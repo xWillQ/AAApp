@@ -1,101 +1,167 @@
 # План  
-1. Прочитать требования  
-2. Создать репозиторий на гитхабе  
-3. Создать Hello world, .gitignore  
+1. Прочитать требования (3 мин.)  
+2. Создать репозиторий на гитхабе  (1 мин.)  
+3. Создать Hello world, .gitignore (2 мин.)  
 4. Описать тестовые данные  
-    1. Описать пользователей  
-    U1: log: vasya pass: 123  
-    U2: log: admin pass: admin  
-    U3: log: q pass: ?!#  
-    U4: log: abcdefghij pass: qwerty  
-    2. Описать ресурсы  
-    R1: re: A ro: READ v: vasya  
-    R2: re: A.B.C ro: WRITE v: vasya  
-    R3: re: A.B ro: EXECUTE v: admin  
-    R4: re: A ro: READ v: admin  
-    R5: re: A.B ro: WRITE v: admin  
-    R6: re: A.B.C ro: READ v: admin  
-    R7: re: B ro: EXECUTE v: q  
-    R8: re: A.A.A ro: EXECUTE v: vasya  
-5. Записываем тесты в sh файл  
+    * Описать пользователей  
 
-    - [ ] T1.1: app.jar -> 1 + вывод справки  
-    - [ ] T1.2: app.jar -h -> 1 + вывод справки  
-    - [ ] T1.3: app.jar -q -> 0 + вывод справки (особый случай)  
-    ---  
-    - [ ] T2.1: app.jar -login vasya -pass 123 -> 0  
-    - [ ] T2.2: app.jar -pass 123 -login vasya -> 0  
-    - [ ] T2.3: app.jar -login VASYA -pass 123 -> 2  
-    - [ ] T2.4: app.jar -login asd -pass 123 -> 3  
-    - [ ] T2.5: app.jar -login admin -pass 1234 -> 4  
-    - [ ] T2.6: app.jar -login admin -pass admin -> 0  
-    ---  
-    - [ ] T3.1: app.jar -login vasya -pass 123 -role READ -res A -> 0  
-    - [ ] T3.2: app.jar -login vasya -pass 123 -role DELETE -res A -> 5  
-    - [ ] T3.3: app.jar -login vasya -pass 123 -role WRITE -res A -> 6  
-    - [ ] T3.4: app.jar -login vasya -pass 123 -role READ -res A.B -> 0  
-    - [ ] T3.5: app.jar -login admin -pass admin -role WRITE -res A.B.C -> 0  
-    - [ ] T3.6: app.jar -login vasya -pass 1234 -role DELETE -res A -> 4  
-    - [ ] T3.7: app.jar -login vasya -pass 123 -role WRITE -res A.B.C -> 6  
-    - [ ] T3.8: app.jar -login admin -pass admin -role READ -> 0  (удачная аутент.)  
-    - [ ] T3.9: app.jar -login admin -pass admin -role EXECUTE -res A -> 6  
-    - [ ] T3.10: app.jar -login admin -pass admin -role WRITE -res A.A -> 6  
-    ---  
-    - [ ] T4.1: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol 1024 -> 0  
-    - [ ] T4.2 app.jar -login vasya -pass 123 -role READ -res A -ds 20202-03-10 -de 2020-04-01 -vol 1024 -> 7 (неверный год)  
-    - [ ] T4.3 app.jar -login vasya -pass 123 -role READ -res A -ds 2020-12-10 -de 2020-13-01 -vol 1024 -> 7 (несуществующий месяц)  
-    - [ ] T4.4: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-04-31 -de 2020-04-01 -vol 1024 -> 7 (день которого нет в месяце)  
-    - [ ] T4.5: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-02-32 -de 2020-04-01 -vol 1024 -> 7 (несуществующее число)  
-    - [ ] T4.6: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol -1024 -> 7 (неверный объем)  
-    - [ ] T4.7: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol alot -> 7 (некорректный объем)  
-    - [ ] T4.8: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -> 0 (удачная авторизация)  
-    - [ ] T4.9: app.jar -login admin -pass admin -role WRITE -res A.B.C -ds 2020-03-10 -de 2020-01-01 -vol 1024 -> 0 (проверка другого юзера)  
-    - [ ] T4.10: app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024 -> 6 (не проходит авторизация)  
-    - [ ] T4.11: app.jar -login vasya -pass 123 -role READ -res A -ds 2020-04-10 -de 2020-03-01 -vol 1024 -> 7 (начало позже конца)  
-6. Обрабатываем простой сценарий  
-    1. Проверяем наличие аргументов  
-    2. Создаём функцию вывода справки  
-            - exitProcess(1)  
-    3. Проверяем надо ли выводить справку  
-        Args[0] == “-h”  
-    4. Во всех остальных случаях выводим справку и возвращаем 0  
-7. Сценарии аутентификации  
-    1. Создаем метод needAuthentication()  
-        Args[0] == “-login” && args[2] == “-pass”  
-    2. Создаем метод validateLogin  
+    |   N   |     log      |   pass   |
+    | :---: | :----------: | :------: |
+    |  U1   |   `vasya`    |  `123`   |
+    |  U2   |   `admin`    | `admin`  |
+    |  U3   |     `q`      |  `?!#`   |
+    |  U4   | `abcdefghij` | `qwerty` |
+
+    * Описать ресурсы  
+
+    |   N   |   re    |    ro     |    u    |
+    | :---: | :-----: | :-------: | :-----: |
+    |  R1   |   `A`   |  `READ`   | `vasya` |
+    |  R2   | `A.B.C` |  `WRITE`  | `vasya` |
+    |  R3   |  `A.B`  | `EXECUTE` | `admin` |
+    |  R4   |   `A`   |  `READ`   | `admin` |
+    |  R5   |  `A.B`  |  `WRITE`  | `admin` |
+    |  R6   | `A.B.C` |  `READ`   | `admin` |
+    |  R7   |   `B`   | `EXECUTE` |   `q`   |
+    |  R8   | `A.A.A` | `EXECUTE` | `vasya` |
+
+5. Записываем тесты в sh файл (8 мин).  
+
+    |   N   | command                                                                                           |               output                |
+    | :---: | :------------------------------------------------------------------------------------------------ | :---------------------------------: |
+    | T1.1  | `app.jar`                                                                                         |         `1 + вывод справки`         |
+    | T1.2  | `app.jar -h`                                                                                      |         `1 + вывод справки`         |
+    | T1.3  | `app.jar -q`                                                                                      | `0 + вывод справки (особый случай)` |
+    | T2.1  | `app.jar -login vasya -pass 123`                                                                  |                 `0`                 |
+    | T2.2  | `app.jar -pass 123 -login vasya`                                                                  |                 `0`                 |
+    | T2.3  | `app.jar -login VASYA -pass 123`                                                                  |                 `2`                 |
+    | T2.4  | `app.jar -login asd -pass 123`                                                                    |                 `3`                 |
+    | T2.5  | `app.jar -login admin -pass 1234`                                                                 |                 `4`                 |
+    | T2.6  | `app.jar -login admin -pass admin`                                                                |                 `0`                 |
+    | T3.1  | `app.jar -login vasya -pass 123 -role READ -res A`                                                |                 `0`                 |
+    | T3.2  | `app.jar -login vasya -pass 123 -role DELETE -res A`                                              |                 `5`                 |
+    | T3.3  | `app.jar -login vasya -pass 123 -role WRITE -res A`                                               |                 `6`                 |
+    | T3.4  | `app.jar -login vasya -pass 123 -role READ -res A.B`                                              |                 `0`                 |
+    | T3.5  | `app.jar -login admin -pass admin -role WRITE -res A.B.C`                                         |                 `0`                 |
+    | T3.6  | `app.jar -login vasya -pass 1234 -role DELETE -res A`                                             |                 `4`                 |
+    | T3.7  | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C`                                           |                 `6`                 |
+    | T3.8  | `app.jar -login admin -pass admin -role READ`                                                     |        `0 (удачная аутент.)`        |
+    | T3.9  | `app.jar -login admin -pass admin -role EXECUTE -res A`                                           |                 `6`                 |
+    | T3.10 | `app.jar -login admin -pass admin -role WRITE -res A.A`                                           |                 `6`                 |
+    | T4.1  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol 1024`        |                 `0`                 |
+    | T4.2  | `app.jar -login vasya -pass 123 -role READ -res A -ds 20202-03-10 -de 2020-04-01 -vol 1024`       |         `7 (неверный год)`          |
+    | T4.3  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-12-10 -de 2020-13-01 -vol 1024`        |     `7 (несуществующий месяц)`      |
+    | T4.4  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-04-31 -de 2020-04-01 -vol 1024`        |  `7 (день которого нет в месяце)`   |
+    | T4.5  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-02-32 -de 2020-04-01 -vol 1024`        |     `7 (несуществующее число)`      |
+    | T4.6  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol -1024`       |        `7 (неверный объем)`         |
+    | T4.7  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol alot`        |      `7 (некорректный объем)`       |
+    | T4.8  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01`                  |      `0 (удачная авторизация)`      |
+    | T4.9  | `app.jar -login admin -pass admin -role WRITE -res A.B.C -ds 2020-03-10 -de 2020-01-01 -vol 1024` |    `0 (проверка другого юзера)`     |
+    | T4.10 | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024`   |    `6 (не проходит авторизация)`    |
+
+6. Обрабатываем простой сценарий (4 мин. 10 сек.)  
+    1. Проверяем наличие аргументов (30 сек.)  
+    2. Создаём функцию вывода справки (3 мин.)  
+            - `exitProcess(1)`  
+    3. Проверяем надо ли выводить справку (20 сек.)  
+        `Args[0] == “-h”`  
+    4. Во всех остальных случаях выводим справку и возвращаем `0` (20 сек.)  
+7. Сценарии аутентификации (16 мин. 30 сек.)  
+    1. Создаем метод `needAuthentication()` (20 сек.)  
+        `Args[0] == “-login” && args[2] == “-pass”`  
+    2. Создаем метод `validateLogin()` (2 мин.)  
         (проверяем правильность формата логина через regex)  
-    3. Создаем метод loginExists  
-        проверяем что логин == vasya  
-    4. Создаем метод authenticate()  
-        проверяем что логин == vasya, пароль == 123  
-    5. Создаем DataClass User (login, pass)  
-    6. Создаем коллекцию юзеров, заполняем данные  
-    7. Исправляем методы на работу с коллекцией  
-    8.  Создаём класс argHandler:  
-        - Конструктор (args:array<String>)  
-        - needHelp()  
-        - isArgs()  
-        - needAuthentication()  
-    9. Рефакторим код на использование argHandler()  
-8. Сценарии авторизаци  
-    1. Создаем метод needAutorization() в классе argHandler  
-    2. Создаем метод validateRole  
+    3. Создаем метод `loginExists()` (20 сек.)  
+        проверяем что `login == vasya`  
+    4. Создаем метод `authenticate()` (20 сек.)  
+        проверяем что `login == vasya && pass == 123`  
+    5. Создаем `DataClass User(login, pass)` (40 сек.)  
+    6. Создаем коллекцию юзеров, заполняем данные (2 мин.)  
+    7. Исправляем методы на работу с коллекцией (4 мин.)  
+    8. Создаём класс `argHandler`: (5 мин.)  
+        - `Конструктор (args: Array\<String\>)`  
+        - `needHelp()`  
+        - `isArgs()`  
+        - `needAuthentication()`  
+    9. Рефакторим код на использование `argHandler()` (2 мин.)  
+8. Сценарии авторизаци (9 мин.)  
+    1. Создаем метод `needAutorization()` в классе `argHandler` (1 мин.)  
+    2. Создаем метод `validateRole()` (40 сек.)  
         (проверяем правильность роли)  
-    3. Создаем метод проверки доступа к ресурсу  
-        проверяем что res == A, role == READ, user == vasya  
-    4. Создаем DataClass Permission(res, ro, user)  
-    5. Создаем коллекцию разрешений, заполняем данные  
-    6. Исправляем методы на работу с коллекцией  
-9. Сценарий аккаунтинга  
-    1. Создаем метод needAccounting() в argHandler  
-    2. Создаем метод validateVol  
+    3. Создаем метод проверки доступа к ресурсу (20 сек.)  
+        проверяем что `res == A && role == READ && user == vasya`  
+    4. Создаем `DataClass Permission(res, ro, user)` (1 мин.)  
+    5. Создаем коллекцию разрешений, заполняем данные (4 мин.)  
+    6. Исправляем методы на работу с коллекцией (2 мин.)  
+9.  Сценарии аккаунтинга (12 мин. 30 сек.)  
+    1. Создаем метод `needAccounting()` в классе `argHandler` (1 мин.)  
+    2. Создаем метод `validateVol()` (30 сек.)  
         (проверяем правильность объёма)  
-    3. Создаем метод validateDate  
+    3. Создаем метод `validateDate()` (5 мин.)  
         (проверяем правильность даты)  
-    4. Создаём метод сравнения двух дат compareDate(date1, date2)  
-            (date1 == 2020-01-01 && date2 == 2020-01-02)  
-    5. Создаем DataClass Resource(ds, de, vol)  
-    6. Переделываем compareDate на работу с любыми датами  
-    7. Создаем коллекцию для хранения ресурсов  
-    8. Создаем объект с переданными данными и помещаем его в коллекцию  
-10. Модифицируем класс argHandler для обработки аргументов в любом порядке  
+    4. Создаем `DataClass Activity(user, res, role, ds, de, vol)` (5 мин.)  
+    5. Создаем коллекцию для хранения активности (30 сек.)  
+    6. Создаем объект с переданными данными и помещаем его в коллекцию (30 сек.)  
+10. Модифицируем класс `argHandler` для обработки аргументов в любом порядке (10 мин.)  
+11. Делаем хранение паролей безопасным (29 мин.)   
+    1. Создаем метод `getSalt()` (20 сек.)  
+        `return "46c61ea8b02362b462f24f1ac8d9aacd"`  
+    2. Создаём метод `getSaltedHash()` (2 мин.)  
+        (солим пароль, хэшируем используя sha256 и возвращаем хэш)  
+    3. Создаём метод `authHash()` (20 сек.)  
+        проверяем что `login == vasya && hash == fc5e540b95138a20e304971df53d66887495a05050031881799feeedcfa52f24`  
+    4. Модифицируем класс `User` для хранения соли и хэша (30 сек.)  
+    5. Генерируем уникальную соль для каждого пользователя и сохраняем в коллекцию пользователей (10 мин.)  
+    6. Генерируем хэш на основе пароля и соли из коллекции для каждого пользователя и сохраняем в коллекцию (10 мин.)  
+    7. Исправляем `getSalt()` и `authHash()` на работу с коллекцией (5 мин.)  
+    8. Подменяем метод `authenticate()` на `authHash()` (20 сек.)  
+        (удаляем `authenticate()`, меняем название `authHash()` на `authenticate()`)  
+    9. Удаляем пароли записанные текстом из коллекции (30 сек.)  
+
+# Оценка времени
+| Пункт плана | Оценка времени  | Фактическое время | Итого |
+| :---------: | --------------- | :---------------- | ----- |
+|     1.      | 3 мин.          |                   |       |
+|     2.      | 1 мин.          |                   |       |
+|     3.      | 2 мин.          |                   |       |
+|     5.      | 8 мин.          |                   |       |
+|     6.      | 4 мин. 10 сек.  |                   |       |
+|    6.1.     | 30 сек.         |                   |       |
+|    6.2.     | 3 мин.          |                   |       |
+|    6.3.     | 20 сек.         |                   |       |
+|    6.4.     | 20 сек.         |                   |       |
+|     7.      | 16 мин. 30 сек. |                   |       |
+|    7.1.     | 20 сек.         |                   |       |
+|    7.2.     | 2 мин.          |                   |       |
+|    7.3.     | 20 сек.         |                   |       |
+|    7.4.     | 20 сек.         |                   |       |
+|    7.5.     | 40 сек.         |                   |       |
+|    7.6.     | 2 мин.          |                   |       |
+|    7.7.     | 4 мин.          |                   |       |
+|    7.8.     | 5 мин.          |                   |       |
+|    7.9.     | 2 мин.          |                   |       |
+|     8.      | 9 мин.          |                   |       |
+|    8.1.     | 1 мин.          |                   |       |
+|    8.2.     | 40 сек.         |                   |       |
+|    8.3.     | 20 сек.         |                   |       |
+|    8.4.     | 1 мин.          |                   |       |
+|    8.5.     | 4 мин.          |                   |       |
+|    8.6.     | 2 мин.          |                   |       |
+|     9.      | 12 мин. 30 сек. |                   |       |
+|    9.1.     | 1 мин.          |                   |       |
+|    9.2.     | 30 сек.         |                   |       |
+|    9.3.     | 5 мин.          |                   |       |
+|    9.4.     | 5 мин.          |                   |       |
+|    9.5.     | 30 сек.         |                   |       |
+|    9.6.     | 30 сек.         |                   |       |
+|     10.     | 10 мин.         |                   |       |
+|     11.     | 29 мин.         |                   |       |
+|    11.1.    | 20 сек.         |                   |       |
+|    11.2.    | 2 мин.          |                   |       |
+|    11.3.    | 20 сек.         |                   |       |
+|    11.4.    | 30 сек.         |                   |       |
+|    11.5.    | 10 мин.         |                   |       |
+|    11.6.    | 10 мин.         |                   |       |
+|    11.7.    | 5 мин.          |                   |       |
+|    11.8.    | 20 сек.         |                   |       |
+|    11.9.    | 30 сек.         |                   |       |
