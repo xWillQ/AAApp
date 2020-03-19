@@ -12,6 +12,10 @@ fun validateLogin(login: String): Boolean {
     return login.matches(Regex("[a-z]{1,10}"))
 }
 
+fun loginExists(login: String): Boolean {
+    return login == "vasya"
+}
+
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
         printHelp()
