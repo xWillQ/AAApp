@@ -17,11 +17,11 @@ fun validateLogin(login: String): Boolean {
 }
 
 fun loginExists(login: String): Boolean {
-    return login == "vasya"
+    return users.any { it.login == login }
 }
 
 fun authenticate(login: String, pass: String): Boolean {
-    return login == "vasya" && pass == "123"
+    return users.any { it.login == login && it.pass == pass }
 }
 
 fun main(args: Array<String>) {
