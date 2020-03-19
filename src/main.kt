@@ -1,5 +1,7 @@
 import kotlin.system.exitProcess
 
+data class User(val login: String, val pass: String)
+
 fun printHelp() {
     println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
 }
