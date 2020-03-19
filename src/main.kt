@@ -16,6 +16,10 @@ fun loginExists(login: String): Boolean {
     return login == "vasya"
 }
 
+fun authenticate(login: String, pass: String): Boolean {
+    return login == "vasya" && pass == "123"
+}
+
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
         printHelp()
@@ -26,12 +30,12 @@ fun main(args: Array<String>) {
         exitProcess(1)
     }
 
-    if (needAuthentication(args)) {
-        if (validateLogin(args[1])) exitProcess(0)
-        else exitProcess(2)
+    if (!needAuthentication(args)) {
+        printHelp()
+        exitProcess(0)
     }
-
-    printHelp()
-    exitProcess(0)
+    if (!validateLogin(args[1])) exitProcess(2)
+    if (!loginExists(args[1])) exitProcess(3)
+    if (!authenticate(args[1], args[3])) exitProcess(4)
 
 }
