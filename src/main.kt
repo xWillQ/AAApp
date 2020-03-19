@@ -8,6 +8,10 @@ fun needAuthentication(args: Array<String>): Boolean {
     return args[0] == "-login" && args[2] == "-pass"
 }
 
+fun validateLogin(login: String): Boolean {
+    return login.matches(Regex("[a-z]{1,10}"))
+}
+
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
         printHelp()
@@ -16,6 +20,11 @@ fun main(args: Array<String>) {
     if (args[0] == "-h") {
         printHelp()
         exitProcess(1)
+    }
+
+    if (needAuthentication(args)) {
+        if (validateLogin(args[1])) exitProcess(0)
+        else exitProcess(2)
     }
 
     printHelp()
