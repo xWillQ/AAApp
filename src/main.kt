@@ -51,4 +51,11 @@ fun main(args: Array<String>) {
         !authenticate(args[1], args[3]) -> exitProcess(4)
     }
 
+    if (!handler.needAuthorization()) exitProcess(0)
+
+    when {
+        !validateRole(args[7]) -> exitProcess(5)
+        !hasPermission(args[5], args[7], args[1]) -> exitProcess(6)
+    }
+
 }
