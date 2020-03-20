@@ -36,6 +36,10 @@ fun authenticate(login: String, pass: String): Boolean {
     return users.any { it.login == login && it.pass == pass }
 }
 
+fun validateRole(role: String): Boolean {
+    return role == "READ" || role == "WRITE" || role == "EXECUTE"
+}
+
 fun main(args: Array<String>) {
     val handler = ArgHandler(args)
     if (!handler.isArgs() || handler.needHelp()) {
