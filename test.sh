@@ -214,8 +214,8 @@ java -jar app.jar -login vasya -pass 123 -role WRITE -res A.B.C > /dev/null
 res=$?
 echo " T3.7:"
 echo "  java -jar app.jar -login vasya -pass 123 -role WRITE -res A.B.C "
-echo "  expected: 6, actual: $res"
-if [ $res -eq 6 ]; then
+echo "  expected: 0, actual: $res"
+if [ $res -eq 0 ]; then
   success=$(( $success + 1))
   echo "\033[32m  Passed \033[0m"
 else
