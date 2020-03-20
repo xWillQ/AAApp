@@ -8,7 +8,7 @@ class ArgHandler(args: Array<String>) {
     private val empty = args.isEmpty()
     private val help = !empty && args[0] == "-h"
     private val authentication = if (args.size >= 2) args[0] == "-login" && args[2] == "-pass" else false
-    private val authorization = if (args.size >= 8) args[4] == "-res" && args[6] == "-role" else false
+    private val authorization = if (args.size >= 8) args[4] == "-role" && args[6] == "-res" else false
 
     fun needHelp() = help
 
@@ -38,7 +38,9 @@ fun authenticate(login: String, pass: String) = users.any { it.login == login &&
 
 fun validateRole(role: String) = (role == "READ" || role == "WRITE" || role == "EXECUTE")
 
-fun hasPermission(res: String, role: String, user: String) = (res == "A" && role == "READ" && user == "vasya")
+fun hasPermission(res: String, role: String, user: String): Boolean {
+    return permissions.any { res.contains(Regex("^" + it.res + "\\b")) && it.role == role && it.user.login == user }
+}
 
 fun main(args: Array<String>) {
     val handler = ArgHandler(args)
@@ -61,8 +63,8 @@ fun main(args: Array<String>) {
     if (!handler.needAuthorization()) exitProcess(0)
 
     when {
-        !validateRole(args[7]) -> exitProcess(5)
-        !hasPermission(args[5], args[7], args[1]) -> exitProcess(6)
+        !validateRole(args[5]) -> exitProcess(5)
+        !hasPermission(args[7], args[5], args[1]) -> exitProcess(6)
     }
 
 }
