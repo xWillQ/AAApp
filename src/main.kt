@@ -45,7 +45,7 @@ fun hasPermission(res: String, role: String, user: String): Boolean {
     return permissions.any { res.contains(Regex("^" + it.res + "\\b")) && it.role == role && it.user.login == user }
 }
 
-fun validateVol(vol: Int) = vol > 0
+fun validateVol(vol: Int?) = if (vol != null) vol > 0 else false
 
 fun validateDate(date: String): Boolean {
     return date.matches(Regex("\\d{4}-((((0[13578])|(1[02]))-(0[1-9]|[12][0-9]|3[01]))|(((0[469])|(11))-(0[1-9]|[12][0-9]|(30)))|(02-(0[1-9]|[12][0-9])))"))
@@ -75,5 +75,9 @@ fun main(args: Array<String>) {
         !validateRole(args[5]) -> exitProcess(5)
         !hasPermission(args[7], args[5], args[1]) -> exitProcess(6)
     }
+
+    if (!handler.needAccounting()) exitProcess(0)
+
+    if (!validateVol(args[13].toIntOrNull()) || !validateDate(args[9]) || !validateDate(args[11])) exitProcess(7)
 
 }
