@@ -9,6 +9,7 @@ class ArgHandler(args: Array<String>) {
     private val help = !empty && args[0] == "-h"
     private val authentication = if (args.size >= 2) args[0] == "-login" && args[2] == "-pass" else false
     private val authorization = if (args.size >= 8) args[4] == "-role" && args[6] == "-res" else false
+    private val accounting = if (args.size >= 14) args[8] == "-ds" && args[10] == "-de" && args[12] == "-vol" else false
 
     fun needHelp() = help
 
@@ -17,6 +18,8 @@ class ArgHandler(args: Array<String>) {
     fun needAuthentication() = authentication
 
     fun needAuthorization() = authorization
+
+    fun needAccounting() = accounting
 
 }
 
