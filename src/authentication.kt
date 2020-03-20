@@ -4,12 +4,8 @@ fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 
 fun loginExists(login: String) = users.any { it.login == login }
 
-fun authenticate(login: String, pass: String) = users.any { it.login == login && it.pass == pass }
 
-fun authHash(login: String, pass: String): Boolean {
-
-    return users.any { it.login == login && it.hash == getSaltedHash(pass, getSalt(it.login)) }
-}
+fun authenticate(login: String, pass: String) = users.any { it.login == login && it.hash == getSaltedHash(pass, getSalt(it.login)) }
 
 fun getSalt(login: String): String {
     for (u in users) {
