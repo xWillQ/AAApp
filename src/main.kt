@@ -2,6 +2,25 @@ import kotlin.system.exitProcess
 
 data class User(val login: String, val pass: String)
 
+class ArgHandler(args: Array<String>) {
+    private val authentication = (args[0] == "-login" && args[2] == "-pass")
+    private val help = (args[0] == "-h")
+    private val empty = args.isEmpty()
+
+    fun needHelp(): Boolean {
+        return help
+    }
+
+    fun isArgs(): Boolean {
+        return !empty
+    }
+
+    fun needAuthentication(): Boolean {
+        return authentication
+    }
+
+}
+
 val users = listOf<User>(User("vasya", "123"), User("admin", "admin"), User("q", "?!#"), User("abcdefghij", "qwerty"))
 
 fun printHelp() {
