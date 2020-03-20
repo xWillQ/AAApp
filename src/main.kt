@@ -31,6 +31,8 @@ fun authenticate(login: String, pass: String) = users.any { it.login == login &&
 
 fun validateRole(role: String) = (role == "READ" || role == "WRITE" || role == "EXECUTE")
 
+fun hasPermission(res: String, role: String, user: String) = (res == "A" && role == "READ" && user == "vasya")
+
 fun main(args: Array<String>) {
     val handler = ArgHandler(args)
     if (!handler.isArgs() || handler.needHelp()) {
