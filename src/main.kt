@@ -20,25 +20,16 @@ class ArgHandler(args: Array<String>) {
 
 val users = listOf<User>(User("vasya", "123"), User("admin", "admin"), User("q", "?!#"), User("abcdefghij", "qwerty"))
 
-fun printHelp() {
-    println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
-}
+fun printHelp() =
+        println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
 
-fun validateLogin(login: String): Boolean {
-    return login.matches(Regex("[a-z]{1,10}"))
-}
+fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 
-fun loginExists(login: String): Boolean {
-    return users.any { it.login == login }
-}
+fun loginExists(login: String) = users.any { it.login == login }
 
-fun authenticate(login: String, pass: String): Boolean {
-    return users.any { it.login == login && it.pass == pass }
-}
+fun authenticate(login: String, pass: String) = users.any { it.login == login && it.pass == pass }
 
-fun validateRole(role: String): Boolean {
-    return role == "READ" || role == "WRITE" || role == "EXECUTE"
-}
+fun validateRole(role: String) = (role == "READ" || role == "WRITE" || role == "EXECUTE")
 
 fun main(args: Array<String>) {
     val handler = ArgHandler(args)
