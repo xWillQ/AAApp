@@ -1,6 +1,6 @@
 import kotlin.system.exitProcess
 
-data class User(val login: String, val pass: String)
+data class User(val login: String, val pass: String, val salt: String, val hash: String)
 data class Permission(val res: String, val role: String, val user: User)
 data class Activity(val user: User, val res: String, val role: String, val ds: String, val de: String, val vol: Int)
 
