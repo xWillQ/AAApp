@@ -45,6 +45,8 @@ fun hasPermission(res: String, role: String, user: String): Boolean {
     return permissions.any { res.contains(Regex("^" + it.res + "\\b")) && it.role == role && it.user.login == user }
 }
 
+fun validateVol(vol: Int) = vol > 0
+
 fun main(args: Array<String>) {
     val handler = ArgHandler(args)
     if (!handler.isArgs() || handler.needHelp()) {
