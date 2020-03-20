@@ -20,7 +20,12 @@ class ArgHandler(args: Array<String>) {
 
 }
 
-val users = listOf<User>(User("vasya", "123"), User("admin", "admin"), User("q", "?!#"), User("abcdefghij", "qwerty"))
+val users = listOf(User("vasya", "123"), User("admin", "admin"), User("q", "?!#"), User("abcdefghij", "qwerty"))
+
+val permissions = listOf(Permission("A", "READ", users[0]), Permission("A.B.C", "WRITE", users[0]),
+        Permission("A.B", "EXECUTE", users[1]), Permission("A", "READ", users[1]),
+        Permission("A.B", "WRITE", users[1]), Permission("A.B.C", "READ", users[1]),
+        Permission("B", "EXECUTE", users[2]), Permission("A.A.A", "EXECUTE", users[0]))
 
 fun printHelp() =
         println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
