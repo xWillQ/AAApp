@@ -32,7 +32,7 @@ val permissions = listOf(Permission("A", "READ", users[0]), Permission("A.B.C", 
         Permission("A.B", "WRITE", users[1]), Permission("A.B.C", "READ", users[1]),
         Permission("B", "EXECUTE", users[2]), Permission("A.A.A", "EXECUTE", users[0]))
 
-val activities = listOf<Activity>()
+val activities = mutableListOf<Activity>()
 
 fun printHelp() =
         println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
@@ -83,5 +83,7 @@ fun main(args: Array<String>) {
     if (!handler.needAccounting()) exitProcess(0)
 
     if (!validateVol(args[13].toIntOrNull()) || !validateDate(args[9]) || !validateDate(args[11])) exitProcess(7)
+
+    activities += Activity(users.first { it.login == args[1] }, args[7], args[5], args[9], args[11], args[13].toInt())
 
 }
