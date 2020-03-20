@@ -2,6 +2,8 @@ import kotlin.system.exitProcess
 
 data class User(val login: String, val pass: String)
 
+data class Permission(val res: String, val role: String, val user: User)
+
 class ArgHandler(args: Array<String>) {
     private val empty = args.isEmpty()
     private val help = !empty && args[0] == "-h"
