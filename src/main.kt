@@ -27,10 +27,6 @@ fun printHelp() {
     println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
 }
 
-fun needAuthentication(args: Array<String>): Boolean {
-    return args[0] == "-login" && args[2] == "-pass"
-}
-
 fun validateLogin(login: String): Boolean {
     return login.matches(Regex("[a-z]{1,10}"))
 }
@@ -44,19 +40,17 @@ fun authenticate(login: String, pass: String): Boolean {
 }
 
 fun main(args: Array<String>) {
-    if (args.isEmpty()) {
-        printHelp()
-        exitProcess(1)
-    }
-    if (args[0] == "-h") {
+    val handler = ArgHandler(args)
+    if (!handler.isArgs() || handler.needHelp()) {
         printHelp()
         exitProcess(1)
     }
 
-    if (!needAuthentication(args)) {
+    if (!handler.needAuthentication()) {
         printHelp()
         exitProcess(0)
     }
+
     if (!validateLogin(args[1])) exitProcess(2)
     if (!loginExists(args[1])) exitProcess(3)
     if (!authenticate(args[1], args[3])) exitProcess(4)
