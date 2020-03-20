@@ -387,6 +387,19 @@ java -jar app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -
 res=$?
 echo " T4.10:"
 echo "  java -jar app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024  "
+echo "  expected: 7, actual: $res"
+if [ $res -eq 7 ]; then
+  success=$(( $success + 1))
+  echo "\033[32m  Passed \033[0m"
+else
+  echo "\033[31m  Failed \033[0m"
+fi
+
+total=$(( $total + 1))
+java -jar app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024  > /dev/null #не проходит авторизация
+res=$?
+echo " T4.11:"
+echo "  java -jar app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024  "
 echo "  expected: 6, actual: $res"
 if [ $res -eq 6 ]; then
   success=$(( $success + 1))

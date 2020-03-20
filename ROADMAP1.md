@@ -57,7 +57,8 @@
     | T4.7  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol alot`        |      `7 (некорректный объем)`       |
     | T4.8  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01`                  |      `0 (удачная авторизация)`      |
     | T4.9  | `app.jar -login admin -pass admin -role WRITE -res A.B.C -ds 2020-03-10 -de 2020-01-01 -vol 1024` |    `0 (проверка другого юзера)`     |
-    | T4.10 | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024`   |    `6 (не проходит авторизация)`    |
+    | T4.10 | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024`   |     `7 (несуществующее число)`      |
+    | T4.11 | `app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024` |    `6 (не проходит авторизация)`    |
 
 6. Обрабатываем простой сценарий (4 мин. 10 сек.)
     1. Проверяем наличие аргументов (30 сек.)
