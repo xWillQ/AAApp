@@ -4,6 +4,8 @@ data class User(val login: String, val pass: String)
 
 data class Permission(val res: String, val role: String, val user: User)
 
+data class Activity(val user: User, val res: String, val role: String, val ds: String, val de: String, val vol: Int)
+
 class ArgHandler(args: Array<String>) {
     private val empty = args.isEmpty()
     private val help = !empty && args[0] == "-h"
@@ -29,6 +31,7 @@ val permissions = listOf(Permission("A", "READ", users[0]), Permission("A.B.C", 
         Permission("A.B", "EXECUTE", users[1]), Permission("A", "READ", users[1]),
         Permission("A.B", "WRITE", users[1]), Permission("A.B.C", "READ", users[1]),
         Permission("B", "EXECUTE", users[2]), Permission("A.A.A", "EXECUTE", users[0]))
+
 
 fun printHelp() =
         println("Usage: app.jar [-h] [-login <login> -pass <pass> [-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
