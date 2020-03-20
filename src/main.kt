@@ -3,21 +3,18 @@ import kotlin.system.exitProcess
 data class User(val login: String, val pass: String)
 
 class ArgHandler(args: Array<String>) {
-    private val authentication = (args[0] == "-login" && args[2] == "-pass")
-    private val help = (args[0] == "-h")
     private val empty = args.isEmpty()
+    private val help = !empty && args[0] == "-h"
+    private val authentication = if (args.size >= 2) args[0] == "-login" && args[2] == "-pass" else false
+    private val authorization = if (args.size >= 8) args[4] == "-res" && args[6] == "-role" else false
 
-    fun needHelp(): Boolean {
-        return help
-    }
+    fun needHelp() = help
 
-    fun isArgs(): Boolean {
-        return !empty
-    }
+    fun isArgs() = !empty
 
-    fun needAuthentication(): Boolean {
-        return authentication
-    }
+    fun needAuthentication() = authentication
+
+    fun needAuthorization() = authorization
 
 }
 
@@ -51,8 +48,10 @@ fun main(args: Array<String>) {
         exitProcess(0)
     }
 
-    if (!validateLogin(args[1])) exitProcess(2)
-    if (!loginExists(args[1])) exitProcess(3)
-    if (!authenticate(args[1], args[3])) exitProcess(4)
+    when {
+        !validateLogin(args[1]) -> exitProcess(2)
+        !loginExists(args[1]) -> exitProcess(3)
+        !authenticate(args[1], args[3]) -> exitProcess(4)
+    }
 
 }
