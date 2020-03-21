@@ -24,8 +24,8 @@ java -jar app.jar -h > /dev/null
 res=$?
 echo " T1.2:"
 echo "  java -jar app.jar -h "
-echo "  expected: 1, actual: $res"
-if [ $res -eq 1 ]; then
+echo "  expected: 0, actual: $res"
+if [ $res -eq 0 ]; then
   success=$(( $success + 1))
   echo "\033[32m  Passed \033[0m"
 else
@@ -33,12 +33,12 @@ else
 fi
 
 total=$(( $total + 1))
-java -jar app.jar -q  > /dev/null #особый случай
+java -jar app.jar -q  > /dev/null
 res=$?
 echo " T1.3:"
 echo "  java -jar app.jar -q  "
-echo "  expected: 0, actual: $res"
-if [ $res -eq 0 ]; then
+echo "  expected: 1, actual: $res"
+if [ $res -eq 1 ]; then
   success=$(( $success + 1))
   echo "\033[32m  Passed \033[0m"
 else

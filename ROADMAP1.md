@@ -27,38 +27,38 @@
 
 5. Записываем тесты в sh файл (8 мин).
 
-    |   N   | command                                                                                           |               output                |
-    | :---: | :------------------------------------------------------------------------------------------------ | :---------------------------------: |
-    | T1.1  | `app.jar`                                                                                         |         `1 + вывод справки`         |
-    | T1.2  | `app.jar -h`                                                                                      |         `1 + вывод справки`         |
-    | T1.3  | `app.jar -q`                                                                                      | `0 + вывод справки (особый случай)` |
-    | T2.1  | `app.jar -login vasya -pass 123`                                                                  |                 `0`                 |
-    | T2.2  | `app.jar -pass 123 -login vasya`                                                                  |                 `0`                 |
-    | T2.3  | `app.jar -login VASYA -pass 123`                                                                  |                 `2`                 |
-    | T2.4  | `app.jar -login asd -pass 123`                                                                    |                 `3`                 |
-    | T2.5  | `app.jar -login admin -pass 1234`                                                                 |                 `4`                 |
-    | T2.6  | `app.jar -login admin -pass admin`                                                                |                 `0`                 |
-    | T3.1  | `app.jar -login vasya -pass 123 -role READ -res A`                                                |                 `0`                 |
-    | T3.2  | `app.jar -login vasya -pass 123 -role DELETE -res A`                                              |                 `5`                 |
-    | T3.3  | `app.jar -login vasya -pass 123 -role WRITE -res A`                                               |                 `6`                 |
-    | T3.4  | `app.jar -login vasya -pass 123 -role READ -res A.B`                                              |                 `0`                 |
-    | T3.5  | `app.jar -login admin -pass admin -role WRITE -res A.B.C`                                         |                 `0`                 |
-    | T3.6  | `app.jar -login vasya -pass 1234 -role DELETE -res A`                                             |                 `4`                 |
-    | T3.7  | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C`                                           |                 `0`                 |
-    | T3.8  | `app.jar -login admin -pass admin -role READ`                                                     |        `0 (удачная аутент.)`        |
-    | T3.9  | `app.jar -login admin -pass admin -role EXECUTE -res A`                                           |                 `6`                 |
-    | T3.10 | `app.jar -login admin -pass admin -role WRITE -res A.A`                                           |                 `6`                 |
-    | T4.1  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol 1024`        |                 `0`                 |
-    | T4.2  | `app.jar -login vasya -pass 123 -role READ -res A -ds 20202-03-10 -de 2020-04-01 -vol 1024`       |         `7 (неверный год)`          |
-    | T4.3  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-12-10 -de 2020-13-01 -vol 1024`        |     `7 (несуществующий месяц)`      |
-    | T4.4  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-04-31 -de 2020-04-01 -vol 1024`        |  `7 (день которого нет в месяце)`   |
-    | T4.5  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-02-32 -de 2020-04-01 -vol 1024`        |     `7 (несуществующее число)`      |
-    | T4.6  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol -1024`       |        `7 (неверный объем)`         |
-    | T4.7  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol alot`        |      `7 (некорректный объем)`       |
-    | T4.8  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01`                  |      `0 (удачная авторизация)`      |
-    | T4.9  | `app.jar -login admin -pass admin -role WRITE -res A.B.C -ds 2020-03-10 -de 2020-01-01 -vol 1024` |    `0 (проверка другого юзера)`     |
-    | T4.10 | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024`   |     `7 (несуществующее число)`      |
-    | T4.11 | `app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024` |    `6 (не проходит авторизация)`    |
+    |   N   | command                                                                                           |              output              |
+    | :---: | :------------------------------------------------------------------------------------------------ | :------------------------------: |
+    | T1.1  | `app.jar`                                                                                         |       `1 + вывод справки`        |
+    | T1.2  | `app.jar -h`                                                                                      |       `0 + вывод справки`        |
+    | T1.3  | `app.jar -q`                                                                                      |       `1 + вывод справки`        |
+    | T2.1  | `app.jar -login vasya -pass 123`                                                                  |               `0`                |
+    | T2.2  | `app.jar -pass 123 -login vasya`                                                                  |               `0`                |
+    | T2.3  | `app.jar -login VASYA -pass 123`                                                                  |               `2`                |
+    | T2.4  | `app.jar -login asd -pass 123`                                                                    |               `3`                |
+    | T2.5  | `app.jar -login admin -pass 1234`                                                                 |               `4`                |
+    | T2.6  | `app.jar -login admin -pass admin`                                                                |               `0`                |
+    | T3.1  | `app.jar -login vasya -pass 123 -role READ -res A`                                                |               `0`                |
+    | T3.2  | `app.jar -login vasya -pass 123 -role DELETE -res A`                                              |               `5`                |
+    | T3.3  | `app.jar -login vasya -pass 123 -role WRITE -res A`                                               |               `6`                |
+    | T3.4  | `app.jar -login vasya -pass 123 -role READ -res A.B`                                              |               `0`                |
+    | T3.5  | `app.jar -login admin -pass admin -role WRITE -res A.B.C`                                         |               `0`                |
+    | T3.6  | `app.jar -login vasya -pass 1234 -role DELETE -res A`                                             |               `4`                |
+    | T3.7  | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C`                                           |               `0`                |
+    | T3.8  | `app.jar -login admin -pass admin -role READ`                                                     |      `0 (удачная аутент.)`       |
+    | T3.9  | `app.jar -login admin -pass admin -role EXECUTE -res A`                                           |               `6`                |
+    | T3.10 | `app.jar -login admin -pass admin -role WRITE -res A.A`                                           |               `6`                |
+    | T4.1  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol 1024`        |               `0`                |
+    | T4.2  | `app.jar -login vasya -pass 123 -role READ -res A -ds 20202-03-10 -de 2020-04-01 -vol 1024`       |        `7 (неверный год)`        |
+    | T4.3  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-12-10 -de 2020-13-01 -vol 1024`        |    `7 (несуществующий месяц)`    |
+    | T4.4  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-04-31 -de 2020-04-01 -vol 1024`        | `7 (день которого нет в месяце)` |
+    | T4.5  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-02-32 -de 2020-04-01 -vol 1024`        |    `7 (несуществующее число)`    |
+    | T4.6  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol -1024`       |       `7 (неверный объем)`       |
+    | T4.7  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01 -vol alot`        |     `7 (некорректный объем)`     |
+    | T4.8  | `app.jar -login vasya -pass 123 -role READ -res A -ds 2020-03-10 -de 2020-04-01`                  |    `0 (удачная авторизация)`     |
+    | T4.9  | `app.jar -login admin -pass admin -role WRITE -res A.B.C -ds 2020-03-10 -de 2020-01-01 -vol 1024` |   `0 (проверка другого юзера)`   |
+    | T4.10 | `app.jar -login vasya -pass 123 -role WRITE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024`   |    `7 (несуществующее число)`    |
+    | T4.11 | `app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024` |  `6 (не проходит авторизация)`   |
 
 6. Обрабатываем простой сценарий (4 мин. 10 сек.)
     1. Проверяем наличие аргументов (30 сек.)
