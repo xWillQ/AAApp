@@ -16,7 +16,7 @@ jar -xf temp.jar
 rm kotlinx-cli-0.2.1.jar temp.jar # Remove unnecessary files to make final jar lighter
 
 # Merge programm with dependencies
-jar -cfe app.jar MainKt .
+jar -cfe app.jar com.kafedra.bd.MainKt .
 
 cd ..
 mv temp/app.jar app.jar

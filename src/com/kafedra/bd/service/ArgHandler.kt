@@ -1,7 +1,10 @@
-import  kotlinx.cli.*
+package com.kafedra.bd.service
+
+import kotlinx.cli.ArgParser
+import kotlinx.cli.ArgType
 
 class ArgHandler(args: Array<String>) {
-    private val parser = ArgParser("BD", useDefaultHelpShortName = false, skipExtraArguments = true)
+    private val parser = ArgParser("BD")
     private val empty = args.isEmpty()
 
     val login by parser.option(ArgType.String, shortName = "login", description = "Login")
@@ -11,11 +14,13 @@ class ArgHandler(args: Array<String>) {
     val ds by parser.option(ArgType.String, shortName = "ds", description = "Start date")
     val de by parser.option(ArgType.String, shortName = "de", description = "End date")
     val vol by parser.option(ArgType.String, shortName = "vol", description = "Volume")
+    var help = false
 
     init {
         try {
             parser.parse(args)
         } catch (e: IllegalStateException) {
+            help = true
         }
     }
 
