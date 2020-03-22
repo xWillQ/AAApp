@@ -1,7 +1,7 @@
 package com.kafedra.bd.service
 
 import com.kafedra.bd.Role
-import com.kafedra.bd.domain.permissions
+import com.kafedra.bd.permissions
 
 class Authorization {
     companion object {

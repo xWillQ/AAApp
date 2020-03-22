@@ -1,6 +1,6 @@
 package com.kafedra.bd.service
 
-import com.kafedra.bd.domain.users
+import com.kafedra.bd.users
 import java.security.MessageDigest
 
 class Authentication {

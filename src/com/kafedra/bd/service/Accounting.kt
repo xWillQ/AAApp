@@ -2,8 +2,8 @@ package com.kafedra.bd.service
 
 import com.kafedra.bd.Role
 import com.kafedra.bd.domain.Activity
-import com.kafedra.bd.domain.activities
-import com.kafedra.bd.domain.users
+import com.kafedra.bd.activities
+import com.kafedra.bd.users
 
 class Accounting {
     companion object {
