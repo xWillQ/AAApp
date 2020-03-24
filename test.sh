@@ -2,13 +2,6 @@
 success=0
 total=0
 
-test() {
-    echo " $1:"
-    echo "  $2"
-    $($2 > /dev/null)
-    return $?
-}
-
 printResult() {
   echo "  expected: $2, actual: $1"
   if [ $1 -eq $2 ]; then
@@ -21,7 +14,9 @@ printResult() {
 }
 
 testAndPrint() {  # usage testAndPrint "test_number" "full_command" expected_return_value
-  test "$1" "$2" $3
+  echo " $1:"
+  echo "  $2"
+  $($2 > /dev/null)
   printResult $? $3
   return $?
 }
