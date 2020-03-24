@@ -30,6 +30,7 @@ src/META-INF/
 
 # other files
 kotlinx.cli
+.vscode
 
 # Allow
 !lib/kotlinx-cli-0.2.1.jar
