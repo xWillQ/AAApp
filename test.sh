@@ -51,6 +51,7 @@ success=$(( $success + $? ))
 total=$(( $total + 1))
 
 testAndPrint "T2.3" "java -jar app.jar -login VASYA -pass 123" 2
+# shellcheck disable=SC2004
 success=$(( $success + $? ))
 total=$(( $total + 1))
 
@@ -154,7 +155,7 @@ testAndPrint "T4.10" "java -jar app.jar -login vasya -pass 123 -role WRITE -res 
 success=$(( $success + $? ))
 total=$(( $total + 1))
 
-testAndPrint "T4.11" "java -jar app.jar -login vasya -pass 123 -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024" 6
+testAndPrint "T4.11" "java -jar app.jar -login vasya -pass -role EXECUTE -res A.B.C -ds 2020-12-01 -de 2020-01-45 -vol 1024" 6
 success=$(( $success + $? ))
 total=$(( $total + 1))
 
