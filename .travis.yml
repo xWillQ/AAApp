@@ -1,0 +1,8 @@
+language: java
+compiler: kotlinc
+jobs:
+  include:
+    - stage: build
+      script: ./build.sh
+    - stage: test
+      script: ./test.sh
