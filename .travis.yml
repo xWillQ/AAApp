@@ -1,5 +1,5 @@
-language: kotlin
-compiler: kotlinc
+language: java
+compiler: javac
 jobs:
   include:
     - stage: build
