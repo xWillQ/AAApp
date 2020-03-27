@@ -158,6 +158,7 @@ testAndPrint "T4.11" "./run.sh -login vasya -pass 123 -role EXECUTE -res A.B.C -
 success=$(( success + $? ))
 total=$(( total + 1))
 
+total=$(( total + 1))
 
 
 echo
