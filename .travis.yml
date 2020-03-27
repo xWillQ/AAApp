@@ -1,5 +1,7 @@
 language: java
-compiler: javac
+compiler: kotlinc
+before-install:
+  - sudo snap kotlin
 jobs:
   include:
     - stage: build
