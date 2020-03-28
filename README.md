@@ -1,5 +1,4 @@
-<img src="https://travis-ci.com/xWillQ/BD.svg?branch=master">
-
+[![Build Status](https://travis-ci.com/xWillQ/BD.svg?branch=master)](https://travis-ci.com/xWillQ/BD)
 # BD
 ## Roadmaps
 - [Roadmap1](ROADMAP1.md)
