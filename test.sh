@@ -159,7 +159,6 @@ success=$(( success + $? ))
 total=$(( total + 1))
 
 
-
 echo
 if [ $success -eq $total ]; then
   echo "Results: \033[32m$success/$total\033[0m tests passed"
