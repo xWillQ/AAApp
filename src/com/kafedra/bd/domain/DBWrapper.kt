@@ -1,26 +1,52 @@
 package com.kafedra.bd.domain
 
-import com.kafedra.bd.domain.Permission
-import com.kafedra.bd.domain.User
-import com.kafedra.bd.domain.Activity
+import com.kafedra.bd.Role
 import java.io.File
-import java.sql.*
+import java.sql.Connection
+import java.sql.DriverManager
 
 class DBWrapper {
     private var con: Connection? = null
 
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
-    fun getUser(login: String): User = com.kafedra.bd.users.first { it.login == login }
-
-    fun getPermissions(login: String): List<Permission> =
-        com.kafedra.bd.permissions.filter { it.user.login == login }
-
-    fun addActivity(activity: Activity) {
-        com.kafedra.bd.activities.add(activity)
+    fun getUser(login: String): User {
+        val getUser = con!!.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
+        getUser.setString(1, login)
+        val res = getUser.executeQuery()
+        res.next()
+        return User(login, res.getString("salt"), res.getString("hash"))
     }
 
-    fun loginExists(login: String) = com.kafedra.bd.users.any { it.login == login }
+    fun getPermissions(login: String): List<Permission> {
+        val getPerms = con!!.prepareStatement("SELECT res, role FROM permissions WHERE login = ?")
+        getPerms.setString(1, login)
+        val res = getPerms.executeQuery()
+        res.next()
+        val perms = mutableListOf<Permission>()
+        while (!res.isAfterLast)
+            perms.add(Permission(res.getString("res"), Role.valueOf(res.getString("role")), getUser(login)))
+        return perms
+    }
+
+    fun addActivity(activity: Activity) {
+        val addAct = con!!.prepareStatement("INSERT INTO activities(login, res, role, ds, de, vol) VALUES ('?', '?', '?', '?', '?', ?)")
+        addAct.setString(1, activity.user.login)
+        addAct.setString(2, activity.res)
+        addAct.setString(3, activity.role.toString())
+        addAct.setString(4, activity.ds)
+        addAct.setString(5, activity.de)
+        addAct.setInt(6, activity.vol)
+        addAct.execute()
+    }
+
+    fun loginExists(login: String): Boolean {
+        val getUser = con!!.prepareStatement("SELECT login FROM users WHERE login = ?")
+        getUser.setString(1, login)
+        val res = getUser.executeQuery()
+        res.next()
+        return !res.isAfterLast
+    }
 
     fun initDatabase(users: List<User>, permissions: List<Permission>) {
         con = DriverManager.getConnection("jdbc:h2:./aaa;MV_STORE=FALSE", "se", "")
