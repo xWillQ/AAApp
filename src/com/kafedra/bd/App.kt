@@ -29,6 +29,9 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
     fun run(args: Array<String>): ExitCode {
         val dbWrapper = DBWrapper()
+        val accountingService = Accounting(dbWrapper)
+        val authorizeService = Authorization(dbWrapper)
+        val authenService = Authentication(dbWrapper)
         val handler = ArgHandler(args)
         logArgs(handler)
         if (!handler.isArgs() || handler.help) {
@@ -43,9 +46,9 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         } else logger.info("Args available. Start Authentication")
 
         when {
-            !Authentication.validateLogin(handler.login!!) -> return INVALID_LOGIN
+            !authenService.validateLogin(handler.login!!) -> return INVALID_LOGIN
             !dbWrapper.loginExists(handler.login!!) -> return UNKNOWN_LOGIN
-            !Authentication.authenticate(handler.login!!, handler.pass!!) -> return WRONG_PASS
+            !authenService.authenticate(handler.login!!, handler.pass!!) -> return WRONG_PASS
         }
 
 
@@ -56,10 +59,10 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         else logger.info("Args available. Start Authorization")
 
         when {
-            !Authorization.validateRole(handler.role!!) -> {
+            !authorizeService.validateRole(handler.role!!) -> {
                 logger.error("Unknown role. Exit.")
                 return UNKNOWN_ROLE}
-            !Authorization.hasPermission(
+            !authorizeService.hasPermission(
                 handler.res!!, Role.valueOf(handler.role!!),
                 handler.login!!
             ) -> {
@@ -75,15 +78,15 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         }
         else logger.info("Args available. Start Accounting")
 
-        if (!Accounting.validateVol(handler.vol!!.toIntOrNull()) ||
-            !Accounting.validateDate(handler.ds!!) ||
-            !Accounting.validateDate(handler.de!!)
+        if (!accountingService.validateVol(handler.vol!!.toIntOrNull()) ||
+            !accountingService.validateDate(handler.ds!!) ||
+            !accountingService.validateDate(handler.de!!)
         ) {
             logger.error("Invalid Activity. Exit.")
             return INVALID_ACTIVITY
         }
 
-        Accounting.addActivity(
+        accountingService.addActivity(
             users.first { it.login == handler.login }, handler.res!!, Role.valueOf(handler.role!!),
             handler.ds!!, handler.de!!, handler.vol!!.toInt()
         )
