@@ -40,4 +40,8 @@ class DBWrapper {
 
         st.execute("CREATE TABLE activities(ID INT PRIMARY KEY, LOGIN VARCHAR(255), RES VARCHAR(255), ROLE VARCHAR(255), DS VARCHAR(255), DE VARCHAR(255), VOL VARCHAR(255));")
     }
+
+    fun connect(url: String, login: String, pass: String) {
+        con = DriverManager.getConnection(url, login, pass)
+    }
 }
