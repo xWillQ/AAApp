@@ -7,7 +7,7 @@ import java.io.File
 import java.sql.*
 
 class DBWrapper {
-    var con: Connection? = null
+    private var con: Connection? = null
 
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
