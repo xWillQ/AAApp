@@ -15,8 +15,8 @@ import org.apache.logging.log4j.LogManager
 class App(val users: List<User>, val permissions: List<Permission>, val activities: MutableList<Activity>) {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
-        "Usage: app.jar [-h] [-login <login> -pass <pass> " +
-                "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
+            "Usage: app.jar [-h] [-login <login> -pass <pass> " +
+                    "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
     )
 
     private fun logArgs(handler: ArgHandler) {
@@ -31,6 +31,9 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
     fun run(args: Array<String>): ExitCode {
         val dbWrapper = DBWrapper()
+        if (dbWrapper.dbExists()) dbWrapper.connect("jdbc:h2:./aaa", "se", "")
+        else dbWrapper.initDatabase(users, permissions)
+
         val handler = ArgHandler(args)
         logArgs(handler)
         if (!handler.isArgs() || handler.help) {
@@ -61,8 +64,8 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
                 return UNKNOWN_ROLE
             }
             !authorizeService.hasPermission(
-                handler.res!!, Role.valueOf(handler.role!!),
-                handler.login!!
+                    handler.res!!, Role.valueOf(handler.role!!),
+                    handler.login!!
             ) -> {
                 logger.error("No access. Exit.")
                 return NO_ACCESS
@@ -76,16 +79,16 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         } else logger.info("Args available. Start Accounting")
         val accountingService = Accounting(dbWrapper)
         if (!accountingService.validateVol(handler.vol!!.toIntOrNull()) ||
-            !accountingService.validateDate(handler.ds!!) ||
-            !accountingService.validateDate(handler.de!!)
+                !accountingService.validateDate(handler.ds!!) ||
+                !accountingService.validateDate(handler.de!!)
         ) {
             logger.error("Invalid Activity. Exit.")
             return INVALID_ACTIVITY
         }
 
         accountingService.addActivity(
-            users.first { it.login == handler.login }, handler.res!!, Role.valueOf(handler.role!!),
-            handler.ds!!, handler.de!!, handler.vol!!.toInt()
+                users.first { it.login == handler.login }, handler.res!!, Role.valueOf(handler.role!!),
+                handler.ds!!, handler.de!!, handler.vol!!.toInt()
         )
 
         logger.info("Success. Exit.")
