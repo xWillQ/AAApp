@@ -8,16 +8,27 @@ import com.kafedra.bd.service.Accounting
 import com.kafedra.bd.service.ArgHandler
 import com.kafedra.bd.service.Authentication
 import com.kafedra.bd.service.Authorization
+import org.apache.logging.log4j.LogManager
 
 
 class App(val users: List<User>, val permissions: List<Permission>, val activities: MutableList<Activity>) {
-    private fun printHelp() = println(
-        "Usage: app.jar [-h] [-login <login> -pass <pass> " +
-                "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
-    )
+    private  val logger = LogManager.getLogger()
+    private fun printHelp() = println("Usage: app.jar [-h] [-login <login> -pass <pass> " +
+            "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
+
+    private fun logArgs(handler: ArgHandler) {
+        if (handler.login != null) logger.info("Login = ${handler.login}")
+        if (handler.pass != null) logger.info("Pass = ${handler.pass}")
+        if (handler.res != null) logger.info("Res = ${handler.res}")
+        if (handler.role != null) logger.info("Role = ${handler.role}")
+        if (handler.ds != null) logger.info("Ds = ${handler.ds}")
+        if (handler.de != null) logger.info("De = ${handler.de}")
+        if (handler.vol != null) logger.info("vol = ${handler.vol}")
+    }
 
     fun run(args: Array<String>): ExitCode {
         val handler = ArgHandler(args)
+        logArgs(handler)
         if (!handler.isArgs() || handler.help) {
             printHelp()
             return HELP
