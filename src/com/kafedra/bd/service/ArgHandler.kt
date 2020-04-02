@@ -18,8 +18,10 @@ class ArgHandler(args: Array<String>) {
 
     init {
         try {
+            logger.info("Parsing Arguments")
             parser.parse(args)
         } catch (e: IllegalStateException) {
+            logger.error("Error: IllegalStateException")
             help = true
         }
     }
