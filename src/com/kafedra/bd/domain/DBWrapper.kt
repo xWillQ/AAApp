@@ -26,19 +26,19 @@ class DBWrapper {
         con = DriverManager.getConnection("jdbc:h2:./aaa;MV_STORE=FALSE", "se", "")
         val st = con!!.createStatement()
 
-        st.execute("CREATE TABLE users(ID INT PRIMARY KEY, LOGIN VARCHAR(255), HASH VARCHAR(255), SALT VARCHAR(255));")
+        st.execute("CREATE TABLE users(login VARCHAR(10) PRIMARY KEY, hash VARCHAR(64), salt VARCHAR(32));")
         for (i in users.indices) {
             val u = users[i]
             st.execute("INSERT INTO users VALUES (${i}, '${u.login}', '${u.hash}', '${u.salt}');")
         }
 
-        st.execute("CREATE TABLE permissions(ID INT PRIMARY KEY, RES VARCHAR(255), ROLE VARCHAR(255), LOGIN VARCHAR(255));")
+        st.execute("CREATE TABLE permissions(id INT PRIMARY KEY, res VARCHAR(255), role VARCHAR(7), login VARCHAR(10)  REFERENCES users (login));")
         for (i in permissions.indices) {
             val p = permissions[i]
             st.execute("INSERT INTO permissions VALUES (${i}, '${p.res}', '${p.role}', '${p.user}');")
         }
 
-        st.execute("CREATE TABLE activities(ID INT PRIMARY KEY, LOGIN VARCHAR(255), RES VARCHAR(255), ROLE VARCHAR(255), DS VARCHAR(255), DE VARCHAR(255), VOL VARCHAR(255));")
+        st.execute("CREATE TABLE activities(id INT PRIMARY KEY, login VARCHAR(10) REFERENCES users (login), res VARCHAR(255), role VARCHAR(7), ds VARCHAR(10), de VARCHAR(10), vol INT);")
     }
 
     fun connect(url: String, login: String, pass: String) {
