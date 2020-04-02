@@ -8,7 +8,7 @@ class Authentication(val dbWrapper: DBWrapper) {
 
     fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 
-
+    fun loginExists(login: String) = dbWrapper.loginExists(login)
     fun authenticate(login: String, pass: String): Boolean {
         val user = dbWrapper.getUser(login)
         return user.hash == getSaltedHash(pass, getSalt(user.login))

@@ -14,8 +14,10 @@ import org.apache.logging.log4j.LogManager
 
 class App(val users: List<User>, val permissions: List<Permission>, val activities: MutableList<Activity>) {
     private val logger = LogManager.getLogger()
-    private fun printHelp() = println("Usage: app.jar [-h] [-login <login> -pass <pass> " +
-            "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]")
+    private fun printHelp() = println(
+        "Usage: app.jar [-h] [-login <login> -pass <pass> " +
+                "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
+    )
 
     private fun logArgs(handler: ArgHandler) {
         if (handler.login != null) logger.info("Login = ${handler.login}")
@@ -29,25 +31,21 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
     fun run(args: Array<String>): ExitCode {
         val dbWrapper = DBWrapper()
-        val accountingService = Accounting(dbWrapper)
-        val authorizeService = Authorization(dbWrapper)
-        val authenService = Authentication(dbWrapper)
         val handler = ArgHandler(args)
         logArgs(handler)
         if (!handler.isArgs() || handler.help) {
             printHelp()
             return HELP
         }
-
         logger.info("Start program")
         if (!handler.needAuthentication()) {
             printHelp()
             return SUCCESS
         } else logger.info("Args available. Start Authentication")
-
+        val authenService = Authentication(dbWrapper)
         when {
             !authenService.validateLogin(handler.login!!) -> return INVALID_LOGIN
-            !dbWrapper.loginExists(handler.login!!) -> return UNKNOWN_LOGIN
+            !authenService.loginExists(handler.login!!) -> return UNKNOWN_LOGIN
             !authenService.authenticate(handler.login!!, handler.pass!!) -> return WRONG_PASS
         }
 
@@ -55,13 +53,13 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         if (!handler.needAuthorization()) {
             logger.warn("Success. Exit.")
             return SUCCESS
-        }
-        else logger.info("Args available. Start Authorization")
-
+        } else logger.info("Args available. Start Authorization")
+        val authorizeService = Authorization(dbWrapper)
         when {
             !authorizeService.validateRole(handler.role!!) -> {
                 logger.error("Unknown role. Exit.")
-                return UNKNOWN_ROLE}
+                return UNKNOWN_ROLE
+            }
             !authorizeService.hasPermission(
                 handler.res!!, Role.valueOf(handler.role!!),
                 handler.login!!
@@ -75,9 +73,8 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         if (!handler.needAccounting()) {
             logger.info("Success. Exit.")
             return SUCCESS
-        }
-        else logger.info("Args available. Start Accounting")
-
+        } else logger.info("Args available. Start Accounting")
+        val accountingService = Accounting(dbWrapper)
         if (!accountingService.validateVol(handler.vol!!.toIntOrNull()) ||
             !accountingService.validateDate(handler.ds!!) ||
             !accountingService.validateDate(handler.de!!)
