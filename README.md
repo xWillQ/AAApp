@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.com/xWillQ/BD.svg?branch=master)](https://travis-ci.com/xWillQ/BD)
 
 ## Roadmaps
-- [Roadmap1](ROADMAP1.md)
-- [Roadmap2](ROADMAP2.md)
-- [Roadmap3](ROADMAP3.md)
+- [Roadmap1](doc/ROADMAP1.md)
+- [Roadmap2](doc/ROADMAP2.md)
+- [Roadmap3](doc/ROADMAP3.md)
 
 ## Сборка
 Для сборки программы установите компилятор Kotlinc и запустите `build.sh`.
