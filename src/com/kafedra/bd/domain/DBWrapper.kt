@@ -9,7 +9,7 @@ import java.sql.*
 class DBWrapper {
     var con: Connection? = null
 
-    fun dbExists(): Boolean = File("aaa.db").exists()
+    fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
     fun getUser(login: String): User = com.kafedra.bd.users.first { it.login == login }
 
@@ -23,7 +23,7 @@ class DBWrapper {
     fun loginExists(login: String) = com.kafedra.bd.users.any { it.login == login }
 
     fun initDatabase(users: List<User>, permissions: List<Permission>) {
-        con = DriverManager.getConnection("jdbc:h2:./aaa.db")
+        con = DriverManager.getConnection("jdbc:h2:./aaa;MV_STORE=FALSE", "se", "")
         val st = con!!.createStatement()
 
         st.execute("CREATE TABLE users(ID INT PRIMARY KEY, LOGIN VARCHAR(255), HASH VARCHAR(255), SALT VARCHAR(255));")
