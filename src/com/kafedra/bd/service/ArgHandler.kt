@@ -2,6 +2,7 @@ package com.kafedra.bd.service
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
+import org.apache.logging.log4j.LogManager
 
 class ArgHandler(args: Array<String>) {
     private val parser = ArgParser("BD")
@@ -18,10 +19,10 @@ class ArgHandler(args: Array<String>) {
 
     init {
         try {
-            logger.info("Parsing Arguments")
+            LogManager.getLogger().info("Parsing Arguments")
             parser.parse(args)
         } catch (e: IllegalStateException) {
-            logger.error("Error: IllegalStateException")
+            LogManager.getLogger().error("Unknown argument")
             help = true
         }
     }
