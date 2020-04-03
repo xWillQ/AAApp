@@ -15,10 +15,12 @@ class DBWrapper {
     fun getUser(login: String): User {
         val getUser = con!!.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
         getUser.setString(1, login)
+        logger.info("Get result set with user")
         val res = getUser.executeQuery()
         res.next()
         val salt = res.getString("salt")
         val hash = res.getString("hash")
+        logger.info("Close result set with user")
         res.close()
         return User(login, salt, hash)
     }
@@ -26,6 +28,7 @@ class DBWrapper {
     fun getPermissions(login: String): List<Permission> {
         val getPerms = con!!.prepareStatement("SELECT res, role FROM permissions WHERE login = ?")
         getPerms.setString(1, login)
+        logger.info("Get result set with permissions")
         val res = getPerms.executeQuery()
         res.next()
         val perms = mutableListOf<Permission>()
@@ -38,6 +41,7 @@ class DBWrapper {
             )
             res.next()
         }
+        logger.info("Close result set with permissions")
         res.close()
         return perms
     }
@@ -60,9 +64,11 @@ class DBWrapper {
     fun loginExists(login: String): Boolean {
         val getUser = con!!.prepareStatement("SELECT count(*) FROM users WHERE login = ?")
         getUser.setString(1, login)
+        logger.info("Get result set with user")
         val res = getUser.executeQuery()
         res.next()
         val ans = res.getInt(1) > 0
+        logger.info("Close result set with user")
         res.close()
         return ans
     }
