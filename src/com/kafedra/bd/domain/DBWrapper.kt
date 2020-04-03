@@ -4,6 +4,7 @@ import com.kafedra.bd.Role
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
+import org.flywaydb.core.Flyway
 
 class DBWrapper {
     private var con: Connection? = null
@@ -53,43 +54,9 @@ class DBWrapper {
         return res.getInt(1) > 0
     }
 
-    fun initDatabase(users: List<User>, permissions: List<Permission>, url: String, login: String, pass: String) {
-        con = DriverManager.getConnection("${url};MV_STORE=FALSE", login, pass)
-        val st = con!!.createStatement()
-
-        st.execute("CREATE TABLE users(" +
-                "login VARCHAR(10) PRIMARY KEY, " +
-                "hash VARCHAR(64), " +
-                "salt VARCHAR(32));")
-        for (i in users.indices) {
-            val u = users[i]
-            st.execute("INSERT INTO users VALUES ('${u.login}', '${u.hash}', '${u.salt}');")
-        }
-
-        st.execute("CREATE TABLE permissions(" +
-                "id INT PRIMARY KEY, " +
-                "res VARCHAR(255), " +
-                "role VARCHAR(7), " +
-                "login VARCHAR(10)  REFERENCES users (login));")
-        for (i in permissions.indices) {
-            val p = permissions[i]
-            st.execute("INSERT INTO permissions VALUES (${i}, '${p.res}', '${p.role}', '${p.user.login}');")
-        }
-
-        st.execute("CREATE TABLE activities(" +
-                "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "login VARCHAR(10) REFERENCES users (login), " +
-                "res VARCHAR(255), " +
-                "role VARCHAR(7), " +
-                "ds VARCHAR(10), " +
-                "de VARCHAR(10), " +
-                "vol INT);")
-
-
-        st.execute("CREATE UNIQUE INDEX idx_users_login " +
-                "ON users (login);")
-        st.execute("CREATE INDEX idx_permissions_login " +
-                "ON permissions (login);")
+    fun initDatabase(url: String, login: String, pass: String) {
+        val flyway = Flyway.configure().dataSource("${url};MV_STORE=FALSE", login, pass).locations("filesystem:db").load()
+        flyway.migrate()
     }
 
     fun connect(url: String, login: String, pass: String) {

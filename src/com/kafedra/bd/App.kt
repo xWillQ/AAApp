@@ -32,20 +32,16 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
         val dbWrapper = DBWrapper()
-        if (dbWrapper.dbExists()) {
-            logger.info("Using existing database.")
-            dbWrapper.connect(
-                System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
-            )
-        }
+        if (dbWrapper.dbExists()) logger.info("Using existing database.")
         else {
             logger.warn("Database does not exist. Initiating new database.")
             dbWrapper.initDatabase(
-                users, permissions, System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
+                    System.getenv("H2_URL"),
+                    System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
             )
         }
+        dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
+                System.getenv("H2_PASS"))
 
 
         val handler = ArgHandler(args)
