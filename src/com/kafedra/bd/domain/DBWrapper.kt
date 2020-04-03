@@ -19,13 +19,13 @@ class DBWrapper {
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
-        logger.info("Close prepare statement with users")
-        getUser.close()
         res.next()
         val salt = res.getString("salt")
         val hash = res.getString("hash")
         logger.info("Close result set with user")
         res.close()
+        logger.info("Close prepare statement with users")
+        getUser.close()
         return User(login, salt, hash)
     }
 
@@ -35,8 +35,6 @@ class DBWrapper {
         getPerms.setString(1, login)
         logger.info("Get result set with permissions")
         val res = getPerms.executeQuery()
-        logger.info("Close prepare statement with permissions")
-        getPerms.close()
         res.next()
         val perms = mutableListOf<Permission>()
         while (!res.isAfterLast) {
@@ -50,6 +48,8 @@ class DBWrapper {
         }
         logger.info("Close result set with permissions")
         res.close()
+        logger.info("Close prepare statement with permissions")
+        getPerms.close()
         return perms
     }
 
@@ -77,12 +77,12 @@ class DBWrapper {
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
-        logger.info("Close prepare statement with user")
-        getUser.close()
         res.next()
         val ans = res.getInt(1) > 0
         logger.info("Close result set with user")
         res.close()
+        logger.info("Close prepare statement with user")
+        getUser.close()
         return ans
     }
 
