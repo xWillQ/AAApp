@@ -17,7 +17,10 @@ class DBWrapper {
         getUser.setString(1, login)
         val res = getUser.executeQuery()
         res.next()
-        return User(login, res.getString("salt"), res.getString("hash"))
+        val salt = res.getString("salt")
+        val hash = res.getString("hash")
+        res.close()
+        return User(login, salt, hash)
     }
 
     fun getPermissions(login: String): List<Permission> {
@@ -35,6 +38,7 @@ class DBWrapper {
             )
             res.next()
         }
+        res.close()
         return perms
     }
 
@@ -58,7 +62,9 @@ class DBWrapper {
         getUser.setString(1, login)
         val res = getUser.executeQuery()
         res.next()
-        return res.getInt(1) > 0
+        val ans = res.getInt(1) > 0
+        res.close()
+        return ans
     }
 
     fun initDatabase(users: List<User>, permissions: List<Permission>, url: String, login: String, pass: String) {
