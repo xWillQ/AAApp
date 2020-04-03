@@ -49,6 +49,7 @@ class App() {
         if (!handler.isArgs() || handler.help) {
             logger.info("Arguments were not passed. Print help. Exit.")
             printHelp()
+            dbWrapper.disconnect()
             return HELP
         }
 
@@ -58,6 +59,7 @@ class App() {
             logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
             printHelp()
             logger.info("Success. Exit.")
+            dbWrapper.disconnect()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authentication.")
 
@@ -65,14 +67,17 @@ class App() {
         when {
             !authenService.validateLogin(handler.login!!) -> {
                 logger.error("Invalid login. Exit.")
+                dbWrapper.disconnect()
                 return INVALID_LOGIN
             }
             !authenService.loginExists(handler.login!!) -> {
                 logger.error("Unknown Login. Exit.")
+                dbWrapper.disconnect()
                 return UNKNOWN_LOGIN
             }
             !authenService.authenticate(handler.login!!, handler.pass!!) -> {
                 logger.error("Wrong password. Exit.")
+                dbWrapper.disconnect()
                 return WRONG_PASS
             }
         }
@@ -82,6 +87,7 @@ class App() {
         if (!handler.needAuthorization()) {
             logger.info("Necessary arguments were not passed. Authorization is not required.")
             logger.warn("Success. Exit.")
+            dbWrapper.disconnect()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authorization")
 
@@ -89,10 +95,12 @@ class App() {
         when {
             !authorizeService.validateRole(handler.role!!) -> {
                 logger.error("Unknown role. Exit.")
+                dbWrapper.disconnect()
                 return UNKNOWN_ROLE
             }
             !authorizeService.hasPermission(handler.res!!, Role.valueOf(handler.role!!), handler.login!!) -> {
                 logger.error("No access. Exit.")
+                dbWrapper.disconnect()
                 return NO_ACCESS
             }
         }
@@ -102,6 +110,7 @@ class App() {
         if (!handler.needAccounting()) {
             logger.info("Necessary arguments were not passed. Accounting is not required.")
             logger.info("Success. Exit.")
+            dbWrapper.disconnect()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Accounting")
 
@@ -109,14 +118,17 @@ class App() {
         when {
             !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
                 logger.info("Invalid Volume. Exit")
+                dbWrapper.disconnect()
                 return INVALID_ACTIVITY
             }
             !accountingService.validateDate(handler.ds!!) -> {
                 logger.info("Invalid start date. Exit.")
+                dbWrapper.disconnect()
                 return INVALID_ACTIVITY
             }
             !accountingService.validateDate(handler.de!!) -> {
                 logger.info("Invalid end date. Exit.")
+                dbWrapper.disconnect()
                 return INVALID_ACTIVITY
             }
 
@@ -130,6 +142,7 @@ class App() {
 
 
         logger.info("Success. Exit.")
+        dbWrapper.disconnect()
         return SUCCESS
     }
 
