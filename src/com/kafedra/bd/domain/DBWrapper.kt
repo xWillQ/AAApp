@@ -4,9 +4,11 @@ import com.kafedra.bd.Role
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
+import org.apache.logging.log4j.LogManager
 
 class DBWrapper {
     private var con: Connection? = null
+    private val logger = LogManager.getLogger()
 
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
@@ -109,10 +111,12 @@ class DBWrapper {
     }
 
     fun connect(url: String, login: String, pass: String) {
+        logger.info("Сonnecting to database")
         con = DriverManager.getConnection(url, login, pass)
     }
 
-    fun disconnect(){
+    fun disconnect() {
+        logger.info("Disconnecting from database")
         con?.close()
     }
 
