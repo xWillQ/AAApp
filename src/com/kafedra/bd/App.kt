@@ -26,18 +26,21 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
         if (handler.role != null) logger.info("Role = ${handler.role}")
         if (handler.ds != null) logger.info("Ds = ${handler.ds}")
         if (handler.de != null) logger.info("De = ${handler.de}")
-        if (handler.vol != null) logger.info("vol = ${handler.vol}")
+        if (handler.vol != null) logger.info("Vol = ${handler.vol}")
     }
 
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
         val dbWrapper = DBWrapper()
-        if (dbWrapper.dbExists()) dbWrapper.connect(
-            System.getenv("H2_URL"),
-            System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
-        )
+        if (dbWrapper.dbExists()) {
+            logger.info("Using existing database.")
+            dbWrapper.connect(
+                System.getenv("H2_URL"),
+                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
+            )
+        }
         else {
-            logger.warn("DataBase is not exists. Init DataBase.")
+            logger.warn("Database does not exist. Initiating new database.")
             dbWrapper.initDatabase(
                 users, permissions, System.getenv("H2_URL"),
                 System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
@@ -57,12 +60,12 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
         // Authentication step
         if (!handler.needAuthentication()) {
-            logger.info("Need arguments were not passed. Authentication no need. Print help.")
+            logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
             printHelp()
             logger.info("Success. Exit.")
             dbWrapper.disconnect()
             return SUCCESS
-        } else logger.info("Args available. Start Authentication")
+        } else logger.info("Necessary arguments available. Starting Authentication.")
 
         val authenService = Authentication(dbWrapper)
         when {
@@ -86,11 +89,11 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
         // Authorization step
         if (!handler.needAuthorization()) {
-            logger.info("Need arguments were not passed. Authorization no need.")
+            logger.info("Necessary arguments were not passed. Authorization is not required.")
             logger.warn("Success. Exit.")
             dbWrapper.disconnect()
             return SUCCESS
-        } else logger.info("Args available. Start Authorization")
+        } else logger.info("Necessary arguments available. Starting Authorization")
 
         val authorizeService = Authorization(dbWrapper)
         when {
@@ -109,11 +112,11 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
         // Accounting step
         if (!handler.needAccounting()) {
-            logger.info("Need arguments were not passed. Accounting no need.")
+            logger.info("Necessary arguments were not passed. Accounting is not required.")
             logger.info("Success. Exit.")
             dbWrapper.disconnect()
             return SUCCESS
-        } else logger.info("Args available. Start Accounting")
+        } else logger.info("Necessary arguments available. Starting Accounting")
 
         val accountingService = Accounting(dbWrapper)
         when {
@@ -135,7 +138,7 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
         }
 
-        logger.info("Success accounting. Add activity in base.")
+        logger.info("Successfull accounting. Adding activity to base.")
         accountingService.addActivity(
             users.first { it.login == handler.login }, handler.res!!,
             Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
