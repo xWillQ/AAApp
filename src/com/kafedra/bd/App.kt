@@ -31,8 +31,8 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
     fun run(args: Array<String>): ExitCode {
         val dbWrapper = DBWrapper()
-        if (dbWrapper.dbExists()) dbWrapper.connect("jdbc:h2:./aaa", "se", "")
-        else dbWrapper.initDatabase(users, permissions)
+        if (dbWrapper.dbExists()) dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
+        else dbWrapper.initDatabase(users, permissions, System.getenv("H2_URL"), System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
 
 
         val handler = ArgHandler(args)

@@ -51,8 +51,8 @@ class DBWrapper {
         return res.getInt(1) > 0
     }
 
-    fun initDatabase(users: List<User>, permissions: List<Permission>) {
-        con = DriverManager.getConnection("jdbc:h2:./aaa;MV_STORE=FALSE", "se", "")
+    fun initDatabase(users: List<User>, permissions: List<Permission>, url: String, login: String, pass: String) {
+        con = DriverManager.getConnection("${url};MV_STORE=FALSE", login, pass)
         val st = con!!.createStatement()
 
         st.execute("CREATE TABLE users(login VARCHAR(10) PRIMARY KEY, hash VARCHAR(64), salt VARCHAR(32));")
