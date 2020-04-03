@@ -16,7 +16,7 @@ printResult() {
 testAndPrint() {  # usage testAndPrint "test_number" "full_command" expected_return_value
   echo " $1:"
   echo "  $2"
-  $2 > /dev/null 2>&1
+  $2 >&2
   printResult $? "$3"
   return $?
 }
