@@ -15,8 +15,8 @@ import org.apache.logging.log4j.LogManager
 class App(val users: List<User>, val permissions: List<Permission>, val activities: MutableList<Activity>) {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
-            "Usage: app.jar [-h] [-login <login> -pass <pass> " +
-                    "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
+        "Usage: app.jar [-h] [-login <login> -pass <pass> " +
+                "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
     )
 
     private fun logArgs(handler: ArgHandler) {
@@ -30,38 +30,58 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
     }
 
     fun run(args: Array<String>): ExitCode {
+        logger.info("Start program")
         val dbWrapper = DBWrapper()
-        if (dbWrapper.dbExists()) dbWrapper.connect(System.getenv("H2_URL"), 
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
-        else dbWrapper.initDatabase(users, permissions, System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
+        if (dbWrapper.dbExists()) dbWrapper.connect(
+            System.getenv("H2_URL"),
+            System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
+        )
+        else {
+            logger.warn("DataBase is not exists. Init DataBase.")
+            dbWrapper.initDatabase(
+                users, permissions, System.getenv("H2_URL"),
+                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
+            )
+        }
 
 
         val handler = ArgHandler(args)
         logArgs(handler)
         if (!handler.isArgs() || handler.help) {
+            logger.info("Arguments were not passed. Print help. Exit.")
             printHelp()
             return HELP
         }
 
 
         // Authentication step
-        logger.info("Start program")
         if (!handler.needAuthentication()) {
+            logger.info("Need arguments were not passed. Authentication no need. Print help.")
             printHelp()
+            logger.info("Success. Exit.")
             return SUCCESS
         } else logger.info("Args available. Start Authentication")
 
         val authenService = Authentication(dbWrapper)
         when {
-            !authenService.validateLogin(handler.login!!) -> return INVALID_LOGIN
-            !authenService.loginExists(handler.login!!) -> return UNKNOWN_LOGIN
-            !authenService.authenticate(handler.login!!, handler.pass!!) -> return WRONG_PASS
+            !authenService.validateLogin(handler.login!!) -> {
+                logger.error("Invalid login. Exit.")
+                return INVALID_LOGIN
+            }
+            !authenService.loginExists(handler.login!!) -> {
+                logger.error("Unknown Login. Exit.")
+                return UNKNOWN_LOGIN
+            }
+            !authenService.authenticate(handler.login!!, handler.pass!!) -> {
+                logger.error("Wrong password. Exit.")
+                return WRONG_PASS
+            }
         }
 
 
         // Authorization step
         if (!handler.needAuthorization()) {
+            logger.info("Need arguments were not passed. Authorization no need.")
             logger.warn("Success. Exit.")
             return SUCCESS
         } else logger.info("Args available. Start Authorization")
@@ -81,20 +101,33 @@ class App(val users: List<User>, val permissions: List<Permission>, val activiti
 
         // Accounting step
         if (!handler.needAccounting()) {
+            logger.info("Need arguments were not passed. Accounting no need.")
             logger.info("Success. Exit.")
             return SUCCESS
         } else logger.info("Args available. Start Accounting")
 
         val accountingService = Accounting(dbWrapper)
-        if (!accountingService.validateVol(handler.vol!!.toIntOrNull()) ||
-                !accountingService.validateDate(handler.ds!!) ||
-                !accountingService.validateDate(handler.de!!)) {
-            logger.error("Invalid Activity. Exit.")
-            return INVALID_ACTIVITY
+        when {
+            !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
+                logger.info("Invalid Volume. Exit")
+                return INVALID_ACTIVITY
+            }
+            !accountingService.validateDate(handler.ds!!) -> {
+                logger.info("Invalid start date. Exit.")
+                return INVALID_ACTIVITY
+            }
+            !accountingService.validateDate(handler.de!!) -> {
+                logger.info("Invalid end date. Exit.")
+                return INVALID_ACTIVITY
+            }
+
         }
 
-        accountingService.addActivity(users.first { it.login == handler.login }, handler.res!!,
-                Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt())
+        logger.info("Success accounting. Add activity in base.")
+        accountingService.addActivity(
+            users.first { it.login == handler.login }, handler.res!!,
+            Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
+        )
 
 
         logger.info("Success. Exit.")
