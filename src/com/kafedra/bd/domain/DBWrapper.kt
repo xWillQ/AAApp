@@ -14,10 +14,13 @@ class DBWrapper {
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
     fun getUser(login: String): User {
+        logger.info("Get prepare statement with users")
         val getUser = con!!.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
+        logger.info("Close prepare statement with users")
+        getUser.close()
         res.next()
         val salt = res.getString("salt")
         val hash = res.getString("hash")
@@ -27,10 +30,13 @@ class DBWrapper {
     }
 
     fun getPermissions(login: String): List<Permission> {
+        logger.info("Get prepare statement with permissions")
         val getPerms = con!!.prepareStatement("SELECT res, role FROM permissions WHERE login = ?")
         getPerms.setString(1, login)
         logger.info("Get result set with permissions")
         val res = getPerms.executeQuery()
+        logger.info("Close prepare statement with permissions")
+        getPerms.close()
         res.next()
         val perms = mutableListOf<Permission>()
         while (!res.isAfterLast) {
@@ -48,6 +54,7 @@ class DBWrapper {
     }
 
     fun addActivity(activity: Activity) {
+        logger.info("Get prepare statement with activities")
         val addAct = con!!.prepareStatement(
             "INSERT INTO " +
                     "activities(login, res, role, ds, de, vol) " +
@@ -60,13 +67,18 @@ class DBWrapper {
         addAct.setString(5, activity.de)
         addAct.setInt(6, activity.vol)
         addAct.execute()
+        logger.info("Close prepare statement with activities")
+        addAct.close()
     }
 
     fun loginExists(login: String): Boolean {
+        logger.info("Get prepare statement with user")
         val getUser = con!!.prepareStatement("SELECT count(*) FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
+        logger.info("Close prepare statement with user")
+        getUser.close()
         res.next()
         val ans = res.getInt(1) > 0
         logger.info("Close result set with user")
