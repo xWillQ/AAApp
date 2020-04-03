@@ -50,7 +50,6 @@ class DBWrapper {
         getUser.setString(1, login)
         val res = getUser.executeQuery()
         res.next()
-        res.getInt(1)
         return res.getInt(1) > 0
     }
 
@@ -85,6 +84,12 @@ class DBWrapper {
                 "ds VARCHAR(10), " +
                 "de VARCHAR(10), " +
                 "vol INT);")
+
+
+        st.execute("CREATE UNIQUE INDEX idx_users_login " +
+                "ON users (login);")
+        st.execute("CREATE INDEX idx_permissions_login " +
+                "ON permissions (login);")
     }
 
     fun connect(url: String, login: String, pass: String) {
