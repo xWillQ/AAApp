@@ -25,14 +25,17 @@ class DBWrapper {
         res.next()
         val perms = mutableListOf<Permission>()
         while (!res.isAfterLast) {
-            perms.add(Permission(res.getString("res"), Role.valueOf(res.getString("role")), getUser(login)))
+            perms.add(Permission(res.getString("res"),
+                    Role.valueOf(res.getString("role")), getUser(login)))
             res.next()
         }
         return perms
     }
 
     fun addActivity(activity: Activity) {
-        val addAct = con!!.prepareStatement("INSERT INTO activities(login, res, role, ds, de, vol) VALUES (?, ?, ?, ?, ?, ?)")
+        val addAct = con!!.prepareStatement("INSERT INTO " +
+                "activities(login, res, role, ds, de, vol) " +
+                "VALUES (?, ?, ?, ?, ?, ?)")
         addAct.setString(1, activity.user.login)
         addAct.setString(2, activity.res)
         addAct.setString(3, activity.role.toString())
@@ -55,19 +58,33 @@ class DBWrapper {
         con = DriverManager.getConnection("${url};MV_STORE=FALSE", login, pass)
         val st = con!!.createStatement()
 
-        st.execute("CREATE TABLE users(login VARCHAR(10) PRIMARY KEY, hash VARCHAR(64), salt VARCHAR(32));")
+        st.execute("CREATE TABLE users(" +
+                "login VARCHAR(10) PRIMARY KEY, " +
+                "hash VARCHAR(64), " +
+                "salt VARCHAR(32));")
         for (i in users.indices) {
             val u = users[i]
             st.execute("INSERT INTO users VALUES ('${u.login}', '${u.hash}', '${u.salt}');")
         }
 
-        st.execute("CREATE TABLE permissions(id INT PRIMARY KEY, res VARCHAR(255), role VARCHAR(7), login VARCHAR(10)  REFERENCES users (login));")
+        st.execute("CREATE TABLE permissions(" +
+                "id INT PRIMARY KEY, " +
+                "res VARCHAR(255), " +
+                "role VARCHAR(7), " +
+                "login VARCHAR(10)  REFERENCES users (login));")
         for (i in permissions.indices) {
             val p = permissions[i]
             st.execute("INSERT INTO permissions VALUES (${i}, '${p.res}', '${p.role}', '${p.user.login}');")
         }
 
-        st.execute("CREATE TABLE activities(id INT PRIMARY KEY AUTO_INCREMENT, login VARCHAR(10) REFERENCES users (login), res VARCHAR(255), role VARCHAR(7), ds VARCHAR(10), de VARCHAR(10), vol INT);")
+        st.execute("CREATE TABLE activities(" +
+                "id INT PRIMARY KEY AUTO_INCREMENT, " +
+                "login VARCHAR(10) REFERENCES users (login), " +
+                "res VARCHAR(255), " +
+                "role VARCHAR(7), " +
+                "ds VARCHAR(10), " +
+                "de VARCHAR(10), " +
+                "vol INT);")
     }
 
     fun connect(url: String, login: String, pass: String) {
