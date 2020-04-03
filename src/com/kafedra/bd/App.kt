@@ -12,7 +12,7 @@ import com.kafedra.bd.service.Authorization
 import org.apache.logging.log4j.LogManager
 
 
-class App(val users: List<User>, val permissions: List<Permission>, val activities: MutableList<Activity>) {
+class App() {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
         "Usage: app.jar [-h] [-login <login> -pass <pass> " +
