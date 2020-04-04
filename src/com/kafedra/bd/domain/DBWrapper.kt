@@ -6,8 +6,9 @@ import java.sql.Connection
 import java.sql.DriverManager
 import org.flywaydb.core.Flyway
 import org.apache.logging.log4j.LogManager
+import java.io.Closeable
 
-class DBWrapper: AutoCloseable {
+class DBWrapper: Closeable {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
 

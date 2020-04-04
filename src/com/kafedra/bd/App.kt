@@ -8,7 +8,6 @@ import com.kafedra.bd.service.Authentication
 import com.kafedra.bd.service.Authorization
 import org.apache.logging.log4j.LogManager
 
-
 class App() {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
@@ -40,7 +39,7 @@ class App() {
         dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
                 System.getenv("H2_PASS"))
 
-        return dbWrapper.use {
+        return dbWrapper.use<DBWrapper, ExitCode> {
             val handler = ArgHandler(args)
             logArgs(handler)
             if (!handler.isArgs() || handler.help) {
