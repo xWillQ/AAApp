@@ -46,7 +46,7 @@ class App() {
             if (!handler.isArgs() || handler.help) {
                 logger.info("Arguments were not passed. Print help. Exit.")
                 printHelp()
-                return HELP
+                return@use HELP
             }
 
 
@@ -55,22 +55,22 @@ class App() {
                 logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
                 printHelp()
                 logger.info("Success. Exit.")
-                return SUCCESS
+                return@use SUCCESS
             } else logger.info("Necessary arguments available. Starting Authentication.")
 
             val authenService = Authentication(dbWrapper)
             when {
                 !authenService.validateLogin(handler.login!!) -> {
                     logger.error("Invalid login. Exit.")
-                    return INVALID_LOGIN
+                    return@use INVALID_LOGIN
                 }
                 !authenService.loginExists(handler.login!!) -> {
                     logger.error("Unknown Login. Exit.")
-                    return UNKNOWN_LOGIN
+                    return@use UNKNOWN_LOGIN
                 }
                 !authenService.authenticate(handler.login!!, handler.pass!!) -> {
                     logger.error("Wrong password. Exit.")
-                    return WRONG_PASS
+                    return@use WRONG_PASS
                 }
             }
 
@@ -79,18 +79,18 @@ class App() {
             if (!handler.needAuthorization()) {
                 logger.info("Necessary arguments were not passed. Authorization is not required.")
                 logger.warn("Success. Exit.")
-                return SUCCESS
+                return@use SUCCESS
             } else logger.info("Necessary arguments available. Starting Authorization")
 
             val authorizeService = Authorization(dbWrapper)
             when {
                 !authorizeService.validateRole(handler.role!!) -> {
                     logger.error("Unknown role. Exit.")
-                    return UNKNOWN_ROLE
+                    return@use UNKNOWN_ROLE
                 }
                 !authorizeService.hasPermission(handler.res!!, Role.valueOf(handler.role!!), handler.login!!) -> {
                     logger.error("No access. Exit.")
-                    return NO_ACCESS
+                    return@use NO_ACCESS
                 }
             }
 
@@ -99,22 +99,22 @@ class App() {
             if (!handler.needAccounting()) {
                 logger.info("Necessary arguments were not passed. Accounting is not required.")
                 logger.info("Success. Exit.")
-                return SUCCESS
+                return@use SUCCESS
             } else logger.info("Necessary arguments available. Starting Accounting")
 
             val accountingService = Accounting(dbWrapper)
             when {
                 !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
                     logger.info("Invalid Volume. Exit")
-                    return INVALID_ACTIVITY
+                    return@use INVALID_ACTIVITY
                 }
                 !accountingService.validateDate(handler.ds!!) -> {
                     logger.info("Invalid start date. Exit.")
-                    return INVALID_ACTIVITY
+                    return@use INVALID_ACTIVITY
                 }
                 !accountingService.validateDate(handler.de!!) -> {
                     logger.info("Invalid end date. Exit.")
-                    return INVALID_ACTIVITY
+                    return@use INVALID_ACTIVITY
                 }
 
             }
@@ -127,7 +127,7 @@ class App() {
 
 
             logger.info("Success. Exit.")
-            return SUCCESS
+            return@use SUCCESS
         }
     }
 }
