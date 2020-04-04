@@ -1,10 +1,7 @@
 package com.kafedra.bd
 
 import com.kafedra.bd.ExitCode.*
-import com.kafedra.bd.domain.Activity
 import com.kafedra.bd.domain.DBWrapper
-import com.kafedra.bd.domain.Permission
-import com.kafedra.bd.domain.User
 import com.kafedra.bd.service.Accounting
 import com.kafedra.bd.service.ArgHandler
 import com.kafedra.bd.service.Authentication
@@ -49,7 +46,7 @@ class App() {
         if (!handler.isArgs() || handler.help) {
             logger.info("Arguments were not passed. Print help. Exit.")
             printHelp()
-            dbWrapper.disconnect()
+            dbWrapper.close()
             return HELP
         }
 
@@ -59,7 +56,7 @@ class App() {
             logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
             printHelp()
             logger.info("Success. Exit.")
-            dbWrapper.disconnect()
+            dbWrapper.close()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authentication.")
 
@@ -67,17 +64,17 @@ class App() {
         when {
             !authenService.validateLogin(handler.login!!) -> {
                 logger.error("Invalid login. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return INVALID_LOGIN
             }
             !authenService.loginExists(handler.login!!) -> {
                 logger.error("Unknown Login. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return UNKNOWN_LOGIN
             }
             !authenService.authenticate(handler.login!!, handler.pass!!) -> {
                 logger.error("Wrong password. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return WRONG_PASS
             }
         }
@@ -87,7 +84,7 @@ class App() {
         if (!handler.needAuthorization()) {
             logger.info("Necessary arguments were not passed. Authorization is not required.")
             logger.warn("Success. Exit.")
-            dbWrapper.disconnect()
+            dbWrapper.close()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authorization")
 
@@ -95,12 +92,12 @@ class App() {
         when {
             !authorizeService.validateRole(handler.role!!) -> {
                 logger.error("Unknown role. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return UNKNOWN_ROLE
             }
             !authorizeService.hasPermission(handler.res!!, Role.valueOf(handler.role!!), handler.login!!) -> {
                 logger.error("No access. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return NO_ACCESS
             }
         }
@@ -110,7 +107,7 @@ class App() {
         if (!handler.needAccounting()) {
             logger.info("Necessary arguments were not passed. Accounting is not required.")
             logger.info("Success. Exit.")
-            dbWrapper.disconnect()
+            dbWrapper.close()
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Accounting")
 
@@ -118,17 +115,17 @@ class App() {
         when {
             !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
                 logger.info("Invalid Volume. Exit")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return INVALID_ACTIVITY
             }
             !accountingService.validateDate(handler.ds!!) -> {
                 logger.info("Invalid start date. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return INVALID_ACTIVITY
             }
             !accountingService.validateDate(handler.de!!) -> {
                 logger.info("Invalid end date. Exit.")
-                dbWrapper.disconnect()
+                dbWrapper.close()
                 return INVALID_ACTIVITY
             }
 
@@ -142,7 +139,7 @@ class App() {
 
 
         logger.info("Success. Exit.")
-        dbWrapper.disconnect()
+        dbWrapper.close()
         return SUCCESS
     }
 

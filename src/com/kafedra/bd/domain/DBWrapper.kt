@@ -7,7 +7,7 @@ import java.sql.DriverManager
 import org.flywaydb.core.Flyway
 import org.apache.logging.log4j.LogManager
 
-class DBWrapper {
+class DBWrapper: AutoCloseable {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
 
@@ -96,7 +96,7 @@ class DBWrapper {
         con = DriverManager.getConnection(url, login, pass)
     }
 
-    fun disconnect() {
+    override fun close() {
         logger.info("Disconnecting from database")
         con?.close()
     }
