@@ -54,6 +54,24 @@ class DBWrapper: Closeable {
         return perms
     }
 
+    fun hasPermission(login: String, role: String, permissionRegex: String): Boolean {
+        logger.info("Get prepared statement with permission")
+        // select * from permissions  where login='admin' and role='READ' and res REGEXP '^A(.B)?$'
+        val getPermission = con!!.prepareStatement("SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
+        getPermission.setString(1, login)
+        getPermission.setString(2, role)
+        getPermission.setString(3, permissionRegex)
+        logger.info("Get result set with permission")
+        val res = getPermission.executeQuery()
+        res.next()
+        val ans = res.getInt(1) > 0
+        logger.info("Close result set with permission")
+        res.close()
+        logger.info("Close prepared statement with permission")
+        getPermission.close()
+        return ans
+    }
+
     fun addActivity(activity: Activity) {
         logger.info("Get prepared statement with activities")
         val addAct = con!!.prepareStatement(
