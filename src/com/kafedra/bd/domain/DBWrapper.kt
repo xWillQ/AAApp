@@ -30,36 +30,12 @@ class DBWrapper: Closeable {
         return User(login, salt, hash)
     }
 
-    fun getPermissions(login: String): List<Permission> {
-        logger.info("Get prepared statement with permissions")
-        val getPerms = con!!.prepareStatement("SELECT res, role FROM permissions WHERE login = ?")
-        getPerms.setString(1, login)
-        logger.info("Get result set with permissions")
-        val res = getPerms.executeQuery()
-        res.next()
-        val perms = mutableListOf<Permission>()
-        while (!res.isAfterLast) {
-            perms.add(
-                Permission(
-                    res.getString("res"),
-                    Role.valueOf(res.getString("role")), getUser(login)
-                )
-            )
-            res.next()
-        }
-        logger.info("Close result set with permissions")
-        res.close()
-        logger.info("Close prepared statement with permissions")
-        getPerms.close()
-        return perms
-    }
-
     fun hasPermission(login: String, role: String, permissionRegex: String): Boolean {
         logger.info("Get prepared statement with permission")
-        // select * from permissions  where login='admin' and role='READ' and res REGEXP '^A(.B)?$'
         val getPermission = con!!.prepareStatement("SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
+        logger.info("Matching resources against '$permissionRegex'")
         getPermission.setString(3, permissionRegex)
         logger.info("Get result set with permission")
         val res = getPermission.executeQuery()

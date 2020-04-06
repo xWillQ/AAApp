@@ -9,10 +9,10 @@ class Authorization(val dbWrapper: DBWrapper){
     fun validateRole(role: String) = Role.values().any { it.role == role }
 
     fun hasPermission(res: String, role: Role, user: String): Boolean {
-        val permissions = dbWrapper.getPermissions(user)
-        return permissions.any {
-            res.contains(Regex("^" + it.res + "\\b")) && it.role == role
-        }
-
+        var permRegex = res
+        while(permRegex.contains(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)")))
+            permRegex = permRegex.replace(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)"), "(\\\\$1)?")
+        permRegex = "^$permRegex$"
+        return dbWrapper.hasPermission(user, role.toString(), permRegex)
     }
 }
