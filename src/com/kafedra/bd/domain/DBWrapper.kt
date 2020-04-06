@@ -32,7 +32,8 @@ class DBWrapper: Closeable {
 
     fun hasPermission(login: String, role: String, permissionRegex: String): Boolean {
         logger.info("Get prepared statement with permission")
-        val getPermission = con!!.prepareStatement("SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
+        val getPermission = con!!.prepareStatement(
+                "SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
         logger.info("Matching resources against '$permissionRegex'")
