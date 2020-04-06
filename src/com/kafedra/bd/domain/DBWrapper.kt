@@ -15,7 +15,7 @@ class DBWrapper: Closeable {
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
     fun getUser(login: String): User {
-        logger.info("Get prepare statement with users")
+        logger.info("Get prepared statement with users")
         val getUser = con!!.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
@@ -25,13 +25,13 @@ class DBWrapper: Closeable {
         val hash = res.getString("hash")
         logger.info("Close result set with user")
         res.close()
-        logger.info("Close prepare statement with users")
+        logger.info("Close prepared statement with users")
         getUser.close()
         return User(login, salt, hash)
     }
 
     fun getPermissions(login: String): List<Permission> {
-        logger.info("Get prepare statement with permissions")
+        logger.info("Get prepared statement with permissions")
         val getPerms = con!!.prepareStatement("SELECT res, role FROM permissions WHERE login = ?")
         getPerms.setString(1, login)
         logger.info("Get result set with permissions")
@@ -49,13 +49,13 @@ class DBWrapper: Closeable {
         }
         logger.info("Close result set with permissions")
         res.close()
-        logger.info("Close prepare statement with permissions")
+        logger.info("Close prepared statement with permissions")
         getPerms.close()
         return perms
     }
 
     fun addActivity(activity: Activity) {
-        logger.info("Get prepare statement with activities")
+        logger.info("Get prepared statement with activities")
         val addAct = con!!.prepareStatement(
             "INSERT INTO " +
                     "activities(login, res, role, ds, de, vol) " +
@@ -68,12 +68,12 @@ class DBWrapper: Closeable {
         addAct.setString(5, activity.de)
         addAct.setInt(6, activity.vol)
         addAct.execute()
-        logger.info("Close prepare statement with activities")
+        logger.info("Close prepared statement with activities")
         addAct.close()
     }
 
     fun loginExists(login: String): Boolean {
-        logger.info("Get prepare statement with user")
+        logger.info("Get prepared statement with user")
         val getUser = con!!.prepareStatement("SELECT count(*) FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
@@ -82,7 +82,7 @@ class DBWrapper: Closeable {
         val ans = res.getInt(1) > 0
         logger.info("Close result set with user")
         res.close()
-        logger.info("Close prepare statement with user")
+        logger.info("Close prepared statement with user")
         getUser.close()
         return ans
     }
