@@ -1,4 +1,4 @@
-package com.kafedra.bd.service
+package com.kafedra.aaapp.service
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType

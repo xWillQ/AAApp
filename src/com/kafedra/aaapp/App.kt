@@ -1,11 +1,11 @@
-package com.kafedra.bd
+package com.kafedra.aaapp
 
-import com.kafedra.bd.ExitCode.*
-import com.kafedra.bd.domain.DBWrapper
-import com.kafedra.bd.service.Accounting
-import com.kafedra.bd.service.ArgHandler
-import com.kafedra.bd.service.Authentication
-import com.kafedra.bd.service.Authorization
+import com.kafedra.aaapp.ExitCode.*
+import com.kafedra.aaapp.domain.DBWrapper
+import com.kafedra.aaapp.service.Accounting
+import com.kafedra.aaapp.service.ArgHandler
+import com.kafedra.aaapp.service.Authentication
+import com.kafedra.aaapp.service.Authorization
 import org.apache.logging.log4j.LogManager
 
 class App() {

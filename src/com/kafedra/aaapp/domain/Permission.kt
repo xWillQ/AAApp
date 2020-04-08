@@ -1,5 +1,5 @@
-package com.kafedra.bd.domain
+package com.kafedra.aaapp.domain
 
-import com.kafedra.bd.Role
+import com.kafedra.aaapp.Role
 
 data class Permission(val res: String, val role: Role, val user: User)

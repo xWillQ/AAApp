@@ -25,7 +25,7 @@ hs_err_pid*
 
 # idea files
 .idea/
-BD.iml
+AAApp.iml
 src/META-INF/
 
 # other files

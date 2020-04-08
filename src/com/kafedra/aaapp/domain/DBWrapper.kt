@@ -1,6 +1,5 @@
-package com.kafedra.bd.domain
+package com.kafedra.aaapp.domain
 
-import com.kafedra.bd.Role
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager

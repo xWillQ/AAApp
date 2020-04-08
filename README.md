@@ -1,6 +1,6 @@
-# [BD](https://xwillq.github.io/BD/)
+# [AAApp](https://xwillq.github.io/AAApp/)
 
-[![Build Status](https://travis-ci.com/xWillQ/BD.svg?branch=master)](https://travis-ci.com/xWillQ/BD)
+[![Build Status](https://travis-ci.com/xWillQ/AAApp.svg?branch=master)](https://travis-ci.com/xWillQ/AAApp)
 
 ## Roadmaps
 - [Roadmap1](doc/ROADMAP1.md)

@@ -1,5 +1,5 @@
-package com.kafedra.bd.domain
+package com.kafedra.aaapp.domain
 
-import com.kafedra.bd.Role
+import com.kafedra.aaapp.Role
 
 data class Activity(val user: User, val res: String, val role: Role, val ds: String, val de: String, val vol: Int)
