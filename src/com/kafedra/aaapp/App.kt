@@ -29,13 +29,12 @@ class App() {
         logger.info("Start program")
         val dbWrapper = DBWrapper()
         if (dbWrapper.dbExists()) logger.info("Using existing database.")
-        else {
-            logger.warn("Database does not exist. Initiating new database.")
-            dbWrapper.initDatabase(
-                    System.getenv("H2_URL"),
-                    System.getenv("H2_LOGIN"), System.getenv("H2_PASS")
-            )
-        }
+        else logger.warn("Database does not exist. Initiating new database.")
+        logger.info("Attempting database migration.")
+        dbWrapper.initDatabase(
+                System.getenv("H2_URL"),
+                System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
+
         dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
                 System.getenv("H2_PASS"))
 
