@@ -33,10 +33,10 @@ class App() {
         logger.info("Attempting database migration.")
         dbWrapper.initDatabase(
                 System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS"))
+                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")?:"")
 
         dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
-                System.getenv("H2_PASS"))
+                System.getenv("H2_PASS")?:"")
 
         return dbWrapper.use<DBWrapper, ExitCode> {
             val handler = ArgHandler(args)
