@@ -8,7 +8,7 @@ class Authorization(val dbWrapper: DBWrapper){
 
     fun validateRole(role: String) = Role.values().any { it.role == role }
 
-    fun hasPermission(res: String, role: Role, user: String): Boolean {
+    fun hasPermission(user: String, role: Role, res: String): Boolean {
         var permRegex = res
         while(permRegex.contains(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)")))
             permRegex = permRegex.replace(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)"), "(\\\\$1)?")
