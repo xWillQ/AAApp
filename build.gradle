@@ -32,7 +32,8 @@ dependencies {
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:latest.release"
     testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:latest.release"
 
-    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation 'org.mockito:mockito-inline:latest.release'
+    testImplementation 'org.mockito:mockito-core:latest.release'
 }
 
 jar {
