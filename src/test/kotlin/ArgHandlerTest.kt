@@ -3,7 +3,7 @@ import org.spekframework.spek2.Spek
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-object ArgHandlerSpec : Spek({
+object ArgHandlerTest : Spek({
 
     lateinit var args: Array<String>
     lateinit var argHandler: ArgHandler
@@ -88,7 +88,7 @@ object ArgHandlerSpec : Spek({
 
         }
     }
-    
+
     group("Accounting arguments") {
         group("Positive test cases") {
             test("All 7 args received") {
@@ -128,7 +128,7 @@ object ArgHandlerSpec : Spek({
                 assertFalse(argHandler.needAccounting())
             }
         }
-        
+
     }
 
 })
