@@ -1,6 +1,7 @@
 # [AAApp](https://xwillq.github.io/AAApp/)
 
 [![Build Status](https://travis-ci.com/xWillQ/AAApp.svg?branch=master)](https://travis-ci.com/xWillQ/AAApp)
+[![codecov](https://codecov.io/gh/kozlyakov-m/AAApp/branch/master/graph/badge.svg)](https://codecov.io/gh/kozlyakov-m/AAApp)
 
 ## Roadmaps
 - [Roadmap1](doc/ROADMAP1.md)
