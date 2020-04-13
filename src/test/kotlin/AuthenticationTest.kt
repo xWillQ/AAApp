@@ -3,13 +3,19 @@ import org.mockito.Mockito
 
 import com.kafedra.aaapp.service.Authentication
 import com.kafedra.aaapp.domain.DBWrapper
+import com.kafedra.aaapp.domain.User
 import kotlin.test.*
 
 object AuthenticationTest: Spek({
     // Setup DBWrapper mock
     val dbMock = Mockito.mock(DBWrapper::class.java)
-    val logins = listOf("bruh", "vasya")
-    Mockito.`when`(dbMock.loginExists(Mockito.argThat { logins.contains(it) }?:"")).thenReturn(true)
+    Mockito.`when`(dbMock.loginExists("bruh")).thenReturn(true)
+    Mockito.`when`(dbMock.getUser("bruh")).thenReturn(User("bruh",
+            "iYqHUi2<2zPhrGIL8]?p8m;bteA?ETaT",
+            "dc6a8709e9fc8de1acea34fdc98c842911686ca0c2a0b12127c512a5ed7ab382"))
+    Mockito.`when`(dbMock.getUser("test")).thenReturn(User("test",
+            "olMMIDct3GkrY:?Xp1WDJOPTw2IY0`a[",
+            "c6d6ced902fe90f039f168837f7ce3d313df040e071281317fc6781a60cac2bc"))
 
     // Create new Authentication object for each test
     lateinit var auth: Authentication
@@ -86,5 +92,26 @@ object AuthenticationTest: Spek({
 
     }
 
+    group("Authentication") {
+
+        test("Right login-password combination") {
+            val login = "bruh"
+            val pass = "123"
+            assertTrue(auth.authenticate(login, pass))
+        }
+
+        test("Existing login, wrong password") {
+            val login = "bruh"
+            val pass = "asdf"
+            assertFalse(auth.authenticate(login, pass))
+        }
+
+        test("Password of another user") {
+            val login = "bruh"
+            val pass = "admin"
+            assertFalse(auth.authenticate(login, pass))
+        }
+
+    }
 
 })
