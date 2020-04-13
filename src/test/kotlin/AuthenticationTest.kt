@@ -23,6 +23,9 @@ object AuthenticationTest: Spek({
         auth = Authentication(dbMock)
     }
 
+    test("Failing test") {
+        assertFalse(true)
+    }
     group("Login validation") {
         group("Valid login") {
 
