@@ -22,10 +22,7 @@ object AuthenticationTest: Spek({
     beforeEachTest {
         auth = Authentication(dbMock)
     }
-
-    test("Failing test") {
-        assertFalse(true)
-    }
+    
     group("Login validation") {
         group("Valid login") {
 
