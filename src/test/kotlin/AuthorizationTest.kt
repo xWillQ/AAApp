@@ -64,4 +64,21 @@ object AuthorizationSpec : Spek({
             }
         }
     }
+
+    authorization = Authorization(dbWrapperMock)
+    group("Test validateRole") {
+        test("Valid role (WRITE)") {
+            assertTrue(authorization.validateRole("WRITE"))
+        }
+        test("Valid role (READ)") {
+            assertTrue(authorization.validateRole("READ"))
+        }
+        test("Invalid role (read)") {
+            assertFalse(authorization.validateRole("read"))
+        }
+        test("Invalid role (DEFAULT)") {
+            assertFalse(authorization.validateRole("DEFAULT"))
+        }
+    }
+
 })
