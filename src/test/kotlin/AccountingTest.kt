@@ -1,0 +1,46 @@
+import com.kafedra.aaapp.domain.DBWrapper
+import com.kafedra.aaapp.service.Accounting
+import org.mockito.Mockito.mock
+import org.spekframework.spek2.Spek
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+
+object AccountingTest: Spek({
+
+    val dbWrapperMock = mock(DBWrapper::class.java)
+
+    lateinit var accounting: Accounting
+    beforeEachTest {
+        accounting = Accounting(dbWrapperMock)
+    }
+    group("Test validateVol") {
+
+        test("vol = 100") {
+            assertTrue(accounting.validateVol(100))
+        }
+        test("vol = 0") {
+            assertFalse(accounting.validateVol(0))
+        }
+        test("vol = -1") {
+            assertFalse(accounting.validateVol(-1))
+        }
+        test("vol = null") {
+            assertFalse(accounting.validateVol(null))
+        }
+    }
+
+    group("Test validateDate") {
+        test("Valid date (2020-04-14") {
+            assertTrue(accounting.validateDate("2020-04-14"))
+        }
+        test("Invalid date (14-04-2020)") {
+            assertFalse(accounting.validateDate("14-04-2020"))
+        }
+        test("Invalid date (2020/04/14") {
+            assertFalse(accounting.validateDate("2020/04/14"))
+        }
+        test("Invalid date (2020-4-14") {
+            assertFalse(accounting.validateDate("2020-4-14"))
+        }
+    }
+})
