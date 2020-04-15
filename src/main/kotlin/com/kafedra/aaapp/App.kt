@@ -8,7 +8,7 @@ import com.kafedra.aaapp.service.Authentication
 import com.kafedra.aaapp.service.Authorization
 import org.apache.logging.log4j.LogManager
 
-class App() {
+class App {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
         "Usage: app.jar [-h] [-login <login> -pass <pass> " +
@@ -38,6 +38,8 @@ class App() {
         dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
                 System.getenv("H2_PASS") ?: "")
 
+        var exitCode: ExitCode?
+
         return dbWrapper.use<DBWrapper, ExitCode> {
             val handler = ArgHandler(args)
             logArgs(handler)
@@ -48,79 +50,99 @@ class App() {
             }
 
             // Authentication step
-            if (!handler.needAuthentication()) {
-                logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
-                printHelp()
-                logger.info("Success. Exit.")
-                return@use SUCCESS
-            } else logger.info("Necessary arguments available. Starting Authentication.")
-
-            val authenService = Authentication(dbWrapper)
-            when {
-                !authenService.validateLogin(handler.login!!) -> {
-                    logger.error("Invalid login. Exit.")
-                    return@use INVALID_LOGIN
-                }
-                !authenService.loginExists(handler.login!!) -> {
-                    logger.error("Unknown Login. Exit.")
-                    return@use UNKNOWN_LOGIN
-                }
-                !authenService.authenticate(handler.login!!, handler.pass!!) -> {
-                    logger.error("Wrong password. Exit.")
-                    return@use WRONG_PASS
-                }
-            }
+            exitCode = authentication(handler, dbWrapper)
+            if(exitCode != null) return@use exitCode!!
 
             // Authorization step
-            if (!handler.needAuthorization()) {
-                logger.info("Necessary arguments were not passed. Authorization is not required.")
-                logger.warn("Success. Exit.")
-                return@use SUCCESS
-            } else logger.info("Necessary arguments available. Starting Authorization")
-
-            val authorizeService = Authorization(dbWrapper)
-            when {
-                !authorizeService.validateRole(handler.role!!) -> {
-                    logger.error("Unknown role. Exit.")
-                    return@use UNKNOWN_ROLE
-                }
-                !authorizeService.hasPermission(handler.login!!, Role.valueOf(handler.role!!), handler.res!!) -> {
-                    logger.error("No access. Exit.")
-                    return@use NO_ACCESS
-                }
-            }
+            exitCode = authorization(handler, dbWrapper)
+            if(exitCode != null) return@use exitCode!!
 
             // Accounting step
-            if (!handler.needAccounting()) {
-                logger.info("Necessary arguments were not passed. Accounting is not required.")
-                logger.info("Success. Exit.")
-                return@use SUCCESS
-            } else logger.info("Necessary arguments available. Starting Accounting")
-
-            val accountingService = Accounting(dbWrapper)
-            when {
-                !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
-                    logger.info("Invalid Volume. Exit")
-                    return@use INVALID_ACTIVITY
-                }
-                !accountingService.validateDate(handler.ds!!) -> {
-                    logger.info("Invalid start date. Exit.")
-                    return@use INVALID_ACTIVITY
-                }
-                !accountingService.validateDate(handler.de!!) -> {
-                    logger.info("Invalid end date. Exit.")
-                    return@use INVALID_ACTIVITY
-                }
-            }
-
-            logger.info("Successfull accounting. Adding activity to base.")
-            accountingService.addActivity(
-                    dbWrapper.getUser(handler.login!!), handler.res!!,
-                    Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
-            )
+            exitCode = accounting(handler, dbWrapper)
+            if(exitCode != null) return@use exitCode!!
 
             logger.info("Success. Exit.")
             return@use SUCCESS
         }
+    }
+
+    private fun authentication(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+        if (!handler.needAuthentication()) {
+            logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
+            printHelp()
+            logger.info("Success. Exit.")
+            return SUCCESS
+        } else logger.info("Necessary arguments available. Starting Authentication.")
+
+        val authenService = Authentication(dbWrapper)
+        return when {
+            !authenService.validateLogin(handler.login!!) -> {
+                logger.error("Invalid login. Exit.")
+                INVALID_LOGIN
+            }
+            !authenService.loginExists(handler.login!!) -> {
+                logger.error("Unknown Login. Exit.")
+                UNKNOWN_LOGIN
+            }
+            !authenService.authenticate(handler.login!!, handler.pass!!) -> {
+                logger.error("Wrong password. Exit.")
+                WRONG_PASS
+            }
+            else -> null
+        }
+    }
+
+    private fun authorization(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+        if (!handler.needAuthorization()) {
+            logger.info("Necessary arguments were not passed. Authorization is not required.")
+            logger.warn("Success. Exit.")
+            return SUCCESS
+        } else logger.info("Necessary arguments available. Starting Authorization")
+
+        val authorizeService = Authorization(dbWrapper)
+        return when {
+            !authorizeService.validateRole(handler.role!!) -> {
+                logger.error("Unknown role. Exit.")
+                UNKNOWN_ROLE
+            }
+            !authorizeService.hasPermission(handler.login!!, Role.valueOf(handler.role!!), handler.res!!) -> {
+                logger.error("No access. Exit.")
+                NO_ACCESS
+            }
+            else -> null
+        }
+    }
+
+    private fun accounting(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+        if (!handler.needAccounting()) {
+            logger.info("Necessary arguments were not passed. Accounting is not required.")
+            logger.info("Success. Exit.")
+            return SUCCESS
+        } else logger.info("Necessary arguments available. Starting Accounting")
+
+
+        val accountingService = Accounting(dbWrapper)
+        val exitCode = when {
+            !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
+                logger.info("Invalid Volume. Exit")
+                INVALID_ACTIVITY
+            }
+            !accountingService.validateDate(handler.ds!!) -> {
+                logger.info("Invalid start date. Exit.")
+                INVALID_ACTIVITY
+            }
+            !accountingService.validateDate(handler.de!!) -> {
+                logger.info("Invalid end date. Exit.")
+                INVALID_ACTIVITY
+            }
+            else -> null
+        }
+
+        logger.info("Successfull accounting. Adding activity to base.")
+        accountingService.addActivity(
+                dbWrapper.getUser(handler.login!!), handler.res!!,
+                Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
+        )
+        return exitCode
     }
 }
