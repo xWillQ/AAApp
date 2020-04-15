@@ -1,6 +1,6 @@
 import org.spekframework.spek2.Spek
 
-object ExampleTest: Spek({
+object ExampleTest : Spek({
     beforeGroup {
         println("before root")
     }

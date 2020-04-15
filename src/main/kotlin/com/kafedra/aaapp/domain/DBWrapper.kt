@@ -1,13 +1,13 @@
 package com.kafedra.aaapp.domain
 
+import java.io.Closeable
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
-import org.flywaydb.core.Flyway
 import org.apache.logging.log4j.LogManager
-import java.io.Closeable
+import org.flywaydb.core.Flyway
 
-class DBWrapper: Closeable {
+class DBWrapper : Closeable {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
 
@@ -82,7 +82,7 @@ class DBWrapper: Closeable {
     }
 
     fun initDatabase(url: String, login: String, pass: String) {
-        val flyway = Flyway.configure().dataSource("${url};MV_STORE=FALSE", login, pass).locations("filesystem:db").load()
+        val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("filesystem:db").load()
         flyway.migrate()
     }
 
@@ -95,5 +95,4 @@ class DBWrapper: Closeable {
         logger.info("Disconnecting from database")
         con?.close()
     }
-
 }

@@ -20,11 +20,14 @@ class Accounting(val dbWrapper: DBWrapper) {
         )
 
     fun addActivity(
-        user: User, res: String,
-        role: Role, ds: String, de: String, vol: Int
+        user: User,
+        res: String,
+        role: Role,
+        ds: String,
+        de: String,
+        vol: Int
     ) {
         dbWrapper.addActivity(Activity(user, res, role, ds, de, vol))
         logger.info("Add Activity")
-
     }
 }

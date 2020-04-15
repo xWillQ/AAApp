@@ -31,7 +31,6 @@ class ArgHandler(args: Array<String>) {
     private val authorization = res != null && role != null
     private val accounting = ds != null && de != null && vol != null
 
-
     fun isArgs() = !empty
 
     fun needAuthentication() = authentication

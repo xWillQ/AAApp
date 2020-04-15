@@ -1,11 +1,11 @@
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
-import org.mockito.Mockito.mock
-import org.spekframework.spek2.Spek
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.mockito.Mockito.mock
+import org.spekframework.spek2.Spek
 
-object AccountingTest: Spek({
+object AccountingTest : Spek({
 
     val dbWrapperMock = mock(DBWrapper::class.java)
 

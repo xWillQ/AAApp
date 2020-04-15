@@ -1,12 +1,11 @@
-import org.spekframework.spek2.Spek
-import org.mockito.Mockito
-
-import com.kafedra.aaapp.service.Authentication
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.User
+import com.kafedra.aaapp.service.Authentication
 import kotlin.test.*
+import org.mockito.Mockito
+import org.spekframework.spek2.Spek
 
-object AuthenticationTest: Spek({
+object AuthenticationTest : Spek({
     // Setup DBWrapper mock
     val dbMock = Mockito.mock(DBWrapper::class.java)
     Mockito.`when`(dbMock.loginExists("bruh")).thenReturn(true)
@@ -22,7 +21,7 @@ object AuthenticationTest: Spek({
     beforeEachTest {
         auth = Authentication(dbMock)
     }
-    
+
     group("Login validation") {
         group("Valid login") {
 
@@ -40,7 +39,6 @@ object AuthenticationTest: Spek({
                 val login = "abcdefghij"
                 assertTrue(auth.validateLogin(login))
             }
-
         }
 
         group("Invalid login") {
@@ -74,7 +72,6 @@ object AuthenticationTest: Spek({
                 val login = "вася"
                 assertFalse(auth.validateLogin(login))
             }
-
         }
     }
 
@@ -89,7 +86,6 @@ object AuthenticationTest: Spek({
             val login = "test"
             assertFalse(auth.loginExists(login))
         }
-
     }
 
     group("Authentication") {
@@ -111,7 +107,5 @@ object AuthenticationTest: Spek({
             val pass = "admin"
             assertFalse(auth.authenticate(login, pass))
         }
-
     }
-
 })

@@ -1,7 +1,6 @@
 package com.kafedra.aaapp.service
 
 import com.kafedra.aaapp.domain.DBWrapper
-import com.kafedra.aaapp.domain.User
 import java.security.MessageDigest
 
 class Authentication(val dbWrapper: DBWrapper) {
@@ -22,7 +21,5 @@ class Authentication(val dbWrapper: DBWrapper) {
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         return digest.fold("", { s, it -> s + "%02x".format(it) })
-
     }
 }
-
