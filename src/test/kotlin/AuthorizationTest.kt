@@ -1,13 +1,13 @@
 import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Authorization
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
-object AuthorizationSpec : Spek({
+object AuthorizationTest : Spek({
     val dbWrapperMock: DBWrapper = mock(DBWrapper::class.java)
 
     var authorization: Authorization
@@ -36,7 +36,6 @@ object AuthorizationSpec : Spek({
                 authorization = Authorization(dbWrapperMock)
                 assertTrue(authorization.hasPermission("vasya", Role.WRITE, "A.B.C.D"))
             }
-
         }
 
         group("Negative tests") {
@@ -62,6 +61,22 @@ object AuthorizationSpec : Spek({
                 authorization = Authorization(dbWrapperMock)
                 assertFalse(authorization.hasPermission("vasya", Role.EXECUTE, "A.B"))
             }
+        }
+    }
+
+    authorization = Authorization(dbWrapperMock)
+    group("Test validateRole") {
+        test("Valid role (WRITE)") {
+            assertTrue(authorization.validateRole("WRITE"))
+        }
+        test("Valid role (READ)") {
+            assertTrue(authorization.validateRole("READ"))
+        }
+        test("Invalid role (read)") {
+            assertFalse(authorization.validateRole("read"))
+        }
+        test("Invalid role (DEFAULT)") {
+            assertFalse(authorization.validateRole("DEFAULT"))
         }
     }
 })

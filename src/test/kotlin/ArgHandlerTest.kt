@@ -1,7 +1,7 @@
 import com.kafedra.aaapp.service.ArgHandler
-import org.spekframework.spek2.Spek
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.spekframework.spek2.Spek
 
 object ArgHandlerTest : Spek({
 
@@ -11,7 +11,7 @@ object ArgHandlerTest : Spek({
     group("No args or wrong args") {
         test("No args") {
             args = emptyArray()
-            argHandler = ArgHandler(args) //вот это по идее beforeEachTest, но args каждый раз разный должен быть
+            argHandler = ArgHandler(args) // вот это по идее beforeEachTest, но args каждый раз разный должен быть
 
             assertFalse(argHandler.isArgs())
         }
@@ -85,7 +85,6 @@ object ArgHandlerTest : Spek({
 
                 assertFalse(argHandler.needAuthorization())
             }
-
         }
     }
 
@@ -128,7 +127,5 @@ object ArgHandlerTest : Spek({
                 assertFalse(argHandler.needAccounting())
             }
         }
-
     }
-
 })

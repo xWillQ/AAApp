@@ -33,10 +33,10 @@ class App() {
         logger.info("Attempting database migration.")
         dbWrapper.initDatabase(
                 System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS")?:"")
+                System.getenv("H2_LOGIN"), System.getenv("H2_PASS") ?: "")
 
         dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
-                System.getenv("H2_PASS")?:"")
+                System.getenv("H2_PASS") ?: "")
 
         return dbWrapper.use<DBWrapper, ExitCode> {
             val handler = ArgHandler(args)
@@ -46,7 +46,6 @@ class App() {
                 printHelp()
                 return@use HELP
             }
-
 
             // Authentication step
             if (!handler.needAuthentication()) {
@@ -72,7 +71,6 @@ class App() {
                 }
             }
 
-
             // Authorization step
             if (!handler.needAuthorization()) {
                 logger.info("Necessary arguments were not passed. Authorization is not required.")
@@ -91,7 +89,6 @@ class App() {
                     return@use NO_ACCESS
                 }
             }
-
 
             // Accounting step
             if (!handler.needAccounting()) {
@@ -114,7 +111,6 @@ class App() {
                     logger.info("Invalid end date. Exit.")
                     return@use INVALID_ACTIVITY
                 }
-
             }
 
             logger.info("Successfull accounting. Adding activity to base.")
@@ -122,7 +118,6 @@ class App() {
                     dbWrapper.getUser(handler.login!!), handler.res!!,
                     Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
             )
-
 
             logger.info("Success. Exit.")
             return@use SUCCESS
