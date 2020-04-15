@@ -7,7 +7,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 
-object AuthorizationSpec : Spek({
+object AuthorizationTest : Spek({
     val dbWrapperMock: DBWrapper = mock(DBWrapper::class.java)
 
     var authorization: Authorization
