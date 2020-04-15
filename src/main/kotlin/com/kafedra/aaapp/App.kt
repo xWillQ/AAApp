@@ -32,10 +32,13 @@ class App {
         else logger.warn("Database does not exist. Initiating new database.")
         logger.info("Attempting database migration.")
         dbWrapper.initDatabase(
-                System.getenv("H2_URL"),
-                System.getenv("H2_LOGIN"), System.getenv("H2_PASS") ?: "")
+                System.getenv("H2_URL") ?: "jdbc:h2:./aaa",
+                System.getenv("H2_LOGIN") ?: "se",
+                System.getenv("H2_PASS") ?: "")
 
-        dbWrapper.connect(System.getenv("H2_URL"), System.getenv("H2_LOGIN"),
+        dbWrapper.connect(
+                System.getenv("H2_URL") ?: "jdbc:h2:./aaa",
+                System.getenv("H2_LOGIN") ?: "se",
                 System.getenv("H2_PASS") ?: "")
 
         var exitCode: ExitCode?
