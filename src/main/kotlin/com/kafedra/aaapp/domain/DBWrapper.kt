@@ -49,7 +49,7 @@ class DBWrapper : Closeable {
         return ans
     }
 
-    @Suppress("MagicNumber") //Will be fixed later. Maybe
+    @Suppress("MagicNumber") // Will be fixed later. Maybe
     fun addActivity(activity: Activity) {
         logger.info("Get prepared statement with activities")
         val addAct = con!!.prepareStatement(

@@ -51,15 +51,15 @@ class App {
 
             // Authentication step
             exitCode = authentication(handler, dbWrapper)
-            if(exitCode != null) return@use exitCode!!
+            if (exitCode != null) return@use exitCode!!
 
             // Authorization step
             exitCode = authorization(handler, dbWrapper)
-            if(exitCode != null) return@use exitCode!!
+            if (exitCode != null) return@use exitCode!!
 
             // Accounting step
             exitCode = accounting(handler, dbWrapper)
-            if(exitCode != null) return@use exitCode!!
+            if (exitCode != null) return@use exitCode!!
 
             logger.info("Success. Exit.")
             return@use SUCCESS
@@ -119,7 +119,6 @@ class App {
             logger.info("Success. Exit.")
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Accounting")
-
 
         val accountingService = Accounting(dbWrapper)
         val exitCode = when {
