@@ -29,6 +29,7 @@ class DBWrapper : Closeable {
         return User(login, salt, hash)
     }
 
+    @Suppress("MagicNumber")
     fun hasPermission(login: String, role: String, permissionRegex: String): Boolean {
         logger.info("Get prepared statement with permission")
         val getPermission = con!!.prepareStatement(
@@ -48,6 +49,7 @@ class DBWrapper : Closeable {
         return ans
     }
 
+    @Suppress("MagicNumber") //Will be fixed later. Maybe
     fun addActivity(activity: Activity) {
         logger.info("Get prepared statement with activities")
         val addAct = con!!.prepareStatement(

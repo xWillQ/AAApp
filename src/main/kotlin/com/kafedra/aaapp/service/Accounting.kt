@@ -19,6 +19,7 @@ class Accounting(private val dbWrapper: DBWrapper) {
             )
         )
 
+    @Suppress("LongParameterList")
     fun addActivity(
         user: User,
         res: String,
