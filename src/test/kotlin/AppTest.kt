@@ -18,6 +18,10 @@ object AppTest : Spek({
         test("Wrong argument") {
             assertEquals(1, app.run(arrayOf("-q")).code)
         }
+
+        test("Not enough args for authentication") {
+            assertEquals(0, app.run(arrayOf("-login", "vasya")).code)
+        }
     }
 
     group("Authentication") {
