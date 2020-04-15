@@ -4,7 +4,7 @@ import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.User
 import java.security.MessageDigest
 
-class Authentication(val dbWrapper: DBWrapper) {
+class Authentication(private val dbWrapper: DBWrapper) {
 
     fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 

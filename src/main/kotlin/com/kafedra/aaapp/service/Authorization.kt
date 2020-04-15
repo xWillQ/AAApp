@@ -4,7 +4,7 @@ import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.Permission
 
-class Authorization(val dbWrapper: DBWrapper){
+class Authorization(private val dbWrapper: DBWrapper){
 
     fun validateRole(role: String) = Role.values().any { it.role == role }
 

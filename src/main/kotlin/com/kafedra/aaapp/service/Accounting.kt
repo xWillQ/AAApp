@@ -6,7 +6,7 @@ import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.User
 import org.apache.logging.log4j.LogManager
 
-class Accounting(val dbWrapper: DBWrapper) {
+class Accounting(private val dbWrapper: DBWrapper) {
 
     private val logger = LogManager.getLogger()
     fun validateVol(vol: Int?) = if (vol != null) vol > 0 else false
