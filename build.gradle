@@ -65,4 +65,5 @@ jacocoTestReport {
 
 kotlinter {
     reporters = ['html']
+    disabledRules = ["no-wildcard-imports"]
 }
