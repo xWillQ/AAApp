@@ -1,6 +1,6 @@
 import com.kafedra.aaapp.App
-import org.spekframework.spek2.Spek
 import kotlin.test.assertEquals
+import org.spekframework.spek2.Spek
 
 object AppTest : Spek({
     lateinit var app: App
@@ -14,7 +14,6 @@ object AppTest : Spek({
         test("No args") {
             assertEquals(1, app.run(arrayOf()).code)
         }
-
 
         test("Wrong argument") {
             assertEquals(1, app.run(arrayOf("-q")).code)
