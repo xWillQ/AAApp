@@ -1,6 +1,7 @@
 package com.kafedra.aaapp
 
 import com.kafedra.aaapp.ExitCode.*
+import com.kafedra.aaapp.domain.Activity
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
 import com.kafedra.aaapp.service.ArgHandler
@@ -11,8 +12,8 @@ import org.apache.logging.log4j.LogManager
 class App {
     private val logger = LogManager.getLogger()
     private fun printHelp() = println(
-        "Usage: app.jar [-h] [-login <login> -pass <pass> " +
-                "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
+            "Usage: app.jar [-h] [-login <login> -pass <pass> " +
+                    "[-res <str> -role <str> [-ds <yyyy-mm-dd> -de <yyyy-mm-dd> -vol <int>] ] ]"
     )
 
     private fun logArgs(handler: ArgHandler) {
@@ -142,9 +143,9 @@ class App {
 
         if (exitCode == null) {
             logger.info("Successfull accounting. Adding activity to base.")
-            accountingService.addActivity(
+            accountingService.addActivity(Activity(
                     dbWrapper.getUser(handler.login!!), handler.res!!,
-                    Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt()
+                    Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt())
             )
         }
         return exitCode
