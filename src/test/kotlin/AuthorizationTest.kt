@@ -1,5 +1,6 @@
 import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.domain.DBWrapper
+import com.kafedra.aaapp.domain.Permission
 import com.kafedra.aaapp.service.Authorization
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -23,7 +24,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(true)
 
                 authorization = Authorization(dbWrapperMock)
-                assertTrue(authorization.hasPermission("vasya", Role.WRITE, "A.B.C"))
+                assertTrue(authorization.hasPermission(Permission("vasya", Role.WRITE, "A.B.C")))
             }
 
             test("vasya WRITE A.B.C.D (access granted)") {
@@ -34,7 +35,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(true)
 
                 authorization = Authorization(dbWrapperMock)
-                assertTrue(authorization.hasPermission("vasya", Role.WRITE, "A.B.C.D"))
+                assertTrue(authorization.hasPermission(Permission("vasya", Role.WRITE, "A.B.C.D")))
             }
         }
 
@@ -48,7 +49,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(false)
 
                 authorization = Authorization(dbWrapperMock)
-                assertFalse(authorization.hasPermission("vasya", Role.WRITE, "A.A.A"))
+                assertFalse(authorization.hasPermission(Permission("vasya", Role.WRITE, "A.A.A")))
             }
 
             test("vasya EXECUTE A.B (access denied)") {
@@ -59,7 +60,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(false)
 
                 authorization = Authorization(dbWrapperMock)
-                assertFalse(authorization.hasPermission("vasya", Role.EXECUTE, "A.B"))
+                assertFalse(authorization.hasPermission(Permission("vasya", Role.EXECUTE, "A.B")))
             }
         }
     }
