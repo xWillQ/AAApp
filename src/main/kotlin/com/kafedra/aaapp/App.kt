@@ -116,11 +116,7 @@ class App {
         }
     }
 
-    private fun accounting(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
-        if (!handler.needAccounting()) {
-            logger.info("Necessary arguments were not passed. Accounting is not required.")
-            logger.info("Success. Exit.")
-            return SUCCESS
+    private fun accouS
         } else logger.info("Necessary arguments available. Starting Accounting")
 
         val accountingService = Accounting(dbWrapper)
