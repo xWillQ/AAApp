@@ -12,7 +12,7 @@ object AppTest : Spek({
     group("Help") {
 
         test("No args") {
-            assertEquals(1, app.run(arrayOf()).code)
+            assertEquals(0, app.run(arrayOf()).code)
         }
 
         test("Wrong argument") {
