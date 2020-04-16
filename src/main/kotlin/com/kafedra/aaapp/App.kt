@@ -3,6 +3,7 @@ package com.kafedra.aaapp
 import com.kafedra.aaapp.ExitCode.*
 import com.kafedra.aaapp.domain.Activity
 import com.kafedra.aaapp.domain.DBWrapper
+import com.kafedra.aaapp.domain.Permission
 import com.kafedra.aaapp.service.Accounting
 import com.kafedra.aaapp.service.ArgHandler
 import com.kafedra.aaapp.service.Authentication
@@ -109,7 +110,7 @@ class App {
                 logger.error("Unknown role. Exit.")
                 UNKNOWN_ROLE
             }
-            !authorizeService.hasPermission(handler.login!!, Role.valueOf(handler.role!!), handler.res!!) -> {
+            !authorizeService.hasPermission(Permission(handler.login!!, Role.valueOf(handler.role!!), handler.res!!)) -> {
                 logger.error("No access. Exit.")
                 NO_ACCESS
             }
