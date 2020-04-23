@@ -84,7 +84,7 @@ class DBWrapper : Closeable {
     }
 
     fun initDatabase(url: String, login: String, pass: String) {
-        val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("filesystem:db").load()
+        val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("classpath:db").load()
         flyway.migrate()
     }
 
