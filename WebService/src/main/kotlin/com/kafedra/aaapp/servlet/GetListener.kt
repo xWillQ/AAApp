@@ -10,6 +10,7 @@ class GetListener: HttpServlet() {
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         val query = request.queryString
         val id = query.substringAfter("id=")
-        response.writer.print(id)
+        request.setAttribute("id", id)
+        request.getRequestDispatcher("../response.jsp").forward(request, response)
     }
 }
