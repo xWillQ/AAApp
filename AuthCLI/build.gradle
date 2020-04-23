@@ -47,8 +47,8 @@ jar {
 }
 
 shadowJar {
-   classifier = ''
-   destinationDir = file("$rootDir")
+    classifier = ''
+    destinationDir = file("$rootDir")
 }
 
 test {
@@ -70,6 +70,6 @@ kotlinter {
 }
 
 detekt {
-    config = files("$projectDir/detekt.yml")
+    config = files("$rootDir/detekt.yml")
     buildUponDefaultConfig = true
 }
