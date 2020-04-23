@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'AAApp'
-include 'AuthCLI'
+include 'AuthCLI', 'WebService'
