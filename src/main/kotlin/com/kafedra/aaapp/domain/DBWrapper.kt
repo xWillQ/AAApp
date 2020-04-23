@@ -89,7 +89,7 @@ class DBWrapper : Closeable {
     }
 
     fun connect(url: String, login: String, pass: String) {
-        logger.info("Сonnecting to database")
+        logger.info("Connecting to database")
         con = DriverManager.getConnection(url, login, pass)
     }
 
