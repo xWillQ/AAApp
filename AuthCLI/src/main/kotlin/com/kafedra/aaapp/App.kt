@@ -110,7 +110,10 @@ class App {
                 logger.error("Unknown role. Exit.")
                 UNKNOWN_ROLE
             }
-            !authorizeService.hasPermission(Permission(handler.login!!, Role.valueOf(handler.role!!), handler.res!!)) -> {
+            !authorizeService.hasPermission(
+                    Permission(handler.login!!,
+                            Role.valueOf(handler.role!!),
+                            handler.res!!)) -> {
                 logger.error("No access. Exit.")
                 NO_ACCESS
             }
