@@ -10,4 +10,4 @@ if [ -z "$H2_PASS" ]; then
     export H2_PASS=
 fi
 
-java -jar AAApp.jar "$@"
+java -jar AuthCLI.jar "$@"
