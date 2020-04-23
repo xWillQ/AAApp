@@ -3,3 +3,12 @@ plugins {
     id 'war'
     id 'org.gretty' version '3.0.2'
 }
+
+dependencies {
+    implementation 'javax:javaee-api:7.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+gretty {
+    contextPath = '/'
+}
