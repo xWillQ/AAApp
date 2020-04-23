@@ -4,7 +4,9 @@ jobs:
   include:
     - stage: "Build"
       install: skip
-      script: ./gradlew shadowJar
+      script: ./gradlew shadowJar && ./run.sh -h
+    - stage: "Lint"
+      script: ./gradlew lintKotlin && ./gradlew detekt
     - stage: "Test"
       script: ./gradlew test && ./gradlew jacocoTestReport
       after_success: bash <(curl -s https://codecov.io/bash)
