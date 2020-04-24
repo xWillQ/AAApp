@@ -2,7 +2,6 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'war'
     id 'org.gretty' version '3.0.2'
-    id "com.heroku.sdk.heroku-gradle" version "1.0.4"
 }
 
 
@@ -10,7 +9,7 @@ configurations.create('download')
 dependencies {
     implementation 'javax:javaee-api:7.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    download 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
+    download 'com.heroku:webapp-runner-main:9.0.31.0'
 }
 
 gretty {
@@ -26,7 +25,7 @@ war.mustRunAfter clean
 task copyToLib(type: Copy) {
     into "$buildDir/server"
     from(configurations.download) {
-        include "jetty-runner*"
+        include "webapp-runner*"
     }
 }
 

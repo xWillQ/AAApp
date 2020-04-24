@@ -1,1 +1,1 @@
-web: java -jar WebService/build/server/jetty-runner-*.jar WebService/build/libs/*.war
+web: java $JAVA_OPTS -jar web/build/server/webapp-runner-*.jar --port $PORT web/build/libs/*.war
