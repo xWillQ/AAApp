@@ -1,4 +1,4 @@
-package com.kafedra.aaapp.servlet
+package com.kafedra.aaapp.filter
 
 import java.net.URLEncoder
 import javax.servlet.*
