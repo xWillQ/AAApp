@@ -2,8 +2,11 @@ package com.kafedra.aaapp.config
 
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.matcher.Matchers
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.inject.servlet.ServletModule
+import com.kafedra.aaapp.filter.CharsetFilter
+import com.kafedra.aaapp.injector.Log4JTypeListener
 import com.kafedra.aaapp.servlet.*
 
 
@@ -11,6 +14,9 @@ class ServletConfig() : GuiceServletContextListener() {
     override fun getInjector(): Injector = Guice.createInjector(object : ServletModule() {
         override fun configureServlets() {
             super.configureServlets()
+            bindListener(Matchers.any(), Log4JTypeListener())
+            filter("/*").through(CharsetFilter::class.java)
+
             serve("/echo/get").with(GetListener::class.java)
             serve("/echo/post").with(PostListener::class.java)
             serve("/echo/*").with(EchoListener::class.java)
