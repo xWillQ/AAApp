@@ -4,10 +4,7 @@ import com.google.inject.Guice
 import com.google.inject.Injector
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.inject.servlet.ServletModule
-import com.kafedra.aaapp.servlet.EchoListener
-import com.kafedra.aaapp.servlet.GetListener
-import com.kafedra.aaapp.servlet.PostListener
-import com.kafedra.aaapp.servlet.UserServlet
+import com.kafedra.aaapp.servlet.*
 
 
 class ServletConfig() : GuiceServletContextListener() {
@@ -19,6 +16,7 @@ class ServletConfig() : GuiceServletContextListener() {
             serve("/echo/*").with(EchoListener::class.java)
 
             serve("/ajax/user").with(UserServlet::class.java)
+            serve("/ajax/authority").with(AuthorityServlet::class.java)
         }
     })
 }
