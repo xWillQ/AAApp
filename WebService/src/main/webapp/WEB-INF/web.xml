@@ -1,4 +1,5 @@
-<web-app>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0">
   <filter>
     <filter-name>guiceFilter</filter-name>
     <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
