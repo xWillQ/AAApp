@@ -7,6 +7,7 @@ import com.google.inject.servlet.ServletModule
 import com.kafedra.aaapp.servlet.EchoListener
 import com.kafedra.aaapp.servlet.GetListener
 import com.kafedra.aaapp.servlet.PostListener
+import com.kafedra.aaapp.servlet.UserServlet
 
 
 class ServletConfig() : GuiceServletContextListener() {
@@ -16,6 +17,8 @@ class ServletConfig() : GuiceServletContextListener() {
             serve("/echo/get").with(GetListener::class.java)
             serve("/echo/post").with(PostListener::class.java)
             serve("/echo/*").with(EchoListener::class.java)
+
+            serve("/ajax/user").with(UserServlet::class.java)
         }
     })
 }
