@@ -1,11 +1,11 @@
 package com.kafedra.aaapp.servlet
 
-import javax.servlet.annotation.WebServlet
+import com.google.inject.Singleton
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@WebServlet(name = "EchoListener", urlPatterns = ["echo/*"], loadOnStartup = 1)
+@Singleton
 class EchoListener: HttpServlet() {
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         response.writer.print("404 not found")
