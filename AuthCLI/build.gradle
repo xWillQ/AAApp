@@ -9,8 +9,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'jacoco'
-    id 'org.jmailen.kotlinter' version '2.3.2'
-    id 'io.gitlab.arturbosch.detekt' version '1.7.4'
+    id 'org.jmailen.kotlinter'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 repositories {
