@@ -10,6 +10,9 @@ configurations.create('download')
 dependencies {
     implementation 'javax:javaee-api:7.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'com.google.inject:guice:4.2.3'
+    implementation 'com.google.inject.extensions:guice-servlet:4.2.3'
+
     download 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
 }
 
