@@ -13,6 +13,10 @@ dependencies {
     implementation 'com.google.inject:guice:4.2.3'
     implementation 'com.google.inject.extensions:guice-servlet:4.2.3'
 
+    implementation "org.apache.logging.log4j:log4j-api:2.13.1"
+    implementation "org.apache.logging.log4j:log4j-core:2.13.1"
+
+
     download 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
 }
 
