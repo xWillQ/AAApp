@@ -9,7 +9,7 @@ CREATE TABLE authorities(
     id INT PRIMARY KEY AUTO_INCREMENT,
     res VARCHAR(255),
     role VARCHAR(7),
-    login VARCHAR(10) REFERENCES users (login)
+    userId INT REFERENCES users (id)
 );
 
 CREATE TABLE activities(
