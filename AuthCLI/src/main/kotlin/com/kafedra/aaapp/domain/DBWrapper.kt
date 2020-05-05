@@ -17,18 +17,19 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
 
     fun getUser(login: String) = conProvider.get().use<Connection, User> {
         logger.info("Get prepared statement with users")
-        val getUser = it.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
+        val getUser = it.prepareStatement("SELECT id, hash, salt FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
         res.next()
+        val id = res.getInt("id")
         val salt = res.getString("salt")
         val hash = res.getString("hash")
         logger.info("Close result set with user")
         res.close()
         logger.info("Close prepared statement with users")
         getUser.close()
-        return User(login, salt, hash)
+        return User(id, login, salt, hash)
     }
 
     @Suppress("MagicNumber")

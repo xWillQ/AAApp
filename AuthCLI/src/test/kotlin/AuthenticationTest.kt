@@ -9,10 +9,10 @@ object AuthenticationTest : Spek({
     // Setup DBWrapper mock
     val dbMock = Mockito.mock(DBWrapper::class.java)
     Mockito.`when`(dbMock.loginExists("bruh")).thenReturn(true)
-    Mockito.`when`(dbMock.getUser("bruh")).thenReturn(User("bruh",
+    Mockito.`when`(dbMock.getUser("bruh")).thenReturn(User(1, "bruh",
             "iYqHUi2<2zPhrGIL8]?p8m;bteA?ETaT",
             "dc6a8709e9fc8de1acea34fdc98c842911686ca0c2a0b12127c512a5ed7ab382"))
-    Mockito.`when`(dbMock.getUser("test")).thenReturn(User("test",
+    Mockito.`when`(dbMock.getUser("test")).thenReturn(User(2, "test",
             "olMMIDct3GkrY:?Xp1WDJOPTw2IY0`a[",
             "c6d6ced902fe90f039f168837f7ce3d313df040e071281317fc6781a60cac2bc"))
 
