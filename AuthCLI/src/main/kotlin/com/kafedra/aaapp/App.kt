@@ -41,37 +41,32 @@ class App {
                 System.getenv("H2_LOGIN") ?: "se",
                 System.getenv("H2_PASS") ?: "")
 
-        dbWrapper.connect(
-                System.getenv("H2_URL") ?: "jdbc:h2:./aaa",
-                System.getenv("H2_LOGIN") ?: "se",
-                System.getenv("H2_PASS") ?: "")
-
         var exitCode: ExitCode?
 
-        return dbWrapper.use<DBWrapper, ExitCode> {
-            val handler = ArgHandler(args)
-            logArgs(handler)
-            if (!handler.isArgs() || handler.help) {
-                logger.info("Arguments were not passed. Print help. Exit.")
-                printHelp()
-                return@use HELP
-            }
 
-            // Authentication step
-            exitCode = authentication(handler, dbWrapper)
-            if (exitCode != null) return@use exitCode!!
-
-            // Authorization step
-            exitCode = authorization(handler, dbWrapper)
-            if (exitCode != null) return@use exitCode!!
-
-            // Accounting step
-            exitCode = accounting(handler, dbWrapper)
-            if (exitCode != null) return@use exitCode!!
-
-            logger.info("Success. Exit.")
-            return@use SUCCESS
+        val handler = ArgHandler(args)
+        logArgs(handler)
+        if (!handler.isArgs() || handler.help) {
+            logger.info("Arguments were not passed. Print help. Exit.")
+            printHelp()
+            return HELP
         }
+
+        // Authentication step
+        exitCode = authentication(handler, dbWrapper)
+        if (exitCode != null) return exitCode
+
+        // Authorization step
+        exitCode = authorization(handler, dbWrapper)
+        if (exitCode != null) return exitCode
+
+        // Accounting step
+        exitCode = accounting(handler, dbWrapper)
+        if (exitCode != null) return exitCode
+
+        logger.info("Success. Exit.")
+        return SUCCESS
+
     }
 
     private fun authentication(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {

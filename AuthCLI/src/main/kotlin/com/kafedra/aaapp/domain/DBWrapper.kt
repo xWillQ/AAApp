@@ -9,15 +9,15 @@ import java.sql.DriverManager
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
 
-class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) : Closeable {
+class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
 
     fun dbExists(): Boolean = File("aaa.h2.db").exists()
 
-    fun getUser(login: String): User {
+    fun getUser(login: String) = conProvider.get().use<Connection, User> {
         logger.info("Get prepared statement with users")
-        val getUser = con!!.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
+        val getUser = it.prepareStatement("SELECT hash, salt FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
@@ -32,9 +32,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     }
 
     @Suppress("MagicNumber")
-    fun hasPermission(login: String, role: String, permissionRegex: String): Boolean {
+    fun hasPermission(login: String, role: String, permissionRegex: String) = conProvider.get().use<Connection, Boolean> {
         logger.info("Get prepared statement with permission")
-        val getPermission = con!!.prepareStatement(
+        val getPermission = it.prepareStatement(
                 "SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
@@ -52,12 +52,12 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     }
 
     @Suppress("MagicNumber") // Will be fixed later. Maybe
-    fun addActivity(activity: Activity) {
+    fun addActivity(activity: Activity) = conProvider.get().use {
         logger.info("Get prepared statement with activities")
-        val addAct = con!!.prepareStatement(
-            "INSERT INTO " +
-                    "activities(login, res, role, ds, de, vol) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)"
+        val addAct = it.prepareStatement(
+                "INSERT INTO " +
+                        "activities(login, res, role, ds, de, vol) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)"
         )
         addAct.setString(1, activity.user.login)
         addAct.setString(2, activity.res)
@@ -70,9 +70,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         addAct.close()
     }
 
-    fun loginExists(login: String): Boolean {
+    fun loginExists(login: String) = conProvider.get().use<Connection, Boolean> {
         logger.info("Get prepared statement with user")
-        val getUser = con!!.prepareStatement("SELECT count(*) FROM users WHERE login = ?")
+        val getUser = it.prepareStatement("SELECT count(*) FROM users WHERE login = ?")
         getUser.setString(1, login)
         logger.info("Get result set with user")
         val res = getUser.executeQuery()
@@ -88,15 +88,5 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     fun initDatabase(url: String, login: String, pass: String) {
         val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("classpath:db").load()
         flyway.migrate()
-    }
-
-    fun connect(url: String, login: String, pass: String) {
-        logger.info("Connecting to database")
-        con = DriverManager.getConnection(url, login, pass)
-    }
-
-    override fun close() {
-        logger.info("Disconnecting from database")
-        con?.close()
     }
 }
