@@ -1,4 +1,4 @@
-INSERT INTO users
+INSERT INTO users(login, hash, salt)
 VALUES
     ('vasya', 'dc6a8709e9fc8de1acea34fdc98c842911686ca0c2a0b12127c512a5ed7ab382', 'iYqHUi2<2zPhrGIL8]?p8m;bteA?ETaT'),
     ('admin', 'c6d6ced902fe90f039f168837f7ce3d313df040e071281317fc6781a60cac2bc', 'olMMIDct3GkrY:?Xp1WDJOPTw2IY0`a['),

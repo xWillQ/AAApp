@@ -1,5 +1,6 @@
 CREATE TABLE users(
-    login VARCHAR(10) PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    login VARCHAR(10),
     hash VARCHAR(64),
     salt VARCHAR(32)
 );
