@@ -90,4 +90,33 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("classpath:db").load()
         flyway.migrate()
     }
+
+    fun getUser(id: Int) = conProvider.get().use<Connection, List<User>> {
+        val st = it.createStatement()
+        val userList = mutableListOf<User>()
+        if (id == 0) {
+            val res = st.executeQuery("SELECT * FROM users")
+            res.next()
+            while (!res.isAfterLast) {
+                val currentID = res.getInt("id")
+                val login = res.getString("login")
+                val hash = res.getString("hash")
+                val salt = res.getString("salt")
+                userList + User(currentID, login, salt, hash)
+                res.next()
+            }
+            res.close()
+        } else {
+            val res = st.executeQuery("SELECT login, hash, salt FROM users WHERE id = $id")
+            res.next()
+            if (!res.isAfterLast) {
+                val login = res.getString("login")
+                val hash = res.getString("hash")
+                val salt = res.getString("salt")
+                userList + User(id, login, salt, hash)
+            }
+            res.close()
+        }
+        return@use userList
+    }
 }
