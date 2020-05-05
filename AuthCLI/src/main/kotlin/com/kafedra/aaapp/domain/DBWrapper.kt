@@ -2,10 +2,8 @@ package com.kafedra.aaapp.domain
 
 import com.google.inject.Inject
 import com.kafedra.aaapp.di.ConnectionProvider
-import java.io.Closeable
 import java.io.File
 import java.sql.Connection
-import java.sql.DriverManager
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
 
@@ -33,21 +31,21 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     }
 
     @Suppress("MagicNumber")
-    fun hasPermission(login: String, role: String, permissionRegex: String) = conProvider.get().use<Connection, Boolean> {
-        logger.info("Get prepared statement with permission")
+    fun hasAuthority(login: String, role: String, resourceRegex: String) = conProvider.get().use<Connection, Boolean> {
+        logger.info("Get prepared statement with authority")
         val getPermission = it.prepareStatement(
                 "SELECT count(*) FROM authorities WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
-        logger.info("Matching resources against '$permissionRegex'")
-        getPermission.setString(3, permissionRegex)
-        logger.info("Get result set with permission")
+        logger.info("Matching resources against '$resourceRegex'")
+        getPermission.setString(3, resourceRegex)
+        logger.info("Get result set with authority")
         val res = getPermission.executeQuery()
         res.next()
         val ans = res.getInt(1) > 0
-        logger.info("Close result set with permission")
+        logger.info("Close result set with authority")
         res.close()
-        logger.info("Close prepared statement with permission")
+        logger.info("Close prepared statement with authority")
         getPermission.close()
         return ans
     }
