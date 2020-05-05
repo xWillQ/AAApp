@@ -5,7 +5,7 @@ CREATE TABLE users(
     salt VARCHAR(32)
 );
 
-CREATE TABLE permissions(
+CREATE TABLE authorities(
     id INT PRIMARY KEY AUTO_INCREMENT,
     res VARCHAR(255),
     role VARCHAR(7),

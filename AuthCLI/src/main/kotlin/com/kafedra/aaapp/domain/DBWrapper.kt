@@ -36,7 +36,7 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     fun hasPermission(login: String, role: String, permissionRegex: String) = conProvider.get().use<Connection, Boolean> {
         logger.info("Get prepared statement with permission")
         val getPermission = it.prepareStatement(
-                "SELECT count(*) FROM permissions WHERE login = ? and role = ? and res REGEXP ?")
+                "SELECT count(*) FROM authorities WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
         logger.info("Matching resources against '$permissionRegex'")
