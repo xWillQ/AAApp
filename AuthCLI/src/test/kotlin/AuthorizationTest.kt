@@ -24,7 +24,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(true)
 
                 authorization = Authorization(dbWrapperMock)
-                assertTrue(authorization.hasAuthority(Authority("vasya", Role.WRITE, "A.B.C")))
+                assertTrue(authorization.hasAuthority(Authority(0, "vasya", Role.WRITE, "A.B.C")))
             }
 
             test("vasya WRITE A.B.C.D (access granted)") {
@@ -35,7 +35,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(true)
 
                 authorization = Authorization(dbWrapperMock)
-                assertTrue(authorization.hasAuthority(Authority("vasya", Role.WRITE, "A.B.C.D")))
+                assertTrue(authorization.hasAuthority(Authority(0, "vasya", Role.WRITE, "A.B.C.D")))
             }
         }
 
@@ -49,7 +49,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(false)
 
                 authorization = Authorization(dbWrapperMock)
-                assertFalse(authorization.hasAuthority(Authority("vasya", Role.WRITE, "A.A.A")))
+                assertFalse(authorization.hasAuthority(Authority(0, "vasya", Role.WRITE, "A.A.A")))
             }
 
             test("vasya EXECUTE A.B (access denied)") {
@@ -60,7 +60,7 @@ object AuthorizationTest : Spek({
                 )).thenReturn(false)
 
                 authorization = Authorization(dbWrapperMock)
-                assertFalse(authorization.hasAuthority(Authority("vasya", Role.EXECUTE, "A.B")))
+                assertFalse(authorization.hasAuthority(Authority(0, "vasya", Role.EXECUTE, "A.B")))
             }
         }
     }

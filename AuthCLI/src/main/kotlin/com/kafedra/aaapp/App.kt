@@ -109,7 +109,7 @@ class App {
                 UNKNOWN_ROLE
             }
             !authorizeService.hasAuthority(
-                    Authority(handler.login!!,
+                    Authority(0, handler.login!!,
                             Role.valueOf(handler.role!!),
                             handler.res!!)) -> {
                 logger.error("No access. Exit.")
