@@ -1,6 +1,8 @@
 package com.kafedra.aaapp
 
+import com.google.inject.Guice
 import com.kafedra.aaapp.ExitCode.*
+import com.kafedra.aaapp.di.ConnectionProvider
 import com.kafedra.aaapp.domain.Activity
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.Permission
@@ -29,7 +31,8 @@ class App {
 
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
-        val dbWrapper = DBWrapper()
+        val injector = Guice.createInjector()
+        val dbWrapper = DBWrapper(injector.getInstance(ConnectionProvider::class.java))
         if (dbWrapper.dbExists()) logger.info("Using existing database.")
         else logger.warn("Database does not exist. Initiating new database.")
         logger.info("Attempting database migration.")

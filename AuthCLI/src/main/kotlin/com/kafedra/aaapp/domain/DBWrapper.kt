@@ -1,5 +1,7 @@
 package com.kafedra.aaapp.domain
 
+import com.google.inject.Inject
+import com.kafedra.aaapp.di.ConnectionProvider
 import java.io.Closeable
 import java.io.File
 import java.sql.Connection
@@ -7,7 +9,7 @@ import java.sql.DriverManager
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
 
-class DBWrapper : Closeable {
+class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) : Closeable {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
 
