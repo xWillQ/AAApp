@@ -21,6 +21,32 @@ class AuthorityServlet: HttpServlet() {
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Handling /ajax/authority")
-        response.writer.print("Authority")
+
+        val id = request.getParameter("id")?.toIntOrNull()
+        val userId = request.getParameter("userId")?.toIntOrNull()
+
+        val authorityList = when {
+            id != null -> {
+                logger.info("id = $id")
+                logger.info("Getting authorities from database")
+                wrapper.getAuthority(id)
+            }
+            userId != null -> {
+                logger.info("userId = $userId")
+                logger.info("Getting authorities from database")
+                wrapper.getAuthorityByUser(userId)
+            }
+            else -> {
+                logger.info("id and userId are not specified, returning all authorities")
+                logger.info("Getting authorities from database")
+                wrapper.getAuthority(0)
+            }
+        }
+
+        logger.info("Converting authorities to json")
+        val gson = gsonProvider.get()
+        val json = gson.toJson(authorityList)
+
+        response.writer.print(json)
     }
 }
