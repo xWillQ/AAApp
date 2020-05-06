@@ -1,6 +1,7 @@
 package com.kafedra.aaapp.domain
 
 import com.google.inject.Inject
+import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.di.ConnectionProvider
 import java.io.File
 import java.sql.Connection
@@ -117,5 +118,43 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         }
         st.close()
         return@use userList
+    }
+
+    fun getAuthority(id: Int) = conProvider.get().use<Connection, List<Authority>> {
+        val st = it.createStatement()
+        val authoritiesList = mutableListOf<Authority>()
+        if (id == 0) {
+            val res = st.executeQuery(
+                    "SELECT a.id, a.res, a.role, u.login " +
+                            "FROM authorities a " +
+                            "INNER JOIN users u ON a.userid = u.id"
+            )
+            res.next()
+            while (!res.isAfterLast) {
+                val currentID = res.getInt("id")
+                val resource = res.getString("res")
+                val role = Role.valueOf(res.getString("role"))
+                val user = res.getString("login")
+                authoritiesList.add(Authority(currentID, user, role, resource))
+                res.next()
+            }
+            res.close()
+        } else {
+            val res = st.executeQuery("SELECT a.id, a.res, a.role, u.login" +
+                    "FROM authorities a" +
+                    "INNER JOIN users u ON a.userid = u.id" +
+                    "WHERE a.id = $id"
+            )
+            res.next()
+            if (!res.isAfterLast) {
+                val resource = res.getString("res")
+                val role = Role.valueOf(res.getString("role"))
+                val user = res.getString("login")
+                authoritiesList.add(Authority(id, user, role, resource))
+            }
+            res.close()
+        }
+        st.close()
+        return@use authoritiesList
     }
 }
