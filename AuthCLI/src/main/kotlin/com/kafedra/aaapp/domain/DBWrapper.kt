@@ -157,4 +157,26 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         st.close()
         return@use authoritiesList
     }
+
+    fun getAuthorityByUser(userId: Int) = conProvider.get().use<Connection, List<Authority>> {
+        val st = it.createStatement()
+        val authoritiesList = mutableListOf<Authority>()
+        val res = st.executeQuery("SELECT a.id, a.res, a.role, u.login" +
+                "FROM authorities a" +
+                "INNER JOIN users u ON a.userid = u.id" +
+                "WHERE a.userid = $userId")
+        res.next()
+        while (!res.isAfterLast) {
+            val currentID = res.getInt("id")
+            val resource = res.getString("res")
+            val role = Role.valueOf(res.getString("role"))
+            val user = res.getString("login")
+            authoritiesList.add(Authority(currentID, user, role, resource))
+            res.next()
+        }
+        res.close()
+        st.close()
+        
+        return@use authoritiesList
+    }
 }
