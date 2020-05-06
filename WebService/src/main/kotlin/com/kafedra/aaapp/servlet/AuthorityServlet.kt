@@ -3,6 +3,7 @@ package com.kafedra.aaapp.servlet
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.GSONProvider
+import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.injector.InjectLogger
 import org.apache.logging.log4j.Logger
 import javax.servlet.http.HttpServlet
@@ -15,6 +16,8 @@ class AuthorityServlet: HttpServlet() {
     lateinit var logger: Logger
     @Inject
     lateinit var gsonProvider: GSONProvider
+    @Inject
+    lateinit var wrapper: DBWrapper
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Handling /ajax/authority")
