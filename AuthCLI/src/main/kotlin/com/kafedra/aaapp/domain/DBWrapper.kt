@@ -100,7 +100,7 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
                 val login = res.getString("login")
                 val hash = res.getString("hash")
                 val salt = res.getString("salt")
-                userList + User(currentID, login, salt, hash)
+                userList.add(User(currentID, login, salt, hash))
                 res.next()
             }
             res.close()
@@ -111,7 +111,7 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
                 val login = res.getString("login")
                 val hash = res.getString("hash")
                 val salt = res.getString("salt")
-                userList + User(id, login, salt, hash)
+                userList.add(User(id, login, salt, hash))
             }
             res.close()
         }
