@@ -31,23 +31,23 @@
     * Возвращает `GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()`
 16. Заинжектить `GSONProvider` в классы `UserServlet`, `AuthorityServlet` и `ActivityServlet` (5 мин.)
 17. Заинжектить `DBWrapper` в классы `UserServlet`, `AuthorityServlet` и `ActivityServlet` (90 мин.)
-18. Реализовать метод `UserServlet.doGet()` (20 мин.)
+18. Реализовать метод `UserServlet.service()` (20 мин.)
     1. Создать переменную `userList`
     2. Если в запросе присутствует `id`: `userList = DBWrapper.getUser(id)`
     3. Иначе `userList = DBWrapper.getUser(0)`
     4. Сериализовать `userList` и вернуть полученный json
        * Для получения сериализатора использовать `GSONProvider`
-19. Реализовать метод `AuthorityServlet.doGet()` (20 мин.)
+19. Реализовать метод `AuthorityServlet.service()` (20 мин.)
     1. Создать переменную `authorityList`
     2. Если в запросе присутствует `id`: `authorityList = DBWrapper.getAuthority(id)`
     3. Если в запросе присутствует `userId`: `authorityList = DBWrapper.getAuthorityByUser(userId)`
     4. Иначе `authorityList = DBWrapper.getAuthority(0)`
     5. Сериализовать `authorityList` и вернуть полученный json
        * Для получения сериализатора использовать `GSONProvider`
-20. Реализовать метод `ActivityServlet.doGet()` (20 мин.)
+20. Реализовать метод `ActivityServlet.service()` (20 мин.)
     1. Создать переменную `activityList`
     2. Если в запросе присутствует `id`: `activityList = DBWrapper.getActivity(id)`
-    3. Если в запросе присутствует `userId`: `activityList = DBWrapper.ActivityByAuthority(authorityId)`
+    3. Если в запросе присутствует `authorityId`: `activityList = DBWrapper.ActivityByAuthority(authorityId)`
     4. Иначе `activityList = DBWrapper.getActivity(0)`
     5. Сериализовать `activityList` и вернуть полученный json
        * Для получения сериализатора использовать `GSONProvider`
