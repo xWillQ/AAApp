@@ -8,6 +8,7 @@ import com.google.inject.servlet.ServletModule
 import com.kafedra.aaapp.filter.CharsetFilter
 import com.kafedra.aaapp.injector.Log4JTypeListener
 import com.kafedra.aaapp.servlet.*
+import org.flywaydb.core.Flyway
 
 
 class ServletConfig() : GuiceServletContextListener() {
@@ -24,6 +25,11 @@ class ServletConfig() : GuiceServletContextListener() {
             serve("/ajax/user").with(UserServlet::class.java)
             serve("/ajax/authority").with(AuthorityServlet::class.java)
             serve("/ajax/activity").with(ActivityServlet::class.java)
+
+            val url = System.getenv("H2_URL") ?: "jdbc:h2:./aaa"
+            val login = System.getenv("H2_LOGIN") ?: "se"
+            val pass = System.getenv("H2_PASS") ?: ""
+            Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("classpath:db").load().migrate()
         }
     })
 }
