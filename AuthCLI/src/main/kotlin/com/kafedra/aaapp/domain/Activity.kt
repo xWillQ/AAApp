@@ -4,9 +4,7 @@ import com.kafedra.aaapp.Role
 
 data class Activity(
         val id: Int,
-        val user: User,
-        val res: String,
-        val role: Role,
+        val authority: Authority,
         val ds: String,
         val de: String,
         val vol: Int)

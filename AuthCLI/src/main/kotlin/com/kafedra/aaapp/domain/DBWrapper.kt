@@ -59,9 +59,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
                         "activities(login, res, role, ds, de, vol) " +
                         "VALUES (?, ?, ?, ?, ?, ?)"
         )
-        addAct.setString(1, activity.user.login)
-        addAct.setString(2, activity.res)
-        addAct.setString(3, activity.role.toString())
+        addAct.setString(1, activity.authority.user)
+        addAct.setString(2, activity.authority.res)
+        addAct.setString(3, activity.authority.role.toString())
         addAct.setString(4, activity.ds)
         addAct.setString(5, activity.de)
         addAct.setInt(6, activity.vol)
