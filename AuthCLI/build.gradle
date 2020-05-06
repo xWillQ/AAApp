@@ -13,10 +13,6 @@ plugins {
     id 'io.gitlab.arturbosch.detekt'
 }
 
-repositories {
-    maven { url "https://kotlin.bintray.com/kotlinx" }
-}
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
@@ -36,6 +32,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:latest.release'
 
     implementation 'com.google.inject:guice:4.2.3'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 jar {
