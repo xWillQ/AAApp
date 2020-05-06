@@ -1,6 +1,6 @@
 import com.kafedra.aaapp.Role
-import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.Authority
+import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Authorization
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

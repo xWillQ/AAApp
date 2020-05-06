@@ -3,10 +3,10 @@ package com.kafedra.aaapp.domain
 import com.google.inject.Inject
 import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.di.ConnectionProvider
-import org.apache.logging.log4j.LogManager
-import org.flywaydb.core.Flyway
 import java.io.File
 import java.sql.Connection
+import org.apache.logging.log4j.LogManager
+import org.flywaydb.core.Flyway
 
 class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) {
     private var con: Connection? = null

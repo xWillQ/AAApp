@@ -1,8 +1,8 @@
 package com.kafedra.aaapp.service
 
 import com.kafedra.aaapp.Role
-import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.Authority
+import com.kafedra.aaapp.domain.DBWrapper
 
 class Authorization(private val dbWrapper: DBWrapper) {
 

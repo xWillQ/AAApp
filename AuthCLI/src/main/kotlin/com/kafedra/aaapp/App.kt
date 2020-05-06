@@ -4,8 +4,8 @@ import com.google.inject.Guice
 import com.kafedra.aaapp.ExitCode.*
 import com.kafedra.aaapp.di.ConnectionProvider
 import com.kafedra.aaapp.domain.Activity
-import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.domain.Authority
+import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
 import com.kafedra.aaapp.service.ArgHandler
 import com.kafedra.aaapp.service.Authentication
@@ -29,6 +29,7 @@ class App {
         if (handler.vol != null) logger.info("Vol = ${handler.vol}")
     }
 
+    @Suppress("ReturnCount")
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
         val injector = Guice.createInjector()
@@ -42,7 +43,6 @@ class App {
                 System.getenv("H2_PASS") ?: "")
 
         var exitCode: ExitCode?
-
 
         val handler = ArgHandler(args)
         logArgs(handler)
@@ -66,7 +66,6 @@ class App {
 
         logger.info("Success. Exit.")
         return SUCCESS
-
     }
 
     private fun authentication(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
