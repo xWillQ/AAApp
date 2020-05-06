@@ -115,6 +115,7 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
             }
             res.close()
         }
+        st.close()
         return@use userList
     }
 }
