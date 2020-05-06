@@ -1,3 +1,10 @@
 package com.kafedra.aaapp.domain
 
-data class User(val id: Int, val login: String, val salt: String, val hash: String)
+import com.google.gson.annotations.Expose
+
+data class User(
+        @Expose val id: Int,
+        @Expose val login: String,
+        val salt: String,
+        val hash: String
+)
