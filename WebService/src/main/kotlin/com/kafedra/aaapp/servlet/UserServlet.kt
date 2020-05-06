@@ -21,6 +21,21 @@ class UserServlet: HttpServlet() {
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Handling /ajax/user")
-        response.writer.print("User")
+
+        var id = request.getParameter("id")?.toIntOrNull()
+        if (id == null) {
+            logger.info("id is not specified, returning all users")
+            id = 0
+        }
+        else logger.info("id = $id")
+
+        logger.info("Getting users from database")
+        val userList = wrapper.getUser(id)
+
+        logger.info("Converting users to json")
+        val gson = gsonProvider.get()
+        val json = gson.toJson(userList)
+        
+        response.writer.print(json)
     }
 }
