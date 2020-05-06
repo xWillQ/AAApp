@@ -125,9 +125,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
                         "INNER JOIN users u ON a.userid = u.id"
         ) else st.executeQuery(
                 "SELECT a.id, a.res, a.role, u.login " +
-                "FROM authorities a " +
-                "INNER JOIN users u ON a.userid = u.id " +
-                "WHERE a.id = $id"
+                        "FROM authorities a " +
+                        "INNER JOIN users u ON a.userid = u.id " +
+                        "WHERE a.id = $id"
         )
 
         res.next()
@@ -151,9 +151,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
 
         val res = st.executeQuery(
                 "SELECT a.id, a.res, a.role, u.login " +
-                "FROM authorities a " +
-                "INNER JOIN users u ON a.userid = u.id " +
-                "WHERE a.userid = $userId"
+                        "FROM authorities a " +
+                        "INNER JOIN users u ON a.userid = u.id " +
+                        "WHERE a.userid = $userId"
         )
 
         res.next()
@@ -170,5 +170,38 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         st.close()
 
         return@use authoritiesList
+    }
+
+    fun getActivity(id: Int) = conProvider.get().use<Connection, List<Activity>> {
+        val st = it.createStatement()
+        val activitiesList = mutableListOf<Activity>()
+
+        val res = if (id == 0) st.executeQuery(
+                "SELECT * FROM activities a " +
+                        "INNER JOIN users u ON a.userId = u.id"
+        )
+        else st.executeQuery(
+                "SELECT * FROM activities a " +
+                        "INNER JOIN users u ON a.userId = u.id " +
+                        "WHERE a.id=$id"
+        )
+
+        res.next()
+        while (!res.isAfterLast) {
+            val currentID = res.getInt("id")
+            val ds = res.getString("ds")
+            val de = res.getString("de")
+            val vol = res.getInt("vol")
+            val user = res.getString("login")
+            val role = Role.valueOf(res.getString("role"))
+            val resource = res.getString("res")
+            activitiesList.add(Activity(currentID, Authority(0, user, role, resource), ds, de, vol))
+            res.next()
+        }
+        res.close()
+
+        st.close()
+
+        return@use activitiesList
     }
 }
