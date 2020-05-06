@@ -1,4 +1,4 @@
-INSERT INTO authorities(res, role, login)
+INSERT INTO authorities(res, role, userId)
 VALUES
     ('A', 'READ', 1),
     ('A.B.C', 'WRITE', 1),
