@@ -35,7 +35,10 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     fun hasAuthority(login: String, role: String, resourceRegex: String) = conProvider.get().use<Connection, Boolean> {
         logger.info("Get prepared statement with authority")
         val getPermission = it.prepareStatement(
-                "SELECT count(*) FROM authorities WHERE login = ? and role = ? and res REGEXP ?")
+                "SELECT count(*) " +
+                        "FROM authorities a " +
+                        "INNER JOIN users u ON a.userId = u.id " +
+                        "WHERE login = ? and role = ? and res REGEXP ?")
         getPermission.setString(1, login)
         getPermission.setString(2, role)
         logger.info("Matching resources against '$resourceRegex'")
@@ -56,10 +59,10 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         logger.info("Get prepared statement with activities")
         val addAct = it.prepareStatement(
                 "INSERT INTO " +
-                        "activities(login, res, role, ds, de, vol) " +
+                        "activities(userId, res, role, ds, de, vol) " +
                         "VALUES (?, ?, ?, ?, ?, ?)"
         )
-        addAct.setString(1, activity.authority.user)
+        addAct.setInt(1, getUser(activity.authority.user).id)
         addAct.setString(2, activity.authority.res)
         addAct.setString(3, activity.authority.role.toString())
         addAct.setString(4, activity.ds)
@@ -121,9 +124,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
                         "FROM authorities a " +
                         "INNER JOIN users u ON a.userid = u.id"
         ) else st.executeQuery(
-                "SELECT a.id, a.res, a.role, u.login" +
-                "FROM authorities a" +
-                "INNER JOIN users u ON a.userid = u.id" +
+                "SELECT a.id, a.res, a.role, u.login " +
+                "FROM authorities a " +
+                "INNER JOIN users u ON a.userid = u.id " +
                 "WHERE a.id = $id"
         )
 
@@ -147,9 +150,9 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         val authoritiesList = mutableListOf<Authority>()
 
         val res = st.executeQuery(
-                "SELECT a.id, a.res, a.role, u.login" +
-                "FROM authorities a" +
-                "INNER JOIN users u ON a.userid = u.id" +
+                "SELECT a.id, a.res, a.role, u.login " +
+                "FROM authorities a " +
+                "INNER JOIN users u ON a.userid = u.id " +
                 "WHERE a.userid = $userId"
         )
 
