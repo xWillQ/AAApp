@@ -14,7 +14,7 @@ CREATE TABLE authorities(
 
 CREATE TABLE activities(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    login VARCHAR(10) REFERENCES users (login),
+    userId INT REFERENCES users (id),
     res VARCHAR(255),
     role VARCHAR(7),
     ds VARCHAR(10),
