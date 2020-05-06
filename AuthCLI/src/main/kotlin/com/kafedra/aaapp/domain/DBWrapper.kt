@@ -3,10 +3,10 @@ package com.kafedra.aaapp.domain
 import com.google.inject.Inject
 import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.di.ConnectionProvider
-import java.io.File
-import java.sql.Connection
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
+import java.io.File
+import java.sql.Connection
 
 class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) {
     private var con: Connection? = null
@@ -93,29 +93,21 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     fun getUser(id: Int) = conProvider.get().use<Connection, List<User>> {
         val st = it.createStatement()
         val userList = mutableListOf<User>()
-        if (id == 0) {
-            val res = st.executeQuery("SELECT * FROM users")
+
+        val res = if (id == 0) st.executeQuery("SELECT * FROM users")
+        else st.executeQuery("SELECT * FROM users WHERE id = $id")
+
+        res.next()
+        while (!res.isAfterLast) {
+            val currentID = res.getInt("id")
+            val login = res.getString("login")
+            val hash = res.getString("hash")
+            val salt = res.getString("salt")
+            userList.add(User(currentID, login, salt, hash))
             res.next()
-            while (!res.isAfterLast) {
-                val currentID = res.getInt("id")
-                val login = res.getString("login")
-                val hash = res.getString("hash")
-                val salt = res.getString("salt")
-                userList.add(User(currentID, login, salt, hash))
-                res.next()
-            }
-            res.close()
-        } else {
-            val res = st.executeQuery("SELECT login, hash, salt FROM users WHERE id = $id")
-            res.next()
-            if (!res.isAfterLast) {
-                val login = res.getString("login")
-                val hash = res.getString("hash")
-                val salt = res.getString("salt")
-                userList.add(User(id, login, salt, hash))
-            }
-            res.close()
         }
+        res.close()
+
         st.close()
         return@use userList
     }
@@ -123,48 +115,18 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
     fun getAuthority(id: Int) = conProvider.get().use<Connection, List<Authority>> {
         val st = it.createStatement()
         val authoritiesList = mutableListOf<Authority>()
-        if (id == 0) {
-            val res = st.executeQuery(
-                    "SELECT a.id, a.res, a.role, u.login " +
-                            "FROM authorities a " +
-                            "INNER JOIN users u ON a.userid = u.id"
-            )
-            res.next()
-            while (!res.isAfterLast) {
-                val currentID = res.getInt("id")
-                val resource = res.getString("res")
-                val role = Role.valueOf(res.getString("role"))
-                val user = res.getString("login")
-                authoritiesList.add(Authority(currentID, user, role, resource))
-                res.next()
-            }
-            res.close()
-        } else {
-            val res = st.executeQuery("SELECT a.id, a.res, a.role, u.login" +
-                    "FROM authorities a" +
-                    "INNER JOIN users u ON a.userid = u.id" +
-                    "WHERE a.id = $id"
-            )
-            res.next()
-            if (!res.isAfterLast) {
-                val resource = res.getString("res")
-                val role = Role.valueOf(res.getString("role"))
-                val user = res.getString("login")
-                authoritiesList.add(Authority(id, user, role, resource))
-            }
-            res.close()
-        }
-        st.close()
-        return@use authoritiesList
-    }
 
-    fun getAuthorityByUser(userId: Int) = conProvider.get().use<Connection, List<Authority>> {
-        val st = it.createStatement()
-        val authoritiesList = mutableListOf<Authority>()
-        val res = st.executeQuery("SELECT a.id, a.res, a.role, u.login" +
+        val res = if (id == 0) st.executeQuery(
+                "SELECT a.id, a.res, a.role, u.login " +
+                        "FROM authorities a " +
+                        "INNER JOIN users u ON a.userid = u.id"
+        ) else st.executeQuery(
+                "SELECT a.id, a.res, a.role, u.login" +
                 "FROM authorities a" +
                 "INNER JOIN users u ON a.userid = u.id" +
-                "WHERE a.userid = $userId")
+                "WHERE a.id = $id"
+        )
+
         res.next()
         while (!res.isAfterLast) {
             val currentID = res.getInt("id")
@@ -175,8 +137,35 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
             res.next()
         }
         res.close()
+
         st.close()
-        
+        return@use authoritiesList
+    }
+
+    fun getAuthorityByUser(userId: Int) = conProvider.get().use<Connection, List<Authority>> {
+        val st = it.createStatement()
+        val authoritiesList = mutableListOf<Authority>()
+
+        val res = st.executeQuery(
+                "SELECT a.id, a.res, a.role, u.login" +
+                "FROM authorities a" +
+                "INNER JOIN users u ON a.userid = u.id" +
+                "WHERE a.userid = $userId"
+        )
+
+        res.next()
+        while (!res.isAfterLast) {
+            val currentID = res.getInt("id")
+            val resource = res.getString("res")
+            val role = Role.valueOf(res.getString("role"))
+            val user = res.getString("login")
+            authoritiesList.add(Authority(currentID, user, role, resource))
+            res.next()
+        }
+        res.close()
+
+        st.close()
+
         return@use authoritiesList
     }
 }
