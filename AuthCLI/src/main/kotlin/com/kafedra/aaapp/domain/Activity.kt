@@ -1,10 +1,11 @@
 package com.kafedra.aaapp.domain
 
-import com.kafedra.aaapp.Role
+import com.google.gson.annotations.Expose
 
 data class Activity(
-        val id: Int,
+        @Expose val id: Int,
         val authority: Authority,
-        val ds: String,
-        val de: String,
-        val vol: Int)
+        @Expose val ds: String,
+        @Expose val de: String,
+        @Expose val vol: Int
+)
