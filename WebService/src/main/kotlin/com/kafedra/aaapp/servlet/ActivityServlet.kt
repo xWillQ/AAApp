@@ -48,6 +48,7 @@ class ActivityServlet: HttpServlet() {
         val gson = gsonProvider.get()
         val json = gson.toJson(activityList)
 
+        response.contentType = "text/plain"
         response.writer.print(json)
     }
 }

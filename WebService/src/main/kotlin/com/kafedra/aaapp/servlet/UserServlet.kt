@@ -35,7 +35,8 @@ class UserServlet: HttpServlet() {
         logger.info("Converting users to json")
         val gson = gsonProvider.get()
         val json = gson.toJson(userList)
-        
+
+        response.contentType = "text/plain"
         response.writer.print(json)
     }
 }

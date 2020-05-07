@@ -5,5 +5,8 @@ import com.google.gson.GsonBuilder
 import com.google.inject.Provider
 
 class GSONProvider : Provider<Gson> {
-    override fun get() : Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+    override fun get() : Gson = GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
+            .setPrettyPrinting()
+            .create()
 }

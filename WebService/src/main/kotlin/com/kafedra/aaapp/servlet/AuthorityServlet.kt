@@ -47,6 +47,7 @@ class AuthorityServlet: HttpServlet() {
         val gson = gsonProvider.get()
         val json = gson.toJson(authorityList)
 
+        response.contentType = "text/plain"
         response.writer.print(json)
     }
 }
