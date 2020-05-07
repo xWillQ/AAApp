@@ -145,8 +145,8 @@ class App {
         if (exitCode == null) {
             logger.info("Successful accounting. Adding activity to base.")
             accountingService.addActivity(Activity(
-                    0, Authority(0, handler.login!!, Role.valueOf(handler.role!!),
-                    handler.res!!), handler.ds!!, handler.de!!, handler.vol!!.toInt())
+                    0, dbWrapper.getUser(handler.login!!), handler.res!!,
+                    Role.valueOf(handler.role!!), handler.ds!!, handler.de!!, handler.vol!!.toInt())
             )
         }
         return exitCode
