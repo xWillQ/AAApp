@@ -201,30 +201,34 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         val st = it.createStatement()
         val activitiesList = mutableListOf<Activity>()
 
-        val res = if (id == 0) st.executeQuery(
-                "SELECT * FROM activities a " +
-                        "INNER JOIN users u ON a.userId = u.id"
-        )
-        else st.executeQuery(
-                "SELECT * FROM activities a " +
-                        "INNER JOIN users u ON a.userId = u.id " +
-                        "WHERE a.id=$id"
-        )
+        try {
+            val res = if (id == 0) st.executeQuery(
+                    "SELECT * FROM activities a " +
+                            "INNER JOIN users u ON a.userId = u.id"
+            )
+            else st.executeQuery(
+                    "SELECT * FROM activities a " +
+                            "INNER JOIN users u ON a.userId = u.id " +
+                            "WHERE a.id=$id"
+            )
 
-        res.next()
-        while (!res.isAfterLast) {
-            val currentID = res.getInt("id")
-            val ds = res.getString("ds")
-            val de = res.getString("de")
-            val vol = res.getInt("vol")
-            val user = getUser(res.getString("login"))
-            val role = Role.valueOf(res.getString("role"))
-            val resource = res.getString("res")
-            val authorityId = res.getInt("authorityId")
-            activitiesList.add(Activity(currentID, user, authorityId, resource, role, ds, de, vol))
             res.next()
+            while (!res.isAfterLast) {
+                val currentID = res.getInt("id")
+                val ds = res.getString("ds")
+                val de = res.getString("de")
+                val vol = res.getInt("vol")
+                val user = getUser(res.getString("login"))
+                val role = Role.valueOf(res.getString("role"))
+                val resource = res.getString("res")
+                val authorityId = res.getInt("authorityId")
+                activitiesList.add(Activity(currentID, user, authorityId, resource, role, ds, de, vol))
+                res.next()
+            }
+            res.close()
+        } catch (e: org.h2.jdbc.JdbcSQLNonTransientException) {
+            logger.warn("No activity data available")
         }
-        res.close()
 
         st.close()
 
@@ -235,25 +239,29 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         val st = it.createStatement()
         val activitiesList = mutableListOf<Activity>()
 
-        val res = st.executeQuery(
-                "SELECT * FROM activities a " +
-                        "INNER JOIN users u ON a.userId = u.id " +
-                        "WHERE a.authorityId = $authorityId"
-        )
+        try {
+            val res = st.executeQuery(
+                    "SELECT * FROM activities a " +
+                            "INNER JOIN users u ON a.userId = u.id " +
+                            "WHERE a.authorityId = $authorityId"
+            )
 
-        res.next()
-        while (!res.isAfterLast) {
-            val currentID = res.getInt("id")
-            val ds = res.getString("ds")
-            val de = res.getString("de")
-            val vol = res.getInt("vol")
-            val user = res.getString("login")
-            val role = Role.valueOf(res.getString("role"))
-            val resource = res.getString("res")
-            activitiesList.add(Activity(currentID, getUser(user), authorityId, resource, role, ds, de, vol))
             res.next()
+            while (!res.isAfterLast) {
+                val currentID = res.getInt("id")
+                val ds = res.getString("ds")
+                val de = res.getString("de")
+                val vol = res.getInt("vol")
+                val user = res.getString("login")
+                val role = Role.valueOf(res.getString("role"))
+                val resource = res.getString("res")
+                activitiesList.add(Activity(currentID, getUser(user), authorityId, resource, role, ds, de, vol))
+                res.next()
+            }
+            res.close()
+        } catch (e: org.h2.jdbc.JdbcSQLNonTransientException) {
+            logger.warn("No activity data available")
         }
-        res.close()
 
         st.close()
 
