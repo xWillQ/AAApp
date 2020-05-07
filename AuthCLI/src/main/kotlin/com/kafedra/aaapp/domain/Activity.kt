@@ -6,6 +6,7 @@ import com.kafedra.aaapp.Role
 data class Activity(
     @Expose val id: Int,
     val user: User,
+    val authorityId: Int,
     val res: String,
     val role: Role,
     @Expose val ds: String,

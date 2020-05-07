@@ -8,6 +8,7 @@ import java.sql.Connection
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
 
+@Suppress("TooManyFunctions")  // divide into different classes
 class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
@@ -59,8 +60,8 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         logger.info("Get prepared statement with activities")
         val addAct = it.prepareStatement(
                 "INSERT INTO " +
-                        "activities(userId, res, role, ds, de, vol) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)"
+                        "activities(userId, res, role, ds, de, vol, authorityId) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)"
         )
         addAct.setInt(1, activity.user.id)
         addAct.setString(2, activity.res)
@@ -68,6 +69,7 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         addAct.setString(4, activity.ds)
         addAct.setString(5, activity.de)
         addAct.setInt(6, activity.vol)
+        addAct.setInt(7, activity.authorityId)
         addAct.execute()
         logger.info("Close prepared statement with activities")
         addAct.close()
@@ -195,7 +197,8 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
             val user = getUser(res.getString("login"))
             val role = Role.valueOf(res.getString("role"))
             val resource = res.getString("res")
-            activitiesList.add(Activity(currentID, user, resource, role, ds, de, vol))
+            val authorityId = res.getInt("authorityId")
+            activitiesList.add(Activity(currentID, user, authorityId, resource, role, ds, de, vol))
             res.next()
         }
         res.close()
