@@ -55,6 +55,29 @@ class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider)
         return ans
     }
 
+    @Suppress("MagicNumber")
+    fun getAuthorityId(login: String, role: String, resourceRegex: String) = conProvider.get().use<Connection, Int> {
+        logger.info("Get prepared statement with authority")
+        val getPermission = it.prepareStatement(
+                "SELECT a.id " +
+                        "FROM authorities a " +
+                        "INNER JOIN users u ON a.userId = u.id " +
+                        "WHERE login = ? and role = ? and res REGEXP ?")
+        getPermission.setString(1, login)
+        getPermission.setString(2, role)
+        logger.info("Matching resources against '$resourceRegex'")
+        getPermission.setString(3, resourceRegex)
+        logger.info("Get result set with authority")
+        val res = getPermission.executeQuery()
+        res.next()
+        val id = res.getInt("id")
+        logger.info("Close result set with authority")
+        res.close()
+        logger.info("Close prepared statement with authority")
+        getPermission.close()
+        return id
+    }
+
     @Suppress("MagicNumber") // Will be fixed later. Maybe
     fun addActivity(activity: Activity) = conProvider.get().use {
         logger.info("Get prepared statement with activities")

@@ -15,4 +15,12 @@ class Authorization(private val dbWrapper: DBWrapper) {
         resRegex = "^$resRegex$"
         return dbWrapper.hasAuthority(authority.user, authority.role.toString(), resRegex)
     }
+
+    fun getAuthorityId(authority: Authority): Int {
+        var resRegex = authority.res
+        while (resRegex.contains(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)")))
+            resRegex = resRegex.replace(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)"), "(\\\\$1)?")
+        resRegex = "^$resRegex$"
+        return dbWrapper.getAuthorityId(authority.user, authority.role.toString(), resRegex)
+    }
 }
