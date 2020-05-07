@@ -8,7 +8,7 @@ import java.sql.Connection
 import org.apache.logging.log4j.LogManager
 import org.flywaydb.core.Flyway
 
-@Suppress("TooManyFunctions")  // divide into different classes
+@Suppress("TooManyFunctions") // divide into different classes
 class DBWrapper @Inject constructor(private val conProvider: ConnectionProvider) {
     private var con: Connection? = null
     private val logger = LogManager.getLogger()
