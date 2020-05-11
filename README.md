@@ -11,6 +11,8 @@
 - [Roadmap4](doc/ROADMAP4.md)
 - [Roadmap5](doc/ROADMAP5.md)
 - [Roadmap6](doc/ROADMAP6.md)
+- [Roadmap7](doc/ROADMAP7.md)
+- [Roadmap8](doc/ROADMAP8.md)
 
 ## Сборка
 Для сборки программы выполните `./gradlew shadowJar`.
