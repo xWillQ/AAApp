@@ -1,0 +1,11 @@
+<hibernate-mapping>
+  <class name="com.kafedra.aaapp.domain.User" table="users">
+    <id column="id" name="id" type="int">
+      <generator class="increment"/>
+    </id>
+    <property column="login" name="login" type="string"/>
+    <property column="hash" name="hash" type="string"/>
+    <property column="salt" name="salt" type="string"/>
+
+  </class>
+</hibernate-mapping>
