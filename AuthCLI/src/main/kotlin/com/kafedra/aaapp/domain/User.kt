@@ -9,7 +9,6 @@ class User() {
     var hash: String = ""
     var version: Long = 0
 
-
     constructor(id: Int, login: String, salt: String, hash: String) : this() {
         this.id = id
         this.login = login
