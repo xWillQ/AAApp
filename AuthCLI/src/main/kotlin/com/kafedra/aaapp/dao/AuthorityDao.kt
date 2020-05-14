@@ -11,64 +11,38 @@ class AuthorityDao {
     @Inject lateinit var sessionProvider: HibernateProvider
     val logger: Logger = LogManager.getLogger()
 
-    private fun generateResourceRegex(res: String): Regex {
-        var resRegex = res
-        while (resRegex.contains(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)")))
-            resRegex = resRegex.replace(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)"), "(\\\\$1)?")
-        return Regex("^$resRegex$")
-    }
-
     fun hasAuthority(login: String, role: Role, res: String): Boolean {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
-        // TODO: find better solution
-        // This is a bodge, should be done with one query and without pulling all authorities from DB
-        logger.info("Querying authorities with user = $login and role = ${role.role}")
-        val authorityList = session.createQuery(
-                "FROM Authority WHERE user.login = '$login' and role = '${role.role}'",
-                Authority::class.java
-        ).resultList
-
-        var result = false
-        val regex = generateResourceRegex(res)
-        logger.info("Matching received authorities against $regex")
-        for (a in authorityList) {
-            if (a.res.matches(regex)) {
-                logger.info("Found matching authority")
-                result = true
-                break
-            }
-        }
+        logger.info("Counting authorities with user = $login and role = ${role.role} and res contains $res")
+        val count = session.createQuery(
+                "SELECT count(*) " +
+                        "FROM Authority " +
+                        "WHERE user.login = '$login' and role = '${role.role}' and " +
+                        "(res = '$res' or '$res' LIKE concat(res, '.%'))"
+        ).singleResult as Long
 
         logger.info("Closing hibernate session")
         session.close()
 
-        return result
+        return count > 0
     }
 
     fun getAuthorityId(login: String, role: Role, res: String): Int {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
-        // TODO: find better solution
-        // This is a bodge, should be done with one query and without pulling all authorities from DB
-        logger.info("Querying authorities with user = $login and role = ${role.role}")
+        logger.info("Querying authorities with user = $login and role = ${role.role} and res contains $res")
         val authorityList = session.createQuery(
-                "FROM Authority WHERE user.login = '$login' and role = '${role.role}'",
+                        "FROM Authority " +
+                        "WHERE user.login = '$login' and role = '${role.role}' and " +
+                        "res = '$res' or '$res' LIKE concat(res, '.%')",
                 Authority::class.java
         ).resultList
 
-        var result = 0
-        val regex = generateResourceRegex(res)
-        logger.info("Matching received authorities against $regex")
-        for (a in authorityList) {
-            if (a.res.matches(regex)) {
-                logger.info("Found matching authority")
-                result = a.id
-                break
-            }
-        }
+        val result = if (authorityList.size > 0) authorityList[0].id
+        else 0
 
         logger.info("Closing hibernate session")
         session.close()
