@@ -3,9 +3,9 @@
     <id column="id" name="id" type="int">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" type="long"/>
     <property column="login" name="login" type="string"/>
     <property column="hash" name="hash" type="string"/>
     <property column="salt" name="salt" type="string"/>
-
   </class>
 </hibernate-mapping>

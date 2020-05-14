@@ -3,6 +3,7 @@
     <id column="id" name="id" type="int">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" type="long"/>
     <property column="role" name="role">
       <type name="org.hibernate.type.EnumType">
           <param name="enumClass">com.kafedra.aaapp.Role</param>

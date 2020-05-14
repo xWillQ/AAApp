@@ -7,6 +7,7 @@ class User {
     @Expose var login: String = ""
     var salt: String = ""
     var hash: String = ""
+    var version: Long = 0
 
     constructor() {}
 

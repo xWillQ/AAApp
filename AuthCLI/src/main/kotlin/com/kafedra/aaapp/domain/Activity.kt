@@ -12,4 +12,5 @@ class Activity {
     @Expose var ds: String = ""
     @Expose var de: String = ""
     @Expose var vol: Int = 0
+    var version: Long = 0
 }

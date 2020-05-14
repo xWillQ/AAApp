@@ -8,4 +8,5 @@ class Authority {
     var user: User? = null
     @Expose var role: Role? = null
     @Expose var res: String = ""
+    var version: Long = 0
 }
