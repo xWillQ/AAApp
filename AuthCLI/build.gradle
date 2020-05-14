@@ -22,6 +22,8 @@ dependencies {
     implementation "org.apache.logging.log4j:log4j-core:2.13.1"
 
     implementation "com.h2database:h2:1.4.200"
+    implementation "org.postgresql:postgresql:42.2.12"
+
 
     testImplementation "org.jetbrains.kotlin:kotlin-test"
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:latest.release"

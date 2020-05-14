@@ -12,7 +12,10 @@ class HibernateProvider : Provider<SessionFactory> {
     init {
         val cfg = Configuration().configure()
         val url = System.getenv("DATABASE_URL")
-        if (url != null) cfg.setProperty("connection.url", "jdbc:$url")
+        if (url != null) {
+            cfg.setProperty("connection.url", "jdbc:$url")
+            cfg.setProperty("connection.driverClass", "org.postgresql.Driver")
+        }
         sessionFactory = cfg.buildSessionFactory()
     }
 
