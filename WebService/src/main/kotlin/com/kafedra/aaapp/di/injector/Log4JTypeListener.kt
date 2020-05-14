@@ -1,4 +1,4 @@
-package com.kafedra.aaapp.injector
+package com.kafedra.aaapp.di.injector
 
 import com.google.inject.TypeLiteral
 import com.google.inject.spi.TypeEncounter

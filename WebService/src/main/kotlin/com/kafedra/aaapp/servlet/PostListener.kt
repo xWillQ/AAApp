@@ -1,7 +1,7 @@
 package com.kafedra.aaapp.servlet
 
 import com.google.inject.Singleton
-import com.kafedra.aaapp.injector.InjectLogger
+import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
 import java.net.URLEncoder
 import javax.servlet.http.HttpServlet

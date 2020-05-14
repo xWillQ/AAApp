@@ -3,7 +3,7 @@ package com.kafedra.aaapp.servlet
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.GSONProvider
-import com.kafedra.aaapp.injector.InjectLogger
+import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest

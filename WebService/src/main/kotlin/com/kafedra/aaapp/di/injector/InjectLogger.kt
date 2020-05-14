@@ -1,4 +1,4 @@
-package com.kafedra.aaapp.injector
+package com.kafedra.aaapp.di.injector
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
