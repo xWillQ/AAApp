@@ -7,4 +7,13 @@ class User {
     @Expose var login: String = ""
     var salt: String = ""
     var hash: String = ""
+
+    constructor() {}
+
+    constructor(id: Int, login: String, salt: String, hash: String) {
+        this.id = id
+        this.login = login
+        this.salt = salt
+        this.hash = hash
+    }
 }
