@@ -1,3 +1,4 @@
+import com.google.inject.Guice
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
 import kotlin.test.assertFalse
@@ -6,12 +7,9 @@ import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 
 object AccountingTest : Spek({
-
-    val dbWrapperMock = mock(DBWrapper::class.java)
-
     lateinit var accounting: Accounting
     beforeEachTest {
-        accounting = Accounting(dbWrapperMock)
+        accounting = Accounting()
     }
     group("Test validateVol") {
 
