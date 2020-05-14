@@ -1,24 +1,24 @@
 package com.kafedra.aaapp.dao
 
 import com.google.inject.Inject
+import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.di.HibernateProvider
 import com.kafedra.aaapp.domain.Authority
-import com.kafedra.aaapp.domain.User
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class AuthorityDao {
-    @Inject lateinit var sessionProvider : HibernateProvider
+    @Inject lateinit var sessionProvider: HibernateProvider
     val logger: Logger = LogManager.getLogger()
 
-    private fun generateResourceRegex(res: String) : Regex {
+    private fun generateResourceRegex(res: String): Regex {
         var resRegex = res
         while (resRegex.contains(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)")))
             resRegex = resRegex.replace(Regex("(?<=[A-Z])(\\.[A-Z]+[^)\\s]*)"), "(\\\\$1)?")
         return Regex("^$resRegex$")
     }
 
-    fun hasAuthority(login: String, role: Role, res: String) : Boolean {
+    fun hasAuthority(login: String, role: Role, res: String): Boolean {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
@@ -44,7 +44,7 @@ class AuthorityDao {
         return result
     }
 
-    fun getAuthorityId(login: String, role: Role, res: String)  : Int {
+    fun getAuthorityId(login: String, role: Role, res: String): Int {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
@@ -70,7 +70,7 @@ class AuthorityDao {
         return result
     }
 
-    fun getAuthority(id: Int) : List<Authority> {
+    fun getAuthority(id: Int): List<Authority> {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 

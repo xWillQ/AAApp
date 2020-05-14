@@ -3,9 +3,6 @@ package com.kafedra.aaapp
 import com.google.inject.Guice
 import com.google.inject.Injector
 import com.kafedra.aaapp.ExitCode.*
-import com.kafedra.aaapp.di.ConnectionProvider
-import com.kafedra.aaapp.domain.Activity
-import com.kafedra.aaapp.domain.Authority
 import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
 import com.kafedra.aaapp.service.ArgHandler

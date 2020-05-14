@@ -6,13 +6,12 @@ import com.kafedra.aaapp.dao.ActivityDao
 import com.kafedra.aaapp.dao.AuthorityDao
 import com.kafedra.aaapp.dao.UserDao
 import com.kafedra.aaapp.domain.Activity
-import com.kafedra.aaapp.domain.Authority
 import org.apache.logging.log4j.LogManager
 
 class Accounting {
-    @Inject lateinit var activityDao : ActivityDao
-    @Inject lateinit var userDao : UserDao
-    @Inject lateinit var authorityDao : AuthorityDao
+    @Inject lateinit var activityDao: ActivityDao
+    @Inject lateinit var userDao: UserDao
+    @Inject lateinit var authorityDao: AuthorityDao
     private val logger = LogManager.getLogger()
 
     fun validateVol(vol: Int?) = if (vol != null) vol > 0 else false

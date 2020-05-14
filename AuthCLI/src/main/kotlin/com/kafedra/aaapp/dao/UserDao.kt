@@ -2,17 +2,15 @@ package com.kafedra.aaapp.dao
 
 import com.google.inject.Inject
 import com.kafedra.aaapp.di.HibernateProvider
-import com.kafedra.aaapp.domain.Authority
 import com.kafedra.aaapp.domain.User
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import java.sql.Connection
 
 class UserDao {
-    @Inject lateinit var sessionProvider : HibernateProvider
+    @Inject lateinit var sessionProvider: HibernateProvider
     val logger: Logger = LogManager.getLogger()
 
-    fun loginExists(login: String) : Boolean {
+    fun loginExists(login: String): Boolean {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
@@ -28,7 +26,7 @@ class UserDao {
         return count > 0
     }
 
-    fun getUser(login: String) : User {
+    fun getUser(login: String): User {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
         logger.info("Querying user with login = $login")
@@ -46,7 +44,7 @@ class UserDao {
         return user
     }
 
-    fun getUser(id: Int) : List<User> {
+    fun getUser(id: Int): List<User> {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 

@@ -2,9 +2,6 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.kafedra.aaapp.Role
 import com.kafedra.aaapp.dao.AuthorityDao
-import com.kafedra.aaapp.dao.UserDao
-import com.kafedra.aaapp.domain.Authority
-import com.kafedra.aaapp.service.Authentication
 import com.kafedra.aaapp.service.Authorization
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

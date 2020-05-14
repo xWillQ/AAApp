@@ -2,11 +2,10 @@ package com.kafedra.aaapp.service
 
 import com.google.inject.Inject
 import com.kafedra.aaapp.dao.UserDao
-import com.kafedra.aaapp.domain.DBWrapper
 import java.security.MessageDigest
 
 class Authentication {
-    @Inject lateinit var dao : UserDao
+    @Inject lateinit var dao: UserDao
 
     fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 

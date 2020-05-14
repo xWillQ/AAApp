@@ -1,9 +1,7 @@
-import com.google.inject.Guice
-import com.kafedra.aaapp.domain.DBWrapper
+
 import com.kafedra.aaapp.service.Accounting
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 
 object AccountingTest : Spek({

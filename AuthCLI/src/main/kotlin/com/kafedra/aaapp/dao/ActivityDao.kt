@@ -3,12 +3,11 @@ package com.kafedra.aaapp.dao
 import com.google.inject.Inject
 import com.kafedra.aaapp.di.HibernateProvider
 import com.kafedra.aaapp.domain.Activity
-import com.kafedra.aaapp.domain.Authority
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class ActivityDao {
-    @Inject lateinit var sessionProvider : HibernateProvider
+    @Inject lateinit var sessionProvider: HibernateProvider
     val logger: Logger = LogManager.getLogger()
 
     fun addActivity(activity: Activity) {
@@ -26,7 +25,7 @@ class ActivityDao {
         session.close()
     }
 
-    fun getActivity(id: Int) : List<Activity> {
+    fun getActivity(id: Int): List<Activity> {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
@@ -52,7 +51,7 @@ class ActivityDao {
         return activityList
     }
 
-    fun getActivityByAuthority(authorityId: Int) : List<Activity> {
+    fun getActivityByAuthority(authorityId: Int): List<Activity> {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
