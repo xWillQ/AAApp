@@ -33,7 +33,9 @@ dependencies {
 
     implementation 'com.google.inject:guice:4.2.3'
     implementation 'com.google.code.gson:gson:2.8.6'
+
     implementation 'org.hibernate:hibernate-core:5.4.15.Final'
+    implementation 'org.hibernate:hibernate-c3p0:5.4.15.Final'
 }
 
 jar {
