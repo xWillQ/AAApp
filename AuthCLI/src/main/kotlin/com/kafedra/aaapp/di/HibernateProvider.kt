@@ -13,9 +13,9 @@ class HibernateProvider : Provider<SessionFactory> {
     val logger: Logger = LogManager.getLogger()
 
     init {
-        val cfg = Configuration().configure()
+        val cfg = Configuration().configure("hibernate.cfg.xml")
         val url = System.getenv("JDBC_DATABASE_URL")
-        if (url != null) {
+        if (url != "" && url != null) {
             logger.info("Reconfiguring hibernate to use postgres")
             cfg.setProperty("connection.url", url)
             cfg.setProperty("connection.username", System.getenv("JDBC_DATABASE_USERNAME"))
