@@ -3,9 +3,7 @@ package com.kafedra.aaapp.filter
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
-import java.net.URLEncoder
 import javax.servlet.*
-import javax.servlet.annotation.WebFilter
 
 @Singleton
 class CharsetFilter : Filter {
