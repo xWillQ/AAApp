@@ -26,10 +26,10 @@ class ServletConfig() : GuiceServletContextListener() {
             serve("/ajax/authority").with(AuthorityServlet::class.java)
             serve("/ajax/activity").with(ActivityServlet::class.java)
 
-            val url = System.getenv("DATABASE_URL") ?: "jdbc:h2:./aaa;MV_STORE=FALSE"
+            val url = System.getenv("DATABASE_URL") ?: "h2:./aaa;MV_STORE=FALSE"
             val login = System.getenv("H2_LOGIN") ?: "se"
             val pass = System.getenv("H2_PASS") ?: ""
-            Flyway.configure().dataSource(url, login, pass).locations("classpath:db").load().migrate()
+            Flyway.configure().dataSource("jdbc:$url", login, pass).locations("classpath:db").load().migrate()
         }
     })
 }
