@@ -6,10 +6,27 @@ import com.kafedra.aaapp.domain.Authority
 import com.kafedra.aaapp.domain.User
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import java.sql.Connection
 
 class UserDao {
     @Inject lateinit var sessionProvider : HibernateProvider
     val logger: Logger = LogManager.getLogger()
+
+    fun loginExists(login: String) : Boolean {
+        logger.info("Opening hibernate session")
+        val session = sessionProvider.get().openSession()
+
+        logger.info("Querying amount of users with login = $login")
+        val count = session.createQuery("SELECT count(*) FROM User where login = '$login'").singleResult as Long
+
+        if (count == 0L) logger.info("User with login = $login exists")
+        else logger.info("User with login = $login doesn't exist")
+
+        logger.info("Closing hibernate session")
+        session.close()
+
+        return count > 0
+    }
 
     fun getUser(login: String) : User {
         logger.info("Opening hibernate session")
