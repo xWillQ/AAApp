@@ -26,13 +26,10 @@ class ServletConfig() : GuiceServletContextListener() {
             serve("/ajax/authority").with(AuthorityServlet::class.java)
             serve("/ajax/activity").with(ActivityServlet::class.java)
 
-            var url = System.getenv("DATABASE_URL") ?: "h2:./aaa;MV_STORE=FALSE"
-            val login = System.getenv("H2_LOGIN") ?: "se"
-            val pass = System.getenv("H2_PASS") ?: ""
-            if (url.startsWith("postgres")) {
-                url = url.replace("postgres", "postgresql")
-            }
-            Flyway.configure().dataSource("jdbc:$url", login, pass).locations("classpath:db").load().migrate()
+            val url = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:./aaa;MV_STORE=FALSE"
+            val login = System.getenv("JDBC_DATABASE_USERNAME") ?: "se"
+            val pass = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
+            Flyway.configure().dataSource(url, login, pass).locations("classpath:db").load().migrate()
         }
     })
 }
