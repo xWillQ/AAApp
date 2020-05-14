@@ -2,13 +2,13 @@ package com.kafedra.aaapp.servlet
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import com.kafedra.aaapp.dao.UserDao
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import com.kafedra.aaapp.domain.DBWrapper
 
 @Singleton
 class UserServlet: HttpServlet() {
@@ -17,7 +17,7 @@ class UserServlet: HttpServlet() {
     @Inject
     lateinit var gsonProvider: GSONProvider
     @Inject
-    lateinit var wrapper: DBWrapper
+    lateinit var dao: UserDao
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Handling /ajax/user")
@@ -30,7 +30,7 @@ class UserServlet: HttpServlet() {
         else logger.info("id = $id")
 
         logger.info("Getting users from database")
-        val userList = wrapper.getUser(id)
+        val userList = dao.getUser(id)
 
         logger.info("Converting users to json")
         val gson = gsonProvider.get()

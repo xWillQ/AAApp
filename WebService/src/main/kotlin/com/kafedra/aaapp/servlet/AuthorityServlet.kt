@@ -2,6 +2,7 @@ package com.kafedra.aaapp.servlet
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import com.kafedra.aaapp.dao.AuthorityDao
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
@@ -16,7 +17,7 @@ class AuthorityServlet: HttpServlet() {
     @Inject
     lateinit var gsonProvider: GSONProvider
     @Inject
-    lateinit var wrapper: DBWrapper
+    lateinit var dao: AuthorityDao
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Handling /ajax/authority")
@@ -28,17 +29,17 @@ class AuthorityServlet: HttpServlet() {
             id != null -> {
                 logger.info("id = $id")
                 logger.info("Getting authorities from database")
-                wrapper.getAuthority(id)
+                dao.getAuthority(id)
             }
             userId != null -> {
                 logger.info("userId = $userId")
                 logger.info("Getting authorities from database")
-                wrapper.getAuthorityByUser(userId)
+                dao.getAuthorityByUser(userId)
             }
             else -> {
                 logger.info("id and userId are not specified, returning all authorities")
                 logger.info("Getting authorities from database")
-                wrapper.getAuthority(0)
+                dao.getAuthority(0)
             }
         }
 

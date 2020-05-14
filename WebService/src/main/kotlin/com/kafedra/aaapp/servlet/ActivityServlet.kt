@@ -2,6 +2,7 @@ package com.kafedra.aaapp.servlet
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import com.kafedra.aaapp.dao.ActivityDao
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.aaapp.di.injector.InjectLogger
 import org.apache.logging.log4j.Logger
@@ -16,7 +17,7 @@ class ActivityServlet: HttpServlet() {
     @Inject
     lateinit var gsonProvider: GSONProvider
     @Inject
-    lateinit var wrapper: DBWrapper
+    lateinit var dao: ActivityDao
 
 
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
@@ -29,17 +30,17 @@ class ActivityServlet: HttpServlet() {
             id != null -> {
                 logger.info("id = $id")
                 logger.info("Getting activities from database")
-                wrapper.getActivity(id)
+                dao.getActivity(id)
             }
             authorityId != null -> {
                 logger.info("authorityId = $authorityId")
                 logger.info("Getting activities from database")
-                wrapper.getActivityByAuthority(authorityId)
+                dao.getActivityByAuthority(authorityId)
             }
             else -> {
                 logger.info("id and authorityId are not specified, returning all activities")
                 logger.info("Getting activities from database")
-                wrapper.getActivity(0)
+                dao.getActivity(0)
             }
         }
 
