@@ -15,7 +15,9 @@ class UserDao {
         val session = sessionProvider.get().openSession()
 
         logger.info("Querying amount of users with login = $login")
-        val count = session.createQuery("SELECT count(*) FROM User where login = '$login'").singleResult as Long
+        val count = session.createQuery(
+                "SELECT count(*) FROM User where login = '$login'"
+        ).singleResult as Long
 
         if (count == 0L) logger.info("User with login = $login exists")
         else logger.info("User with login = $login doesn't exist")

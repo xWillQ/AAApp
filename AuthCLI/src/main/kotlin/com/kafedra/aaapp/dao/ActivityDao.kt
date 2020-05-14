@@ -56,7 +56,10 @@ class ActivityDao {
         val session = sessionProvider.get().openSession()
 
         logger.info("Querying activities with authorityId = $authorityId")
-        val query = session.createQuery("FROM Activity WHERE authorityId = $authorityId", Activity::class.java)
+        val query = session.createQuery(
+                "FROM Activity WHERE authorityId = $authorityId",
+                Activity::class.java
+        )
 
         val activitiesList = query.resultList
         logger.info("Received ${activitiesList.size} activities")

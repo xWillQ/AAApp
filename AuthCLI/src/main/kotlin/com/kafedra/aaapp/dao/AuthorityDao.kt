@@ -25,7 +25,10 @@ class AuthorityDao {
         // TODO: find better solution
         // This is a bodge, should be done with one query and without pulling all authorities from DB
         logger.info("Querying authorities with user = $login and role = ${role.role}")
-        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '${role.role}'", Authority::class.java).resultList
+        val authorityList = session.createQuery(
+                "FROM Authority WHERE user.login = '$login' and role = '${role.role}'",
+                Authority::class.java
+        ).resultList
 
         var result = false
         val regex = generateResourceRegex(res)
@@ -51,7 +54,10 @@ class AuthorityDao {
         // TODO: find better solution
         // This is a bodge, should be done with one query and without pulling all authorities from DB
         logger.info("Querying authorities with user = $login and role = ${role.role}")
-        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '${role.role}'", Authority::class.java).resultList
+        val authorityList = session.createQuery(
+                "FROM Authority WHERE user.login = '$login' and role = '${role.role}'",
+                Authority::class.java
+        ).resultList
 
         var result = 0
         val regex = generateResourceRegex(res)
@@ -101,7 +107,10 @@ class AuthorityDao {
         val session = sessionProvider.get().openSession()
 
         logger.info("Querying authorities with userId = $userId")
-        val query = session.createQuery("FROM Authority WHERE userId = $userId", Authority::class.java)
+        val query = session.createQuery(
+                "FROM Authority WHERE userId = $userId",
+                Authority::class.java
+        )
 
         val authoritiesList = query.resultList
         logger.info("Received ${authoritiesList.size} authorities")

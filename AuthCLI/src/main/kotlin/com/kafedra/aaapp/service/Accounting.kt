@@ -24,6 +24,7 @@ class Accounting {
                     )
             )
 
+    @Suppress("LongParameterList")
     fun addActivity(login: String, res: String, role: Role, ds: String, de: String, vol: Int) {
         val activity = Activity()
         activity.user = userDao.getUser(login)
