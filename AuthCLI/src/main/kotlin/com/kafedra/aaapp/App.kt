@@ -1,6 +1,7 @@
 package com.kafedra.aaapp
 
 import com.google.inject.Guice
+import com.google.inject.Injector
 import com.kafedra.aaapp.ExitCode.*
 import com.kafedra.aaapp.di.ConnectionProvider
 import com.kafedra.aaapp.domain.Activity
@@ -33,7 +34,7 @@ class App {
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
         val injector = Guice.createInjector()
-        val dbWrapper = DBWrapper(injector.getInstance(ConnectionProvider::class.java))
+        val dbWrapper = DBWrapper()
         if (dbWrapper.dbExists()) logger.info("Using existing database.")
         else logger.warn("Database does not exist. Initiating new database.")
         logger.info("Attempting database migration.")
@@ -53,22 +54,22 @@ class App {
         }
 
         // Authentication step
-        exitCode = authentication(handler, dbWrapper)
+        exitCode = authentication(handler, injector)
         if (exitCode != null) return exitCode
 
         // Authorization step
-        exitCode = authorization(handler, dbWrapper)
+        exitCode = authorization(handler, injector)
         if (exitCode != null) return exitCode
 
         // Accounting step
-        exitCode = accounting(handler, dbWrapper)
+        exitCode = accounting(handler, injector)
         if (exitCode != null) return exitCode
 
         logger.info("Success. Exit.")
         return SUCCESS
     }
 
-    private fun authentication(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+    private fun authentication(handler: ArgHandler, injector: Injector): ExitCode? {
         if (!handler.needAuthentication()) {
             logger.info("Necessary arguments were not passed. Authentication is not required. Print help.")
             printHelp()
@@ -76,7 +77,7 @@ class App {
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authentication.")
 
-        val authenService = Authentication(dbWrapper)
+        val authenService = injector.getInstance(Authentication::class.java)
         return when {
             !authenService.validateLogin(handler.login!!) -> {
                 logger.error("Invalid login. Exit.")
@@ -94,23 +95,23 @@ class App {
         }
     }
 
-    private fun authorization(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+    private fun authorization(handler: ArgHandler, injector: Injector): ExitCode? {
         if (!handler.needAuthorization()) {
             logger.info("Necessary arguments were not passed. Authorization is not required.")
             logger.warn("Success. Exit.")
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Authorization")
 
-        val authorizeService = Authorization(dbWrapper)
+        val authorizeService = injector.getInstance(Authorization::class.java)
         return when {
             !authorizeService.validateRole(handler.role!!) -> {
                 logger.error("Unknown role. Exit.")
                 UNKNOWN_ROLE
             }
             !authorizeService.hasAuthority(
-                    Authority(0, handler.login!!,
+                            handler.login!!,
                             Role.valueOf(handler.role!!),
-                            handler.res!!)) -> {
+                            handler.res!!) -> {
                 logger.error("No access. Exit.")
                 NO_ACCESS
             }
@@ -118,15 +119,14 @@ class App {
         }
     }
 
-    private fun accounting(handler: ArgHandler, dbWrapper: DBWrapper): ExitCode? {
+    private fun accounting(handler: ArgHandler, injector: Injector): ExitCode? {
         if (!handler.needAccounting()) {
             logger.info("Necessary arguments were not passed. Accounting is not required.")
             logger.info("Success. Exit.")
             return SUCCESS
         } else logger.info("Necessary arguments available. Starting Accounting")
 
-        val authorizeService = Authorization(dbWrapper)
-        val accountingService = Accounting(dbWrapper)
+        val accountingService = injector.getInstance(Accounting::class.java)
         val exitCode = when {
             !accountingService.validateVol(handler.vol!!.toIntOrNull()) -> {
                 logger.info("Invalid Volume. Exit")
@@ -145,20 +145,14 @@ class App {
 
         if (exitCode == null) {
             logger.info("Successful accounting. Adding activity to base.")
-            accountingService.addActivity(Activity(
-                    0, dbWrapper.getUser(handler.login!!),
-                    authorizeService.getAuthorityId(Authority(
-                            0,
-                            handler.login!!,
-                            Role.valueOf(handler.role!!),
-                            handler.res!!
-                    )),
+            accountingService.addActivity(
+                    handler.login!!,
                     handler.res!!,
                     Role.valueOf(handler.role!!),
                     handler.ds!!,
                     handler.de!!,
                     handler.vol!!.toInt()
-            ))
+            )
         }
         return exitCode
     }
