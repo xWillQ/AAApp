@@ -18,14 +18,14 @@ class AuthorityDao {
         return Regex("^$resRegex$")
     }
 
-    fun hasAuthority(login: String, role: String, res: String) : Boolean {
+    fun hasAuthority(login: String, role: Role, res: String) : Boolean {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
         // TODO: find better solution
         // This is a bodge, should be done with one query and without pulling all authorities from DB
-        logger.info("Querying authorities with user = $login and role = $role")
-        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '$role'", Authority::class.java).resultList
+        logger.info("Querying authorities with user = $login and role = ${role.role}")
+        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '${role.role}'", Authority::class.java).resultList
 
         var result = false
         val regex = generateResourceRegex(res)
@@ -44,14 +44,14 @@ class AuthorityDao {
         return result
     }
 
-    fun getAuthorityId(login: String, role: String, res: String)  : Int {
+    fun getAuthorityId(login: String, role: Role, res: String)  : Int {
         logger.info("Opening hibernate session")
         val session = sessionProvider.get().openSession()
 
         // TODO: find better solution
         // This is a bodge, should be done with one query and without pulling all authorities from DB
-        logger.info("Querying authorities with user = $login and role = $role")
-        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '$role'", Authority::class.java).resultList
+        logger.info("Querying authorities with user = $login and role = ${role.role}")
+        val authorityList = session.createQuery("FROM Authority WHERE user.login = '$login' and role = '${role.role}'", Authority::class.java).resultList
 
         var result = 0
         val regex = generateResourceRegex(res)
