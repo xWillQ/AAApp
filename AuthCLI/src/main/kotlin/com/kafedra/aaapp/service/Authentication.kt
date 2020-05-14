@@ -1,19 +1,24 @@
 package com.kafedra.aaapp.service
 
+import com.google.inject.Inject
+import com.kafedra.aaapp.dao.UserDao
 import com.kafedra.aaapp.domain.DBWrapper
 import java.security.MessageDigest
 
-class Authentication(private val dbWrapper: DBWrapper) {
+class Authentication {
+    @Inject lateinit var dao : UserDao
 
     fun validateLogin(login: String) = login.matches(Regex("[a-z]{1,10}"))
 
-    fun loginExists(login: String) = dbWrapper.loginExists(login)
+    fun loginExists(login: String) = dao.loginExists(login)
+
     fun authenticate(login: String, pass: String): Boolean {
-        val user = dbWrapper.getUser(login)
+        val user = dao.getUser(login)
         return user.hash == getSaltedHash(pass, getSalt(user.login))
     }
 
-    private fun getSalt(login: String): String = dbWrapper.getUser(login).salt
+    private fun getSalt(login: String): String = dao.getUser(login).salt
+
     private fun getSaltedHash(pass: String, salt: String) = hash(pass + salt)
 
     private fun hash(str: String): String {

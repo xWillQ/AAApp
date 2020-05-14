@@ -1,12 +1,14 @@
 package com.kafedra.aaapp.service
 
+import com.google.inject.Inject
+import com.kafedra.aaapp.dao.ActivityDao
 import com.kafedra.aaapp.domain.Activity
-import com.kafedra.aaapp.domain.DBWrapper
 import org.apache.logging.log4j.LogManager
 
-class Accounting(private val dbWrapper: DBWrapper) {
-
+class Accounting {
+    @Inject lateinit var dao : ActivityDao
     private val logger = LogManager.getLogger()
+
     fun validateVol(vol: Int?) = if (vol != null) vol > 0 else false
 
     fun validateDate(date: String) =
@@ -18,7 +20,7 @@ class Accounting(private val dbWrapper: DBWrapper) {
             )
 
     fun addActivity(activity: Activity) {
-        dbWrapper.addActivity(activity)
+        dao.addActivity(activity)
         logger.info("Add Activity")
     }
 }
