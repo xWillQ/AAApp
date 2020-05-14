@@ -11,11 +11,11 @@ class Authorization {
 
     fun validateRole(role: String) = Role.values().any { it.role == role }
 
-    fun hasAuthority(authority: Authority): Boolean {
-        return dao.hasAuthority(authority.user?.login?:"", authority.role.toString(), authority.res)
+    fun hasAuthority(login: String, role: Role, res: String): Boolean {
+        return dao.hasAuthority(login, role, res)
     }
 
-    fun getAuthorityId(authority: Authority): Int {
-        return dao.getAuthorityId(authority.user?.login?:"", authority.role.toString(), authority.res)
+    fun getAuthorityId(login: String, role: Role, res: String): Int {
+        return dao.getAuthorityId(login, role, res)
     }
 }
