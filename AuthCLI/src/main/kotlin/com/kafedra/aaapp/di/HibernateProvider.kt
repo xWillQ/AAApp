@@ -17,10 +17,10 @@ class HibernateProvider : Provider<SessionFactory> {
         val url = System.getenv("JDBC_DATABASE_URL")
         if (url != "" && url != null) {
             logger.info("Reconfiguring hibernate to use postgres")
-            cfg.setProperty("connection.url", url)
-            cfg.setProperty("connection.username", System.getenv("JDBC_DATABASE_USERNAME"))
-            cfg.setProperty("connection.password", System.getenv("JDBC_DATABASE_PASSWORD"))
-            cfg.setProperty("connection.driverClass", "org.postgresql.Driver")
+            cfg.setProperty("hibernate.connection.url", url)
+            cfg.setProperty("hibernate.connection.username", System.getenv("JDBC_DATABASE_USERNAME"))
+            cfg.setProperty("hibernate.connection.password", System.getenv("JDBC_DATABASE_PASSWORD"))
+            cfg.setProperty("hibernate.connection.driverClass", "org.postgresql.Driver")
         }
         sessionFactory = cfg.buildSessionFactory()
     }
