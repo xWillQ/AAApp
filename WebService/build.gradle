@@ -21,6 +21,8 @@ dependencies {
     implementation project(':AuthCLI')
     implementation "org.flywaydb:flyway-core:6.3.3"
 
+    implementation "org.postgresql:postgresql:42.2.12"
+
 
     download 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
 }
