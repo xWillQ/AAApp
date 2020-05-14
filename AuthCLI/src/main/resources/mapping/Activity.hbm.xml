@@ -1,0 +1,23 @@
+<hibernate-mapping>
+  <class name="com.kafedra.aaapp.domain.Activity" table="activities">
+    <id column="id" name="id" type="int">
+      <generator class="increment"/>
+    </id>
+    <property column="role" name="role">
+      <type name="org.hibernate.type.EnumType">
+          <param name="enumClass">com.kafedra.aaapp.Role</param>
+          <param name="useNamed">true</param>
+      </type>
+    </property>
+    <property column="res" name="res" type="string"/>
+    <property column="ds" name="ds" type="string"/>
+    <property column="de" name="de" type="string"/>
+    <property column="vol" name="vol" type="int"/>
+
+    <many-to-one name="user" column = "userId"
+         class="com.kafedra.aaapp.domain.User" not-null="true"/>
+    <many-to-one name="authority" column = "authorityId"
+         class="com.kafedra.aaapp.domain.Authority" not-null="true"/>
+
+  </class>
+</hibernate-mapping>

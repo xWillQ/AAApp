@@ -10,6 +10,7 @@
 
         <mapping resource="mapping/User.hbm.xml"/>
         <mapping resource="mapping/Authority.hbm.xml"/>
+        <mapping resource="mapping/Activity.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>
