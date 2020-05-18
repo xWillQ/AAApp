@@ -16,6 +16,10 @@ class Form extends React.Component {
         this.send = this.send.bind(this)
     }
 
+    changeHandler(event) {
+        this.state.fields[event.target.name] = event.target.value
+    }
+
     renderFields() {
         let fields = Object.keys(this.state.fields)
         return fields.map((value) => {
