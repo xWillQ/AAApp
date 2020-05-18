@@ -1,7 +1,7 @@
 style:
   WildcardImport:
     active: true
-    excludeImports: 'com.kafedra.aaapp.ExitCode.*'
+    excludeImports: ['com.kafedra.aaapp.ExitCode.*', 'javax.servlet.*', 'com.kafedra.aaapp.servlet.*']
   MagicNumber:
     active: true
     ignoreEnums: true
