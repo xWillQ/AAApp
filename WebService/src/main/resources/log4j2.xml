@@ -13,5 +13,6 @@
       <AppenderRef ref="Console"/>
       <AppenderRef ref="File"/>
     </Root>
+    <Logger name="org.hibernate" level="error"/>
   </Loggers>
 </Configuration>
