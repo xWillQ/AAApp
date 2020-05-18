@@ -20,6 +20,19 @@ class Form extends React.Component {
         this.state.fields[event.target.name] = event.target.value
     }
 
+    send() {
+        let req = new Request("ajax/activity", { method: "POST", body: JSON.stringify(this.state.fields) })
+        fetch(req).then(response => response.text()).then(msg => {
+            if (msg != 0) {
+                alert(msg)
+            }
+            else {
+                let table = document.getElementById("table")
+                updateData(table.getAttribute("table"), table.getAttribute("query"))
+            }
+        })
+    }
+
     renderFields() {
         let fields = Object.keys(this.state.fields)
         return fields.map((value) => {
