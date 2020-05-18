@@ -11,12 +11,7 @@ buildscript {
     }
 }
 
-
 allprojects {
-
-}
-
-subprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jmailen.kotlinter'
     apply plugin: 'io.gitlab.arturbosch.detekt'
@@ -40,4 +35,13 @@ subprojects {
         implementation "org.flywaydb:flyway-core:6.3.3"
     }
 
+    kotlinter {
+        reporters = ['html']
+        disabledRules = ["no-wildcard-imports"]
+    }
+
+    detekt {
+        config = files("$rootDir/detekt.yml")
+        buildUponDefaultConfig = true
+    }
 }

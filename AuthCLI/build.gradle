@@ -47,13 +47,3 @@ jacocoTestReport {
         html.enabled true
     }
 }
-
-kotlinter {
-    reporters = ['html']
-    disabledRules = ["no-wildcard-imports"]
-}
-
-detekt {
-    config = files("$rootDir/detekt.yml")
-    buildUponDefaultConfig = true
-}
