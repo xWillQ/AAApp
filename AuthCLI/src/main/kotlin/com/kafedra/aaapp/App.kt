@@ -3,7 +3,6 @@ package com.kafedra.aaapp
 import com.google.inject.Guice
 import com.google.inject.Injector
 import com.kafedra.aaapp.ExitCode.*
-import com.kafedra.aaapp.domain.DBWrapper
 import com.kafedra.aaapp.service.Accounting
 import com.kafedra.aaapp.service.ArgHandler
 import com.kafedra.aaapp.service.Authentication
@@ -31,14 +30,6 @@ class App {
     fun run(args: Array<String>): ExitCode {
         logger.info("Start program")
         val injector = Guice.createInjector()
-        val dbWrapper = DBWrapper()
-        if (dbWrapper.dbExists()) logger.info("Using existing database.")
-        else logger.warn("Database does not exist. Initiating new database.")
-        logger.info("Attempting database migration.")
-        dbWrapper.initDatabase(
-                System.getenv("H2_URL") ?: "jdbc:h2:./aaa",
-                System.getenv("H2_LOGIN") ?: "se",
-                System.getenv("H2_PASS") ?: "")
 
         var exitCode: ExitCode?
 
