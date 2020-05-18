@@ -23,7 +23,7 @@ class Form extends React.Component {
     renderFields() {
         let fields = Object.keys(this.state.fields)
         return fields.map((value) => {
-            return React.createElement("p", null, [value + " ", React.createElement("input", { type: "text", name: value })])
+            return React.createElement("p", null, [value + " ", React.createElement("input", { type: "text", name: value, onChange: this.changeHandler })])
         })
     }
 
