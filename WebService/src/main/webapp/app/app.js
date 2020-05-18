@@ -12,3 +12,5 @@ const updateData = (table, query) => {
         );
     })
 }
+
+updateData("user")
