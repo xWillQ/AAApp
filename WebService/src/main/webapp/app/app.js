@@ -1,3 +1,8 @@
+const handler = (table, id) => {
+    if (table == "user") updateData("authority", "userId=" + id)
+    else if (table == "authority") updateData("activity", "authorityId=" + id)
+}
+
 const updateData = (table, query) => {
     let keys = []
     if (table == "user") keys = ["id", "login"]
