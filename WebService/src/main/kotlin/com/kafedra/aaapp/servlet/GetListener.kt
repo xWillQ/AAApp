@@ -2,14 +2,14 @@ package com.kafedra.aaapp.servlet
 
 import com.google.inject.Singleton
 import com.kafedra.aaapp.di.injector.InjectLogger
-import org.apache.logging.log4j.Logger
 import java.net.URLDecoder
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.apache.logging.log4j.Logger
 
 @Singleton
-class GetListener: HttpServlet() {
+class GetListener : HttpServlet() {
     @InjectLogger
     lateinit var logger: Logger
 

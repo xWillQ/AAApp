@@ -5,13 +5,13 @@ import com.google.inject.Singleton
 import com.kafedra.aaapp.dao.UserDao
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.aaapp.di.injector.InjectLogger
-import org.apache.logging.log4j.Logger
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.apache.logging.log4j.Logger
 
 @Singleton
-class UserServlet: HttpServlet() {
+class UserServlet : HttpServlet() {
     @InjectLogger
     lateinit var logger: Logger
     @Inject
@@ -26,8 +26,7 @@ class UserServlet: HttpServlet() {
         if (id == null) {
             logger.info("id is not specified, returning all users")
             id = 0
-        }
-        else logger.info("id = $id")
+        } else logger.info("id = $id")
 
         logger.info("Getting users from database")
         val userList = dao.getUser(id)

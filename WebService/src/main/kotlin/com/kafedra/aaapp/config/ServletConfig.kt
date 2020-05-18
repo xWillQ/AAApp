@@ -5,13 +5,12 @@ import com.google.inject.Injector
 import com.google.inject.matcher.Matchers
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.inject.servlet.ServletModule
-import com.kafedra.aaapp.filter.CharsetFilter
 import com.kafedra.aaapp.di.injector.Log4JTypeListener
+import com.kafedra.aaapp.filter.CharsetFilter
 import com.kafedra.aaapp.servlet.*
 import org.flywaydb.core.Flyway
 
-
-class ServletConfig() : GuiceServletContextListener() {
+class ServletConfig : GuiceServletContextListener() {
     override fun getInjector(): Injector = Guice.createInjector(object : ServletModule() {
         override fun configureServlets() {
             super.configureServlets()

@@ -5,7 +5,6 @@ import com.google.inject.spi.TypeEncounter
 import com.google.inject.spi.TypeListener
 import org.apache.logging.log4j.Logger
 
-
 internal class Log4JTypeListener : TypeListener {
     override fun <T> hear(typeLiteral: TypeLiteral<T>, typeEncounter: TypeEncounter<T>) {
         var clazz = typeLiteral.rawType

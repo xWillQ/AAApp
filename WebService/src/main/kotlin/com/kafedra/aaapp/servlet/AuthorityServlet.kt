@@ -5,13 +5,13 @@ import com.google.inject.Singleton
 import com.kafedra.aaapp.dao.AuthorityDao
 import com.kafedra.aaapp.di.GSONProvider
 import com.kafedra.aaapp.di.injector.InjectLogger
-import org.apache.logging.log4j.Logger
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.apache.logging.log4j.Logger
 
 @Singleton
-class AuthorityServlet: HttpServlet() {
+class AuthorityServlet : HttpServlet() {
     @InjectLogger
     lateinit var logger: Logger
     @Inject
