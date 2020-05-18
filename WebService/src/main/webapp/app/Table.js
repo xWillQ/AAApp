@@ -21,7 +21,7 @@ class Table extends React.Component {
         return items.map((row, index) => {
             return React.createElement(
                 "tr",
-                { key: index },
+                { key: index, onClick: () => { handler(this.props.table, row["id"]) } },
                 React.createElement(RenderRow, { key: index, data: row, keys: keys }, null)
             )
         })
