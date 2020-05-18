@@ -3,14 +3,13 @@
 2. В `<head>` указать скрипты: (0 мин.)
    * `<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>`
    * `<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>`
-   * `<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>`
 3. Создать класс `Table` используя `React` ([гайд](https://medium.com/@subalerts/create-dynamic-table-from-json-in-react-js-1a4a7b1146ef)) (60 мин.)
    * Элемент должен принимать данные из json, список ключей и название таблицы
 4. Добавить элемент `<div id="table_container">` в `index.html` (0 мин.)
 5. Создать функцию `updateData(table, query)` (10 мин.)
    1. Создать массив `keys` и заполнить его ключами необходимыми для запрошенной таблицы
-   2. Используя `jQuery.getJSON` запросить json с адреса `ajax/$table` с параметрами из `query`
-   3. В callback функции отрендерить `Table` внутри элемента с `id="table_container"` с параметрами `data`, `table`, `keys` и `query`
+   2. Используя `fetch` запросить json с адреса `ajax/$table?$query`
+   3. В `then` методе отрендерить `Table` внутри элемента с `id="table_container"` с параметрами `data`, `table`, `keys` и `query`
 6. В конце скрипта добавить вызов `updateData("user")` (0 мин.)
 7. Создать функцию `handler(table, id)` (2 мин.)
    1. Если `table == "user"` вызывает `updateData("authority", "userId=" + id)`
