@@ -45,7 +45,7 @@ class Form extends React.Component {
             React.createElement("form", null,
                 [
                     this.renderFields(),
-                    React.createElement("input", { type: "button", id: "submit-button", value: "Submit" })
+                    React.createElement("input", { type: "button", id: "submit-button", value: "Submit", onClick: this.send })
                 ]
             )
 
