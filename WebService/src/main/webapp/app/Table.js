@@ -3,19 +3,19 @@ class Table extends React.Component {
         super(props);
     }
 
-    getKeys = function () {
+    getKeys() {
         // return Object.keys(this.props.data[0]);
         return this.props.keys
     }
 
-    getHeader = function () {
+    getHeader() {
         var keys = this.getKeys();
         return keys.map((key, index) => {
             return React.createElement("th", { key: key }, key.toUpperCase())
         })
     }
 
-    getRowsData = function () {
+    getRowsData() {
         var items = this.props.data;
         var keys = this.getKeys();
         return items.map((row, index) => {
