@@ -23,10 +23,7 @@ class Form extends React.Component {
     send() {
         let req = new Request("ajax/activity", { method: "POST", body: JSON.stringify(this.state.fields) })
         fetch(req).then(response => response.text()).then(msg => {
-            if (msg != 0) {
-                alert(msg)
-            }
-            else {
+            if (msg == 0) {
                 let table = document.getElementById("table")
                 updateData(table.getAttribute("table"), table.getAttribute("query"))
             }
