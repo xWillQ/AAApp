@@ -18,4 +18,9 @@ const updateData = (table, query) => {
     })
 }
 
+ReactDOM.render(
+    React.createElement(Form),
+    document.getElementById("form_container")
+);
+
 updateData("user")
