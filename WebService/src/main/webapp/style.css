@@ -1,0 +1,20 @@
+
+#input_container {
+    width: 100px;
+}
+#input_field {
+    position: sticky;
+    right: 0px;
+    margin-bottom: 5px;
+}
+
+table {
+    border: solid gray;
+    float: left;
+    margin: 15px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: solid gray 1px;
+}

@@ -13,9 +13,22 @@ const updateData = (table, query) => {
     fetch(req).then(response => response.json()).then(data => {
         ReactDOM.render(
             React.createElement(Table, { "data": data, "table": table, "keys": keys, "query": query }, null),
-            document.getElementById("table_container")
+            document.getElementById(table + "_table_container")
         );
     })
+
+    if (table == "user") {
+        ReactDOM.render(
+            React.createElement("div"),
+            document.getElementById("authority_table_container")
+        );
+    }
+    if (table != "activity") {
+        ReactDOM.render(
+            React.createElement("div"),
+            document.getElementById("activity_table_container")
+        );
+    }
 }
 
 ReactDOM.render(

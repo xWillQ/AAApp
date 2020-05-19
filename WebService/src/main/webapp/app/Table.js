@@ -29,7 +29,7 @@ class Table extends React.Component {
 
     render() {
         return (
-            React.createElement("table", { "id": "table", "table": this.props.table, "query": this.props.query },
+            React.createElement("table", { "id": this.props.table + "_table", "query": this.props.query },
                 [
                     React.createElement("thead", null, this.getHeader()),
                     React.createElement("tbody", null, this.getRowsData())

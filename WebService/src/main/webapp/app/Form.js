@@ -24,8 +24,8 @@ class Form extends React.Component {
         let req = new Request("ajax/activity", { method: "POST", body: JSON.stringify(this.state.fields) })
         fetch(req).then(response => response.text()).then(msg => {
             if (msg == 0) {
-                let table = document.getElementById("table")
-                updateData(table.getAttribute("table"), table.getAttribute("query"))
+                let table = document.getElementById("activity_table")
+                updateData("activity", table.getAttribute("query"))
             }
         })
     }
@@ -33,7 +33,7 @@ class Form extends React.Component {
     renderFields() {
         let fields = Object.keys(this.state.fields)
         return fields.map((value) => {
-            return React.createElement("p", null, [value + " ", React.createElement("input", { type: "text", name: value, onChange: this.changeHandler })])
+            return React.createElement("div", { id: "input_container" }, [value, React.createElement("input", { id: "input_field", type: "text", name: value, onChange: this.changeHandler })])
         })
     }
 
