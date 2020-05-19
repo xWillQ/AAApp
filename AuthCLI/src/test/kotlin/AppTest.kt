@@ -1,9 +1,16 @@
 import com.kafedra.aaapp.App
 import kotlin.test.assertEquals
+import org.flywaydb.core.Flyway
 import org.spekframework.spek2.Spek
 
 object AppTest : Spek({
     lateinit var app: App
+
+    val url = System.getenv("H2_URL") ?: "jdbc:h2:./aaa"
+    val login = System.getenv("H2_LOGIN") ?: "se"
+    val pass = System.getenv("H2_PASS") ?: ""
+    val flyway = Flyway.configure().dataSource("$url;MV_STORE=FALSE", login, pass).locations("classpath:db").load()
+    flyway.migrate()
 
     beforeEachTest {
         app = App()
