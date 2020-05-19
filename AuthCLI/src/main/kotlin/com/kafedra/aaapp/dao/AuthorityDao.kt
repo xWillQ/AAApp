@@ -37,7 +37,7 @@ class AuthorityDao {
         val authorityList = session.createQuery(
                         "FROM Authority " +
                         "WHERE user.login = '$login' and role = '${role.role}' and " +
-                        "res = '$res' or '$res' LIKE concat(res, '.%')",
+                        "(res = '$res' or '$res' LIKE concat(res, '.%'))",
                 Authority::class.java
         ).resultList
 
