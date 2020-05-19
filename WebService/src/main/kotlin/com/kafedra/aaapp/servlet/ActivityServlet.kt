@@ -43,7 +43,7 @@ class ActivityServlet : HttpServlet() {
         logger.info("Running application")
         val app = App()
         val exitCode = app.run(argList.toTypedArray())
-        logger.info("Application exited with code ${exitCode.code} (${exitCode.name}")
+        logger.info("Application exited with code ${exitCode.code} (${exitCode.name})")
         logger.info("Sending exit code as a response")
         response.writer.write("${exitCode.code}")
     }
