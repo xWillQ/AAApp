@@ -1,6 +1,6 @@
 const handler = (table, id) => {
-    if (table == "user") updateData("authority", "userId=" + id)
-    else if (table == "authority") updateData("activity", "authorityId=" + id)
+    if (table == "user") updateData("authority", `userId=${id}`)
+    else if (table == "authority") updateData("activity", `authorityId=${id}`)
 }
 
 const updateData = (table, query) => {
@@ -9,11 +9,11 @@ const updateData = (table, query) => {
     else if (table == "authority") keys = ["id", "role", "res"]
     else if (table == "activity") keys = ["id", "ds", "de", "vol"]
 
-    let req = new Request("ajax/" + table + "?" + query)
+    let req = new Request(`ajax/${table}?${query}`)
     fetch(req).then(response => response.json()).then(data => {
         ReactDOM.render(
             React.createElement(Table, { "data": data, "table": table, "keys": keys, "query": query }, null),
-            document.getElementById(table + "_table_container")
+            document.getElementById(`${table}_table_container`)
         );
     })
 
