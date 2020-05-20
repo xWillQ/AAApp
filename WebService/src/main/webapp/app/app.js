@@ -1,3 +1,8 @@
+import React from "react"
+import ReactDOM from "react-dom"
+import Form from "./Form.js"
+import Table from "./Table.js"
+
 const handler = (table, id) => {
     if (table == "user") updateData("authority", `userId=${id}`)
     else if (table == "authority") updateData("activity", `authorityId=${id}`)
