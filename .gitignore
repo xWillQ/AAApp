@@ -34,6 +34,8 @@ kotlinx.cli
 lib/apache-log4j-2.13.1-bin/*
 *.db
 .gradle
+node_modules/
+bundle.js
 
 # Allow
 !gradle-wrapper.jar
