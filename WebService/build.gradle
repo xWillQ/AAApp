@@ -56,4 +56,4 @@ task buildWebapp(type: Exec) {
     }
 }
 
-stage.dependsOn(buildWebapp)
+//stage.dependsOn(buildWebapp)
