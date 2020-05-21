@@ -52,7 +52,7 @@ task buildWebapp(type: Exec) {
         commandLine "cmd", "/c", "npm run build"
     }
     else {
-        commandLine "npm run build"
+        commandLine "sh", "-c", "npm run build"
     }
 }
 
