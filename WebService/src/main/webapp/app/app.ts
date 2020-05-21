@@ -1,20 +1,24 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Form from "./Form.js"
-import Table from "./Table.js"
+import Form from "./Form"
+import Table from "./Table"
 
-const handler = (table, id) => {
+export function handler(table: string, id: number) {
     if (table == "user") updateData("authority", `userId=${id}`)
     else if (table == "authority") updateData("activity", `authorityId=${id}`)
 }
 
-const updateData = (table, query) => {
-    let keys = []
+export function updateData(table: string, query: string) {
+    let keys: string[] = []
     if (table == "user") keys = ["id", "login"]
     else if (table == "authority") keys = ["id", "role", "res"]
     else if (table == "activity") keys = ["id", "ds", "de", "vol"]
 
-    let req = new Request(`ajax/${table}?${query}`)
+    let req: Request
+    if (query != "")
+        req = new Request(`ajax/${table}?${query}`)
+    else
+        req = new Request(`ajax/${table}`)
     fetch(req).then(response => response.json()).then(data => {
         ReactDOM.render(
             React.createElement(Table, { "data": data, "table": table, "keys": keys, "query": query }, null),
@@ -41,4 +45,4 @@ ReactDOM.render(
     document.getElementById("form_container")
 );
 
-updateData("user")
+updateData("user", "")
